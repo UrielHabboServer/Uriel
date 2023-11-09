@@ -1,0 +1,22 @@
+#
+# Uriel Habbo Server | © 2023 • @dapping
+# - Hotel settings / mechanics
+#
+
+[hotel]
+defaultRoomId = 0 # 0 = no room, hotelview
+
+[habbos]
+
+
+[habbos.wardrobe]
+figureDataUrl = "https://habbo.com/gamedata/figuredata/0"
+validateLooksOnHabboClubExpire = true
+validateLooksOnLogin = true
+validateLooksOnChange = true
+
+[habbos.inventory]
+storeItemDataOnPickUp = false
+
+[habbos.subscription]
+deleteExpiredSubscriptions = true

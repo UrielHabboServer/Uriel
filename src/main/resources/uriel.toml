@@ -1,0 +1,27 @@
+#
+# Uriel Habbo Server | © 2023 • @dapping
+# - Server configuration
+#
+
+[server]
+ip = "127.0.0.1"
+port = 2096
+route = "/"
+
+[database]
+host = "127.0.0.1"
+port = 3306
+username = "root"
+password = ""
+databaseName = "habbo"
+
+[connections]
+maxConnectedClients = 1000 # -1 = unlimited
+maxConnectionsPerIp = 5 # -1 = unlimited
+
+[packets]
+packetRateLimitTime = 1000 # ms
+packetRateLimitAmount = 10 # packets, -1 = unlimited
+
+[security]
+refreshSSOTicketOnLogin = false
