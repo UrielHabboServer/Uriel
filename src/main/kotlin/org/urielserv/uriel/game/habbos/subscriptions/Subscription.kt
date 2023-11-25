@@ -4,7 +4,7 @@ import org.ktorm.dsl.eq
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.database.enums.Bool
-import org.urielserv.uriel.database.schemas.UsersSubscriptions
+import org.urielserv.uriel.database.schemas.UserSubscriptionsSchema
 import org.urielserv.uriel.game.habbos.Habbo
 
 data class Subscription(
@@ -27,11 +27,11 @@ data class Subscription(
         isActive = false
 
         if (HotelSettings.habbos.subscription.deleteExpiredSubscriptions) {
-            Database.delete(UsersSubscriptions) {
+            Database.delete(UserSubscriptionsSchema) {
                 it.id eq id
             }
         } else {
-            Database.update(UsersSubscriptions) {
+            Database.update(UserSubscriptionsSchema) {
                 it.isActive to Bool.FALSE
                 where {
                     it.id eq id

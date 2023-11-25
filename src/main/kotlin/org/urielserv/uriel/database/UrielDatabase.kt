@@ -26,7 +26,10 @@ class UrielDatabase(
 ) {
 
     private val hikariConfig = HikariConfig().apply {
-        jdbcUrl = "jdbc:mysql://$host:$port/$databaseName"
+        jdbcUrl = "jdbc:postgresql://$host:$port/$databaseName"
+        driverClassName = "org.postgresql.Driver"
+        maximumPoolSize = 10
+
         this.username = username
         this.password = password
     }

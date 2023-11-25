@@ -10,8 +10,8 @@ route = "/"
 
 [database]
 host = "127.0.0.1"
-port = 3306
-username = "root"
+port = 5432
+username = "postgres"
 password = ""
 databaseName = "habbo"
 
@@ -25,3 +25,7 @@ packetRateLimitAmount = 10 # packets, -1 = unlimited
 
 [security]
 refreshSSOTicketOnLogin = false
+
+[tickLoops]
+hotelTicksPerSecond = 25
+roomTicksPerSecond = 25

@@ -5,7 +5,7 @@ import org.ktorm.dsl.eq
 import org.ktorm.dsl.select
 import org.ktorm.dsl.where
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UsersSubscriptions
+import org.urielserv.uriel.database.schemas.UserSubscriptionsSchema
 import org.urielserv.uriel.game.habbos.Habbo
 
 @Suppress("unused")
@@ -16,20 +16,20 @@ class HabboSubscriptions(
     private val subscriptions = mutableListOf<Subscription>()
 
     init {
-        Database.from(UsersSubscriptions)
+        Database.from(UserSubscriptionsSchema)
             .select()
-            .where(UsersSubscriptions.userId eq habbo.id)
+            .where(UserSubscriptionsSchema.userId eq habbo.id)
             .rowSet
             .iterator()
             .forEach { row ->
                 subscriptions.add(
                     Subscription(
-                        row[UsersSubscriptions.id]!!,
+                        row[UserSubscriptionsSchema.id]!!,
                         habbo,
-                        row[UsersSubscriptions.subscriptionType]!!,
-                        row[UsersSubscriptions.subscriptionStart]!!,
-                        row[UsersSubscriptions.subscriptionEnd]!!,
-                        row[UsersSubscriptions.isActive]!!.toBoolean()
+                        row[UserSubscriptionsSchema.subscriptionType]!!,
+                        row[UserSubscriptionsSchema.subscriptionStart]!!,
+                        row[UserSubscriptionsSchema.subscriptionEnd]!!,
+                        row[UserSubscriptionsSchema.isActive]!!.toBoolean()
                     )
                 )
             }
@@ -53,7 +53,7 @@ class HabboSubscriptions(
     fun registerSubscription(subscription: Subscription) {
         subscriptions.add(subscription)
 
-        Database.insert(UsersSubscriptions) {
+        Database.insert(UserSubscriptionsSchema) {
             it.userId to habbo.id
             it.subscriptionType to subscription.subscriptionType
             it.subscriptionStart to subscription.subscriptionStart

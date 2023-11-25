@@ -1,9 +1,6 @@
 package org.urielserv.uriel.database.schemas
 
-import org.ktorm.schema.Table
-import org.ktorm.schema.enum
-import org.ktorm.schema.int
-import org.ktorm.schema.varchar
+import org.ktorm.schema.*
 import org.urielserv.uriel.database.enums.Bool
 
 @Suppress("unused")
@@ -21,10 +18,10 @@ object UsersSchema : Table<Nothing>("users") {
 
     val rankId = int("rank")
 
-    val accountCreated = int("account_creation_timestamp")
+    val accountCreated = long("account_creation_timestamp")
 
-    val lastLogin = int("last_login_timestamp")
-    val lastOnline = int("last_online_timestamp")
+    val lastLogin = long("last_login_timestamp")
+    val lastOnline = long("last_online_timestamp")
     val isOnline = enum<Bool>("is_online")
 
     val motto = varchar("motto")

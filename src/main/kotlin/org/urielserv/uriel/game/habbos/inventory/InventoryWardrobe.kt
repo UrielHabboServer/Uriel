@@ -1,4 +1,13 @@
 package org.urielserv.uriel.game.habbos.inventory
 
-class InventoryWardrobe {
+import org.urielserv.uriel.game.habbos.Habbo
+
+class InventoryWardrobe(
+    val habbo: Habbo
+) {
+
+    init {
+
+    }
+
 }

@@ -6,7 +6,7 @@ import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 import org.urielserv.uriel.database.enums.Bool
 
-object UsersSubscriptions : Table<Nothing>("users_subscriptions") {
+object UserSubscriptionsSchema : Table<Nothing>("user_subscriptions") {
 
     val id = int("id").primaryKey()
     val userId = int("user_id")

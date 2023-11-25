@@ -1,5 +1,7 @@
 package org.urielserv.uriel.packets.outgoing
 
+import kotlin.reflect.full.memberProperties
+
 @Suppress("unused", "ConstPropertyName")
 object OutgoingPacketIDs {
 

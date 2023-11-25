@@ -18,7 +18,8 @@ data class UrielConfiguration(
     val database: Database,
     val connections: Connections,
     val packets: Packets,
-    val security: Security
+    val security: Security,
+    val tickLoops: TickLoops
 ) {
 
     @Serializable
@@ -52,6 +53,12 @@ data class UrielConfiguration(
     @Serializable
     data class Security(
         val refreshSSOTicketOnLogin: Boolean
+    )
+
+    @Serializable
+    data class TickLoops(
+        val hotelTicksPerSecond: Int,
+        val roomTicksPerSecond: Int
     )
 
 }

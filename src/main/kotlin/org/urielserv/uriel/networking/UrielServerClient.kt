@@ -21,6 +21,7 @@ class UrielServerClient(
 ) {
 
     var habbo: Habbo? = null
+    var nitroTimeTaken = 0
 
     /**
      * Suspends the execution and disposes the resources used by the client.
@@ -35,6 +36,10 @@ class UrielServerClient(
         Server.disposeClient(this)
         if (habbo != null)
             HabboManager.unloadHabbo(habbo!!)
+    }
+
+    suspend fun send(bytes: ByteArray) {
+        socketServerSession.send(bytes)
     }
 
 }

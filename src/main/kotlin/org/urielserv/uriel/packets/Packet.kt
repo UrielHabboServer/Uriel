@@ -40,7 +40,7 @@ interface Packet {
     suspend fun send(client: UrielServerClient) {
         byteArray.appendShortAtBeginning(packetId.toShort())
         construct()
-        client.socketServerSession.send(byteArray.toByteArray())
+        client.send(byteArray.toByteArray())
     }
 
 }

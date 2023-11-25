@@ -4,6 +4,8 @@ import io.klogging.logger
 import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.WardrobeManager
+import org.urielserv.uriel.extensions.readInt
+import org.urielserv.uriel.extensions.readShort
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.PacketHandler
@@ -18,6 +20,9 @@ class SecureLoginPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         val ssoTicket = packet.readString().replace(" ", "")
+        val timeTaken = packet.readInt()
+
+        client.nitroTimeTaken = timeTaken
 
         if (ssoTicket.isEmpty()) {
             client.dispose()
@@ -48,22 +53,12 @@ class SecureLoginPacketHandler : PacketHandler {
         }
 
         /*
-                messages.add(new SecureLoginOKComposer().compose()); - ADDED
-
-                int roomIdToEnter = 0;
-
-                if (!this.client.getHabbo().getHabboStats().nux || Emulator.getConfig().getBoolean("retro.style.homeroom") && this.client.getHabbo().getHabboInfo().getHomeRoom() != 0)
-                    roomIdToEnter = this.client.getHabbo().getHabboInfo().getHomeRoom();
-                else if (!this.client.getHabbo().getHabboStats().nux || Emulator.getConfig().getBoolean("retro.style.homeroom") && RoomManager.HOME_ROOM_ID > 0)
-                    roomIdToEnter = RoomManager.HOME_ROOM_ID;
-
-                messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), roomIdToEnter).compose());
                 messages.add(new UserEffectsListComposer(habbo, this.client.getHabbo().getInventory().getEffectsComponent().effects.values()).compose());
                 messages.add(new UserClothesComposer(this.client.getHabbo()).compose());
-                messages.add(new NewUserIdentityComposer(habbo).compose());
+                messages.add(new NewUserIdentityComposer(habbo).compose()); - probably really important
                 messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
                 messages.add(new AvailabilityStatusMessageComposer(true, false, true).compose());
-                messages.add(new PingComposer().compose());
+                messages.add(new PingComposer().compose()); - ADDED
                 messages.add(new EnableNotificationsComposer(Emulator.getConfig().getBoolean("bubblealerts.enabled", true)).compose());
                 messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
                 messages.add(new IsFirstLoginOfDayComposer(true).compose());

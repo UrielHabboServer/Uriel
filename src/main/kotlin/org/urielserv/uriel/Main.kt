@@ -4,7 +4,7 @@ import com.akuleshov7.ktoml.Toml
 import io.klogging.Level
 import io.klogging.config.loggingConfiguration
 import io.klogging.logger
-import io.klogging.rendering.*
+import io.klogging.rendering.RENDER_ANSI
 import io.klogging.sending.STDOUT
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -18,6 +18,7 @@ import org.urielserv.uriel.game.habbos.wardrobe.UrielWardrobeManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.UrielPacketHandlerManager
+import org.urielserv.uriel.tick_loop.UrielTickLoop
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
@@ -37,6 +38,8 @@ lateinit var WardrobeManager: UrielWardrobeManager
 
 lateinit var Server: UrielServer
 lateinit var PacketHandlerManager: UrielPacketHandlerManager
+
+lateinit var TickLoop: UrielTickLoop
 
 var Ready = false
 
@@ -82,13 +85,15 @@ suspend fun main() = runBlocking {
     )
     PacketHandlerManager = UrielPacketHandlerManager()
 
-    Ready = true
-
     launch {
         Server.start()
     }
 
-    logger.info("Uriel initialization successful. The server should start shortly")
+    Ready = true
+
+    TickLoop = UrielTickLoop(
+        ticksPerSecond = Configuration.tickLoops.hotelTicksPerSecond
+    )
 }
 
 private suspend inline fun <reified T> loadTomlFile(pathString: String): T {

@@ -10,6 +10,7 @@ import io.ktor.websocket.*
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.PacketHandlerManager
 import org.urielserv.uriel.extensions.readShort
+import org.urielserv.uriel.packets.incoming.IncomingPacketIDs
 import java.time.Duration
 
 /**
@@ -134,7 +135,7 @@ class UrielServer(
                     // read packet id (short)
                     val packetId = byteStream.readShort()
 
-                    logPacket(packetId, client, packet)
+                    logIncomingPacket(packetId, client, packet)
 
                     PacketHandlerManager.handlePacket(packetId, client, byteStream)
                 }
@@ -146,7 +147,7 @@ class UrielServer(
         }
     }
 
-    private suspend fun logPacket(packetId: Short, client: UrielServerClient, packet: ByteArray) {
+    private suspend fun logIncomingPacket(packetId: Short, client: UrielServerClient, packet: ByteArray) {
         logger.debug("Packet: $packetId | Client: ${client.ip}:${client.port} | Packet: ${packet.contentToString()}")
     }
 
