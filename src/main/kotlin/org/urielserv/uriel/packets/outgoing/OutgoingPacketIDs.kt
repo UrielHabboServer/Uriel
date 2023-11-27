@@ -1,7 +1,5 @@
 package org.urielserv.uriel.packets.outgoing
 
-import org.urielserv.uriel.packets.outgoing.handshake.AuthenticationOKPacket
-
 @Suppress("unused", "ConstPropertyName")
 object OutgoingPacketIDs {
 
