@@ -45,7 +45,8 @@ var Ready = false
 
 suspend fun main() = runBlocking {
     println()
-    println("Uriel Habbo Server | v${BuildConfig.VERSION} | @dapping")
+    println("Uriel Habbo Server | v${BuildConfig.VERSION}")
+    println("https://git.krews.org/dap/uriel")
     println()
 
     loggingConfiguration {
