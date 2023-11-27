@@ -1,8 +1,5 @@
 package org.urielserv.uriel.packets.incoming
 
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.memberProperties
-
 @Suppress("unused", "ConstPropertyName")
 object IncomingPacketIDs {
     
@@ -121,7 +118,7 @@ object IncomingPacketIDs {
     const val AcceptFriendRequest = 137
     const val DeclineFriendRequest = 2890 //835
 
-    const val ReleaseVersion = 4000 //4000 
+    const val ClientVersion = 4000 //4000
 
     const val InitDiffieHandshake = 3110
     const val CompleteDiffieHandshake = 773
@@ -168,7 +165,7 @@ object IncomingPacketIDs {
     const val WiredEffectSaveData = 2281
     const val WiredApplySetConditions = 3373
     const val CheckPetName = 2109
-    const val SecureLogin = 2419
+    const val SSOTicket = 2419
     const val BotSaveSettings = 2624
     const val RequestGuildBuy = 230
     const val SearchUser = 1210

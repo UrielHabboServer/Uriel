@@ -12,11 +12,10 @@ object UserEffectsSchema : Table<Nothing>("user_effects") {
 
     val effectId = int("effect_id")
 
-    val startTimestamp = int("start_timestamp")
-    val endTimestamp = int("end_timestamp")
+    val duration = int("duration")
+    val quantity = int("quantity")
 
-    val amount = int("amount")
-
+    val activationTimestamp = int("activation_timestamp")
     val isActive = enum<Bool>("is_active")
 
 }

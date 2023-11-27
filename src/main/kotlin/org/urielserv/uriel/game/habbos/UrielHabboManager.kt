@@ -1,7 +1,10 @@
 package org.urielserv.uriel.game.habbos
 
+import io.klogging.noCoLogger
 import org.ktorm.database.iterator
-import org.ktorm.dsl.*
+import org.ktorm.dsl.eq
+import org.ktorm.dsl.select
+import org.ktorm.dsl.where
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.database.schemas.UsersSchema
@@ -14,6 +17,8 @@ import java.util.*
  */
 @Suppress("unused")
 class UrielHabboManager {
+
+    private val logger = noCoLogger("uriel.game.habbos.UrielHabboManager")
 
     private val habbos = mutableListOf<Habbo>()
 
@@ -82,18 +87,28 @@ class UrielHabboManager {
 
         val result = resultIterator.next()
 
-        val habboInfo = HabboInfo.Builder(result[UsersSchema.id] ?: 0)
-            .username(result[UsersSchema.username] ?: "")
-            .motto(result[UsersSchema.motto] ?: "")
-            .gender(result[UsersSchema.gender] ?: UsersSchema.Gender.MALE)
-            .look(result[UsersSchema.look] ?: "")
-            .homeRoomId(result[UsersSchema.homeRoomId] ?: 0)
-            .build()
+        try {
+            val habboInfo = HabboInfo.Builder(result[UsersSchema.id] ?: 0)
+                .username(result[UsersSchema.username] ?: "")
+                .motto(result[UsersSchema.motto] ?: "")
+                .gender(result[UsersSchema.gender] ?: HabboGender.MALE)
+                .look(result[UsersSchema.look] ?: "")
+                .homeRoomId(result[UsersSchema.homeRoomId] ?: 0)
+                .build()
 
-        return Habbo(
-            id = result[UsersSchema.id] ?: 0,
-            info = habboInfo
-        )
+            val habbo = Habbo(
+                id = result[UsersSchema.id] ?: 0,
+                info = habboInfo
+            )
+
+            habboInfo.habbo = habbo
+
+            return habbo
+        } catch (e: Exception) {
+            logger.error("Failed to build Habbo object for SSO ticket $ssoTicket", e)
+        }
+
+        return null
     }
 
     /**

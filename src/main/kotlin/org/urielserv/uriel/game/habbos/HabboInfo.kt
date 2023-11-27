@@ -38,7 +38,7 @@ class HabboInfo private constructor(
             field = value
         }
 
-    var gender: UsersSchema.Gender = UsersSchema.Gender.MALE
+    var gender: HabboGender = HabboGender.MALE
         set(value) {
             if (initialized && value != field) {
                 Database.update(UsersSchema) {
@@ -55,13 +55,13 @@ class HabboInfo private constructor(
         set(value) {
             field = value
 
-            val validatedLook = WardrobeManager.validateLook(habbo)
-
-            if (validatedLook != look) {
-                field = validatedLook
-            }
-
             if (initialized && value != field) {
+                val validatedLook = WardrobeManager.validateLook(habbo)
+
+                if (validatedLook != look) {
+                    field = validatedLook
+                }
+
                 Database.update(UsersSchema) {
                     it.look to value
                     where {
@@ -95,7 +95,7 @@ class HabboInfo private constructor(
         private var username: String = ""
         private var motto: String = ""
 
-        private var gender: UsersSchema.Gender = UsersSchema.Gender.MALE
+        private var gender: HabboGender = HabboGender.MALE
         private var look: String = ""
 
         private var homeRoomId: Int = 0
@@ -110,7 +110,7 @@ class HabboInfo private constructor(
             return this
         }
 
-        fun gender(gender: UsersSchema.Gender): Builder {
+        fun gender(gender: HabboGender): Builder {
             this.gender = gender
             return this
         }

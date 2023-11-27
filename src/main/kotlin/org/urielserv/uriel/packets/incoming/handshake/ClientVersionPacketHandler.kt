@@ -6,7 +6,7 @@ import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.PacketHandler
 import java.io.ByteArrayInputStream
 
-class ReleaseVersionPacketHandler : PacketHandler {
+class ClientVersionPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         packet.readString()

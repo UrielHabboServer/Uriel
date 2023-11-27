@@ -5,24 +5,26 @@ import org.urielserv.uriel.Database
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.database.enums.Bool
 import org.urielserv.uriel.database.schemas.UserSubscriptionsSchema
+import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.Habbo
 
 data class Subscription(
     val id: Int,
     val habbo: Habbo,
 
-    val subscriptionType: String,
+    val type: String,
 
-    val subscriptionStart: Int,
-    val subscriptionEnd: Int,
+    val start: Int,
+    val end: Int,
 
     var isActive: Boolean
 ) {
 
-    fun isExpired(): Boolean = (System.currentTimeMillis() / 1000).toInt() > subscriptionEnd
+    val hasExpired: Boolean
+        get() = currentUnixSeconds > end
 
     fun checkIfExpired() {
-        if (!isExpired()) return
+        if (!hasExpired) return
 
         isActive = false
 
@@ -33,6 +35,7 @@ data class Subscription(
         } else {
             Database.update(UserSubscriptionsSchema) {
                 it.isActive to Bool.FALSE
+
                 where {
                     it.id eq id
                 }

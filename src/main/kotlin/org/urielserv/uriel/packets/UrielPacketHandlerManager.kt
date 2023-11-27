@@ -4,8 +4,8 @@ import io.klogging.logger
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.IncomingPacketIDs
 import org.urielserv.uriel.packets.incoming.handshake.PongPacketHandler
-import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandler
-import org.urielserv.uriel.packets.incoming.handshake.SecureLoginPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.ClientVersionPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.SSOTicketPacketHandler
 import java.io.ByteArrayInputStream
 
 /**
@@ -26,8 +26,8 @@ class UrielPacketHandlerManager {
     }
 
     private fun registerHandshakePackets() {
-        registerPacket(IncomingPacketIDs.ReleaseVersion, ReleaseVersionPacketHandler())
-        registerPacket(IncomingPacketIDs.SecureLogin, SecureLoginPacketHandler())
+        registerPacket(IncomingPacketIDs.ClientVersion, ClientVersionPacketHandler())
+        registerPacket(IncomingPacketIDs.SSOTicket, SSOTicketPacketHandler())
         registerPacket(IncomingPacketIDs.Pong, PongPacketHandler())
     }
 

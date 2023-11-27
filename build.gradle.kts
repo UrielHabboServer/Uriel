@@ -25,9 +25,8 @@ dependencies {
     implementation("io.ktor:ktor-server-netty")
     implementation("io.ktor:ktor-server-websockets")
 
+    implementation("mysql:mysql-connector-java:8.0.33")
     implementation("org.ktorm:ktorm-core:3.6.0")
-    implementation("org.ktorm:ktorm-support-postgresql:3.6.0")
-    implementation("org.postgresql:postgresql:42.6.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
 
     implementation("com.akuleshov7:ktoml-core:0.5.0")

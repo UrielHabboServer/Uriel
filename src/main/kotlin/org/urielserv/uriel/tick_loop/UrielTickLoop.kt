@@ -7,17 +7,23 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 
-class UrielTickLoop(
-    private val ticksPerSecond: Int
-) {
+class UrielTickLoop(private val ticksPerSecond: Int) {
 
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
     private var ticks = 0
+    private var totalTicks = 0L
+    var startTime = System.currentTimeMillis()
+        private set
 
     private var currentJobCount = 0
     private val jobs = mutableListOf<Job>()
     private val repeatingJobs = mutableListOf<RepeatingJob>()
+
+    var averageTps = 0.0
+        private set
+    var averageMspt = 0.0
+        private set
 
     init {
         executor.scheduleAtFixedRate(object : TimerTask() {
@@ -28,21 +34,29 @@ class UrielTickLoop(
     }
 
     fun tick() {
+        val start = System.currentTimeMillis()
+
         ticks++
+        totalTicks++
 
-        jobs
-            .filter { it.start == ticks }
-            .forEach { it.run() }
+        jobs.filter { it.start == ticks }.forEach { it.run() }
 
-        repeatingJobs
-            .filter { it.start == ticks || (it.start < ticks && it.interval > 0 && (ticks - it.start) % it.interval == 0) }
-            .forEach {
-                if (!it.isCancelled) {
-                    it.run()
-                } else {
-                    repeatingJobs.remove(it)
-                }
+        repeatingJobs.filter { it.start == ticks || (it.start < ticks && it.interval > 0 && (ticks - it.start) % it.interval == 0) }.forEach {
+            if (!it.isCancelled) {
+                it.run()
+            } else {
+                repeatingJobs.remove(it)
             }
+        }
+
+        val elapsed = System.currentTimeMillis() - start
+        updateStatistics(elapsed)
+    }
+
+    private fun updateStatistics(elapsed: Long) {
+        val elapsedSeconds = elapsed.toDouble() / 1000.0
+        averageTps = totalTicks / elapsedSeconds
+        averageMspt = elapsed / totalTicks.toDouble()
     }
 
     fun end() {
@@ -62,18 +76,13 @@ class UrielTickLoop(
     }
 
     fun scheduleJob(delay: Duration, task: () -> Unit): Job {
-        // Convert delay to ticks
         val ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
-
         return createJob(this.ticks + ticks, task)
     }
 
     fun scheduleRepeatingJob(delay: Duration, interval: Duration, task: () -> Unit): RepeatingJob {
-        // Convert delay to ticks
         val ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
-        // Convert interval to ticks
         val intervalTicks = (interval.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
-
         return createRepeatingJob(this.ticks + ticks, intervalTicks, task)
     }
 

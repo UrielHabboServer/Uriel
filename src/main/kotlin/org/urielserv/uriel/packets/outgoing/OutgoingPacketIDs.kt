@@ -1,7 +1,5 @@
 package org.urielserv.uriel.packets.outgoing
 
-import kotlin.reflect.full.memberProperties
-
 @Suppress("unused", "ConstPropertyName")
 object OutgoingPacketIDs {
 
@@ -89,7 +87,7 @@ object OutgoingPacketIDs {
     const val RoomModel = 2031
     const val RoomScore = 482
     const val DoorbellAddUser = 2309
-    const val SecureLoginOK = 2491
+    const val AuthenticationOK = 2491
     const val AvailabilityStatusMessage = 2033
     const val GuildMemberUpdate = 265
     const val RoomFloorItems = 1778
@@ -200,8 +198,8 @@ object OutgoingPacketIDs {
     const val RoomSettingsSaved = 948 // PRODUCTION-201611291003-338511768
     const val MessengerInit = 1605 // PRODUCTION-201611291003-338511768
     const val UserClothes = 1450 // PRODUCTION-201611291003-338511768
-    const val UserEffectsList = 340 // PRODUCTION-201611291003-338511768
-    const val NewUserIdentity = 3738 // PRODUCTION-201611291003-338511768
+    const val UserEffects = 340 // PRODUCTION-201611291003-338511768
+    const val NewUserExperienceStatus = 3738 // PRODUCTION-201611291003-338511768
     const val NewNavigatorEventCategories = 3244 // PRODUCTION-201611291003-338511768
     const val NewNavigatorCollapsedCategories = 1543 // PRODUCTION-201611291003-338511768
     const val NewNavigatorLiftedRooms = 3104 // PRODUCTION-201611291003-338511768

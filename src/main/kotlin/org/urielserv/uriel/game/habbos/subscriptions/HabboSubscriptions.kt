@@ -42,22 +42,22 @@ class HabboSubscriptions(
     fun hasActiveHabboClubMembership(): Boolean = hasActiveSubscription("HABBO_CLUB")
 
     fun hasActiveSubscription(subscriptionType: String): Boolean =
-        subscriptions.any { it.subscriptionType == subscriptionType && it.isActive }
+        subscriptions.any { it.type == subscriptionType && it.isActive }
 
     fun getSubscription(subscriptionType: String): Subscription? =
-        subscriptions.firstOrNull { it.subscriptionType == subscriptionType }
+        subscriptions.firstOrNull { it.type == subscriptionType }
 
     fun getActiveSubscription(subscriptionType: String): Subscription? =
-        subscriptions.firstOrNull { it.subscriptionType == subscriptionType && it.isActive }
+        subscriptions.firstOrNull { it.type == subscriptionType && it.isActive }
 
     fun registerSubscription(subscription: Subscription) {
         subscriptions.add(subscription)
 
         Database.insert(UserSubscriptionsSchema) {
             it.userId to habbo.id
-            it.subscriptionType to subscription.subscriptionType
-            it.subscriptionStart to subscription.subscriptionStart
-            it.subscriptionEnd to subscription.subscriptionEnd
+            it.subscriptionType to subscription.type
+            it.subscriptionStart to subscription.start
+            it.subscriptionEnd to subscription.end
             it.isActive to subscription.isActive
         }
     }

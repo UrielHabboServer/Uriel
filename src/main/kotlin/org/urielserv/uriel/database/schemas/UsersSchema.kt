@@ -2,6 +2,7 @@ package org.urielserv.uriel.database.schemas
 
 import org.ktorm.schema.*
 import org.urielserv.uriel.database.enums.Bool
+import org.urielserv.uriel.game.habbos.HabboGender
 
 @Suppress("unused")
 object UsersSchema : Table<Nothing>("users") {
@@ -26,7 +27,7 @@ object UsersSchema : Table<Nothing>("users") {
 
     val motto = varchar("motto")
     val look = varchar("look")
-    val gender = enum<Gender>("gender")
+    val gender = enum<HabboGender>("gender")
 
     val credits = int("credits")
     val pixels = int("pixels")
@@ -38,12 +39,5 @@ object UsersSchema : Table<Nothing>("users") {
     val machineId = varchar("machine_id")
 
     val homeRoomId = int("home_room_id")
-
-    enum class Gender {
-        MALE,
-        FEMALE;
-
-        fun short(): String = this.name.substring(0, 1)
-    }
 
 }

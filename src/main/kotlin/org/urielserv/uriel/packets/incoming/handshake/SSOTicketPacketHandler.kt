@@ -5,16 +5,17 @@ import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.WardrobeManager
 import org.urielserv.uriel.extensions.readInt
-import org.urielserv.uriel.extensions.readShort
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.PacketHandler
 import org.urielserv.uriel.packets.outgoing.handshake.PingPacket
-import org.urielserv.uriel.packets.outgoing.handshake.SecureLoginOKPacket
+import org.urielserv.uriel.packets.outgoing.handshake.AuthenticationOKPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
+import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectsPacket
+import org.urielserv.uriel.packets.outgoing.users.nux.NewUserExperienceStatusPacket
 import java.io.ByteArrayInputStream
 
-class SecureLoginPacketHandler : PacketHandler {
+class SSOTicketPacketHandler : PacketHandler {
 
     private val logger = logger("uriel.packets.incoming.handshake.SecureLoginPacketHandler")
 
@@ -83,11 +84,13 @@ class SecureLoginPacketHandler : PacketHandler {
                 this.client.sendResponse(new InventoryAchievementsComposer());
          */
 
-        SecureLoginOKPacket().send(client)
+        AuthenticationOKPacket().send(client)
         UserHomeRoomPacket(
             homeRoomId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId,
             roomToEnterId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId
         ).send(client)
+        UserEffectsPacket(habbo.inventory.effects.toList()).send(client)
+        NewUserExperienceStatusPacket(true).send(client)
         PingPacket().send(client)
     }
 

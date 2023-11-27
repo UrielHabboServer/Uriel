@@ -10,8 +10,8 @@ route = "/"
 
 [database]
 host = "127.0.0.1"
-port = 5432
-username = "postgres"
+port = 3306
+username = "mysql"
 password = ""
 databaseName = "habbo"
 

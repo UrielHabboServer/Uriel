@@ -20,6 +20,3 @@ storeItemDataOnPickUp = false
 
 [habbos.subscription]
 deleteExpiredSubscriptions = true
-
-[habbos.effects]
-deleteExpiredEffects = true
