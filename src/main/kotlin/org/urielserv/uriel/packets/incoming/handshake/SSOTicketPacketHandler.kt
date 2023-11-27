@@ -54,34 +54,22 @@ class SSOTicketPacketHandler : PacketHandler {
         }
 
         /*
-                messages.add(new UserEffectsListComposer(habbo, this.client.getHabbo().getInventory().getEffectsComponent().effects.values()).compose());
-                messages.add(new UserClothesComposer(this.client.getHabbo()).compose());
-                messages.add(new NewUserIdentityComposer(habbo).compose()); - probably really important
-                messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
-                messages.add(new AvailabilityStatusMessageComposer(true, false, true).compose());
-                messages.add(new PingComposer().compose()); - ADDED
-                messages.add(new EnableNotificationsComposer(Emulator.getConfig().getBoolean("bubblealerts.enabled", true)).compose());
-                messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
-                messages.add(new IsFirstLoginOfDayComposer(true).compose());
-                messages.add(new MysteryBoxKeysComposer().compose());
-                messages.add(new BuildersClubExpiredComposer().compose());
-                messages.add(new CfhTopicsMessageComposer().compose());
-                messages.add(new FavoriteRoomsCountComposer(this.client.getHabbo()).compose());
-                messages.add(new GameCenterGameListComposer().compose());
-                messages.add(new GameCenterAccountInfoComposer(3, 100).compose());
-                messages.add(new GameCenterAccountInfoComposer(0, 100).compose());
-
-                messages.add(new UserClubComposer(this.client.getHabbo(), SubscriptionHabboClub.HABBO_CLUB, UserClubComposer.RESPONSE_TYPE_LOGIN).compose());
-
-                if (this.client.getHabbo().hasPermission(Permission.ACC_SUPPORTTOOL)) {
-                    messages.add(new ModToolComposer(this.client.getHabbo()).compose());
-                }
-
-                this.client.sendResponses(messages);
-
-                //Hardcoded
-                //this.client.sendResponse(new ForumsTestComposer());
-                this.client.sendResponse(new InventoryAchievementsComposer());
+        Packets to add:
+        - UserClothesComposer
+        - UserPermissionsComposer
+        - AvailabilityStatusMessageComposer
+        - EnableNotificationsComposer
+        - UserAchievementScoreComposer
+        - IsFirstLoginOfDayComposer
+        - MysteryBoxKeysComposer
+        - BuildersClubExpiredComposer
+        - CfhTopicsMessageComposer
+        - FavoriteRoomsCountComposer
+        - GameCenterGameListComposer
+        - GameCenterAccountInfoComposer
+        - UserClubComposer
+        - ModToolComposer
+        - InventoryAchievementsComposer
          */
 
         AuthenticationOKPacket().send(client)
