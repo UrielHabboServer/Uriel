@@ -60,31 +60,39 @@ suspend fun main() = runBlocking {
         }
     }
 
-    logger.info("Uriel is starting...")
+    logger.info("Starting Uriel, please wait...")
 
-    Configuration = loadTomlFile("uriel.toml")
-    HotelSettings = loadTomlFile("uriel_hotel_settings.toml")
+    measureInitialProcess("Configuration & Hotel Settings") {
+        Configuration = loadTomlFile("uriel.toml")
+        HotelSettings = loadTomlFile("uriel_hotel_settings.toml")
+    }
 
-    Database = UrielDatabase(
-        host = Configuration.database.host,
-        port = Configuration.database.port,
-        username = Configuration.database.username,
-        password = Configuration.database.password,
-        databaseName = Configuration.database.databaseName
-    )
+    measureInitialProcess("Database") {
+        Database = UrielDatabase(
+            host = Configuration.database.host,
+            port = Configuration.database.port,
+            username = Configuration.database.username,
+            password = Configuration.database.password,
+            databaseName = Configuration.database.databaseName
+        )
+    }
 
-    HabboManager = UrielHabboManager()
-    FigureDataManager = UrielFigureDataManager(
-        pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
-    )
-    WardrobeManager = UrielWardrobeManager()
+    measureInitialProcess("Habbo Manager, Figure Data Manager & Wardrobe Manager") {
+        HabboManager = UrielHabboManager()
+        FigureDataManager = UrielFigureDataManager(
+            pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
+        )
+        WardrobeManager = UrielWardrobeManager()
+    }
 
-    Server = UrielServer(
-        host = Configuration.server.ip,
-        port = Configuration.server.port,
-        routePath = Configuration.server.route
-    )
-    PacketHandlerManager = UrielPacketHandlerManager()
+    measureInitialProcess("Server & Packet Handler Manager") {
+        Server = UrielServer(
+            host = Configuration.server.ip,
+            port = Configuration.server.port,
+            routePath = Configuration.server.route
+        )
+        PacketHandlerManager = UrielPacketHandlerManager()
+    }
 
     launch {
         Server.start()
@@ -92,9 +100,11 @@ suspend fun main() = runBlocking {
 
     Ready = true
 
-    TickLoop = UrielTickLoop(
-        ticksPerSecond = Configuration.tickLoops.hotelTicksPerSecond
-    )
+    measureInitialProcess("Tick Loop") {
+        TickLoop = UrielTickLoop(
+            ticksPerSecond = Configuration.tickLoops.hotelTicksPerSecond
+        )
+    }
 }
 
 private suspend inline fun <reified T> loadTomlFile(pathString: String): T {
@@ -119,4 +129,19 @@ private suspend inline fun <reified T> loadTomlFile(pathString: String): T {
     val contents = path.readText()
 
     return Toml.decodeFromString<T>(contents)
+}
+
+private suspend fun measureInitialProcess(name: String, block: suspend () -> Unit) {
+    logger.info("Initialising $name...")
+
+    try {
+        val start = System.currentTimeMillis()
+        block()
+        val timeTaken = System.currentTimeMillis() - start
+
+        logger.info("Initialised $name in ${timeTaken}ms")
+    } catch (exc: Exception) {
+        logger.error("Failed to initialise $name", exc)
+        exitProcess(1)
+    }
 }
