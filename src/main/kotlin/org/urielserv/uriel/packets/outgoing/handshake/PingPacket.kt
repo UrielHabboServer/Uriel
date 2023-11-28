@@ -7,4 +7,6 @@ class PingPacket : Packet() {
 
     override val packetId = OutgoingPacketIDs.Ping
 
+    override suspend fun construct() = Unit
+
 }

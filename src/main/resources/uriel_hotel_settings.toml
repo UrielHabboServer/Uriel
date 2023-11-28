@@ -6,6 +6,10 @@
 [hotel]
 defaultRoomId = 0 # 0 = no room, hotelview
 
+[habboClub]
+discountEnabled = false
+discountDaysBeforeEnd = 7
+
 [habbos]
 
 

@@ -22,6 +22,9 @@ data class Subscription(
     val hasExpired: Boolean
         get() = currentUnixSeconds > end
 
+    val remainingSeconds: Int
+        get() = end - currentUnixSeconds
+
     fun checkIfExpired() {
         if (!hasExpired) return
 

@@ -7,4 +7,6 @@ class AuthenticationOKPacket : Packet() {
 
     override val packetId = OutgoingPacketIDs.AuthenticationOK
 
+    override suspend fun construct() = Unit
+
 }

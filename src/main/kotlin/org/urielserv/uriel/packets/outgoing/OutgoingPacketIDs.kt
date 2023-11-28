@@ -11,6 +11,7 @@ object OutgoingPacketIDs {
     const val UserHomeRoom = 2875
     const val UserEffects = 340
     const val UserData = 2725
+    const val UserClub = 954
     const val UserSavedLooks = 3315
     const val UpdateUserLook = 2429
 

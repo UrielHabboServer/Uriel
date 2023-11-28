@@ -11,6 +11,7 @@ import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.handshake.PingPacket
 import org.urielserv.uriel.packets.outgoing.handshake.AuthenticationOKPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
+import org.urielserv.uriel.packets.outgoing.users.habbo_club.UserClubPacket
 import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectsPacket
 import org.urielserv.uriel.packets.outgoing.users.nux.NewUserExperienceStatusPacket
 import java.io.ByteArrayInputStream
@@ -79,6 +80,7 @@ class SSOTicketPacketHandler : PacketHandler {
         ).send(client)
         UserEffectsPacket(habbo.inventory.effects.toList()).send(client)
         NewUserExperienceStatusPacket(true).send(client)
+        UserClubPacket(habbo, "HABBO_CLUB", UserClubPacket.RESPONSE_TYPE_LOGIN).send(client)
         PingPacket().send(client)
     }
 

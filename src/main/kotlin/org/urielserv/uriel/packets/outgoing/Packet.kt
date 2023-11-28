@@ -9,9 +9,9 @@ import org.urielserv.uriel.networking.UrielServerClient
  * Interface representing a packet.
  */
 @Suppress("unused")
-open class Packet {
+abstract class Packet {
 
-    open val packetId = 0
+    abstract val packetId: Int
 
     private val channelByteBuffer = Unpooled.buffer()
     private val byteStream = ByteBufOutputStream(channelByteBuffer)
@@ -22,11 +22,11 @@ open class Packet {
      * This method is a suspend function that constructs and initializes a packet.
      * It is designed to be called from a coroutine context.
      */
-    open suspend fun construct() = Unit
+    abstract suspend fun construct()
 
     /**
      * Sends a message to the specified Habbo.
-     * Acts as a wrapper for the send method that accepts a Uriel server client.
+     * Acts as a wrapper for the send method that accepts an Uriel server client.
      *
      * @param habbo The Habbo to send the message to.
      */

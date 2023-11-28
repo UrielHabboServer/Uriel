@@ -11,12 +11,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UrielHotelSettings(
     val hotel: Hotel,
+    val habboClub: HabboClub,
     val habbos: Habbos
 ) {
 
     @Serializable
     data class Hotel(
         val defaultRoomId: Int
+    )
+
+    @Serializable
+    data class HabboClub(
+        val discountEnabled: Boolean,
+        val discountDaysBeforeEnd: Int
     )
 
     @Serializable
