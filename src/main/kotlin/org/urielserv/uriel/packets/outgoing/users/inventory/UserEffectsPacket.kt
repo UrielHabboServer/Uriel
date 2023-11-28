@@ -1,7 +1,7 @@
 package org.urielserv.uriel.packets.outgoing.users.inventory
 
 import org.urielserv.uriel.game.habbos.inventory.effects.Effect
-import org.urielserv.uriel.packets.Packet
+import org.urielserv.uriel.packets.outgoing.Packet
 import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
 
 class UserEffectsPacket(

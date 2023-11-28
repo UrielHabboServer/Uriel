@@ -3,20 +3,29 @@ package org.urielserv.uriel.game.habbos.wardrobe
 import io.klogging.noCoLogger
 import org.urielserv.uriel.FigureDataManager
 import org.urielserv.uriel.game.habbos.Habbo
+import org.urielserv.uriel.game.habbos.inventory.looks.SavedLook
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.FigureDataPalette
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.FigureDataSetType
 import java.util.regex.Pattern
 
-class UrielWardrobeManager {
+object ClothingValidator {
 
     private val logger = noCoLogger("uriel.game.habbos.wardrobe.UrielWardrobeManager")
+
+    fun validateLook(savedLook: SavedLook, isHabboClubMember: Boolean): String =
+        validateLook(
+            savedLook.look,
+            savedLook.gender.short(),
+            isHabboClubMember,
+            listOf()
+        )
 
     fun validateLook(habbo: Habbo): String =
         validateLook(
             habbo.info.look,
             habbo.info.gender.short(),
             habbo.subscriptions.hasActiveHabboClubMembership(),
-            listOf()//habbo.ownedClothing.map { it.id }.toList()
+            listOf() // habbo.inventory.ownedClothing.map { it.id }.toList()
         )
 
     fun validateLook(look: String, gender: String, isHabboClubMember: Boolean, ownedClothing: List<Int>): String {

@@ -26,7 +26,7 @@ class UrielServer(
     val routePath: String = "/"
 ) {
 
-    private val logger = logger("uriel.networking.Server")
+    private val logger = logger("uriel.networking.UrielServer")
 
     private val server = embeddedServer(Netty, host = host, port = port) {
         module()
@@ -38,33 +38,25 @@ class UrielServer(
     }
 
     /**
-     * Start the Uriel server.
+     * Starts the WebSocket server.
      *
-     * This method starts the Uriel server.
-     * It blocks the current thread until the server is stopped.
-     *
-     * Usage:
-     * ```
-     * start()
-     * ```
-     *
-     * @throws Exception if an error occurs while starting the server.
+     * This method starts the WebSocket server on the specified host and port.
+     * It waits for incoming connections and handles them accordingly.
      */
     suspend fun start() {
-        logger.info("Starting Uriel server on $host:$port")
+        logger.info("Starting the WebSocket Server on $host:$port")
         server.start(wait = true)
     }
 
     /**
-     * Shuts down the Uriel server.
+     * Shuts down the WebSocket Server.
      *
-     * This method gracefully stops the server, allowing ongoing requests to complete
-     * before shutting down completely.
-     *
-     * @throws Exception if an error occurs while stopping the server.
+     * This method stops the WebSocket Server and logs a shutdown message.
+     * The server will be stopped with a graceful shutdown timeout of 1000 milliseconds
+     * for both the endpoint handlers and the HTTP server.
      */
     suspend fun shutdown() {
-        logger.info("Shutting down Uriel server")
+        logger.info("Shutting down the WebSocket Server")
         server.stop(1000, 1000)
     }
 

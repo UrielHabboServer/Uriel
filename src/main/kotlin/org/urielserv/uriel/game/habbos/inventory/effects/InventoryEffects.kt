@@ -29,7 +29,7 @@ class InventoryEffects(
                         row[UserEffectsSchema.duration]!!,
                         row[UserEffectsSchema.quantity]!!,
                         row[UserEffectsSchema.activationTimestamp]!!,
-                        row[UserEffectsSchema.isActive]!!.toBoolean()
+                        row[UserEffectsSchema.isActive]!!
                     )
                 )
             }
@@ -52,12 +52,12 @@ class InventoryEffects(
         effects.add(effect)
 
         Database.insert(UserEffectsSchema) {
-            it.userId to habbo.id
-            it.effectId to effect.effectId
-            it.duration to effect.duration
-            it.quantity to effect.quantity
-            it.activationTimestamp to effect.activationTimestamp
-            it.isActive to effect.isActive
+            set(it.userId, habbo.id)
+            set(it.effectId, effect.effectId)
+            set(it.duration, effect.duration)
+            set(it.quantity, effect.quantity)
+            set(it.activationTimestamp, effect.activationTimestamp)
+            set(it.isActive, effect.isActive)
         }
     }
 

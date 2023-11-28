@@ -1,6 +1,5 @@
-package org.urielserv.uriel.packets
+package org.urielserv.uriel.packets.outgoing
 
-import io.ktor.websocket.*
 import io.netty.buffer.ByteBufOutputStream
 import io.netty.buffer.Unpooled
 import org.urielserv.uriel.game.habbos.Habbo

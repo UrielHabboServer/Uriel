@@ -2,7 +2,6 @@ package org.urielserv.uriel.game.habbos
 
 import org.ktorm.dsl.eq
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.WardrobeManager
 import org.urielserv.uriel.database.schemas.UsersSchema
 
 class HabboInfo private constructor(
@@ -15,7 +14,8 @@ class HabboInfo private constructor(
         set(value) {
             if (initialized && value != field) {
                 Database.update(UsersSchema) {
-                    it.username to value
+                    set(it.username, value)
+
                     where {
                         it.id eq id
                     }
@@ -28,7 +28,8 @@ class HabboInfo private constructor(
         set(value) {
             if (initialized && value != field) {
                 Database.update(UsersSchema) {
-                    it.motto to value
+                    set(it.motto, value)
+
                     where {
                         it.id eq id
                     }
@@ -42,7 +43,8 @@ class HabboInfo private constructor(
         set(value) {
             if (initialized && value != field) {
                 Database.update(UsersSchema) {
-                    it.gender to value
+                    set(it.gender, value)
+
                     where {
                         it.id eq id
                     }
@@ -53,22 +55,17 @@ class HabboInfo private constructor(
         }
     var look: String = ""
         set(value) {
-            field = value
-
             if (initialized && value != field) {
-                val validatedLook = WardrobeManager.validateLook(habbo)
-
-                if (validatedLook != look) {
-                    field = validatedLook
-                }
-
                 Database.update(UsersSchema) {
-                    it.look to value
+                    set(it.look, value)
+
                     where {
                         it.id eq id
                     }
                 }
             }
+
+            field = value
         }
 
 
@@ -76,7 +73,8 @@ class HabboInfo private constructor(
         set(value) {
             if (initialized && value != field) {
                 Database.update(UsersSchema) {
-                    it.homeRoomId to value
+                    set(it.homeRoomId, value)
+
                     where {
                         it.id eq id
                     }

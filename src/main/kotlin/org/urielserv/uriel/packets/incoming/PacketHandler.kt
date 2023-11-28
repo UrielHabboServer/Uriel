@@ -1,4 +1,4 @@
-package org.urielserv.uriel.packets
+package org.urielserv.uriel.packets.incoming
 
 import org.urielserv.uriel.networking.UrielServerClient
 import java.io.ByteArrayInputStream

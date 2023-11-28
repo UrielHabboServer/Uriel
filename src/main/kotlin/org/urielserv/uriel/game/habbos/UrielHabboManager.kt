@@ -104,8 +104,9 @@ class UrielHabboManager {
             habboInfo.habbo = habbo
 
             return habbo
-        } catch (e: Exception) {
-            logger.error("Failed to build Habbo object for SSO ticket $ssoTicket", e)
+        } catch (exc: Exception) {
+            logger.error("Failed to build Habbo object for SSO ticket $ssoTicket:")
+            exc.printStackTrace()
         }
 
         return null

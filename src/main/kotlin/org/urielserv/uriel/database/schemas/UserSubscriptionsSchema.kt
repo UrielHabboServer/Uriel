@@ -1,10 +1,9 @@
 package org.urielserv.uriel.database.schemas
 
 import org.ktorm.schema.Table
-import org.ktorm.schema.enum
+import org.ktorm.schema.boolean
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
-import org.urielserv.uriel.database.enums.Bool
 
 object UserSubscriptionsSchema : Table<Nothing>("user_subscriptions") {
 
@@ -16,6 +15,6 @@ object UserSubscriptionsSchema : Table<Nothing>("user_subscriptions") {
     val subscriptionStart = int("start_timestamp")
     val subscriptionEnd = int("end_timestamp")
 
-    val isActive = enum<Bool>("is_active")
+    val isActive = boolean("is_active")
 
 }

@@ -2,8 +2,6 @@ package org.urielserv.uriel.game.habbos.inventory.effects
 
 import org.ktorm.dsl.eq
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.HotelSettings
-import org.urielserv.uriel.database.enums.Bool
 import org.urielserv.uriel.database.schemas.UserEffectsSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.Habbo
@@ -44,8 +42,8 @@ class Effect(
         isActive = true
 
         Database.update(UserEffectsSchema) {
-            it.isActive to Bool.TRUE
-            it.activationTimestamp to currentUnixSeconds
+            set(it.isActive, true)
+            set(it.activationTimestamp, currentUnixSeconds)
 
             where {
                 it.id eq id
@@ -55,7 +53,7 @@ class Effect(
 
     fun addToQuantity(amount: Int) {
         Database.update(UserEffectsSchema) {
-            it.quantity to quantity + amount
+            set(it.quantity, quantity + amount)
 
             where {
                 it.id eq id

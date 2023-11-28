@@ -2,6 +2,7 @@ package org.urielserv.uriel.database
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.klogging.noCoLogger
 import org.ktorm.database.Database
 import org.ktorm.dsl.*
 import org.ktorm.schema.BaseTable
@@ -25,6 +26,8 @@ class UrielDatabase(
     databaseName: String
 ) {
 
+    private val logger = noCoLogger("uriel.database.UrielDatabase")
+
     private val hikariConfig = HikariConfig().apply {
         jdbcUrl = "jdbc:mysql://$host:$port/$databaseName"
         maximumPoolSize = 10
@@ -43,7 +46,13 @@ class UrielDatabase(
      * @return The created QuerySource object.
      */
     fun <T : Any> from(table: BaseTable<T>): QuerySource {
-        return database.from(table)
+        try {
+            return database.from(table)
+        } catch (exc: Exception) {
+            logger.error("Error creating QuerySource from table ${table.tableName}:")
+            exc.printStackTrace()
+            throw exc
+        }
     }
 
     /**
@@ -54,7 +63,13 @@ class UrielDatabase(
      * @return The number of rows inserted.
      */
     fun <T : BaseTable<*>> insert(table: T, block: AssignmentsBuilder.(T) -> Unit): Int {
-        return database.insert(table, block)
+        try {
+            return database.insert(table, block)
+        } catch (exc: Exception) {
+            logger.error("Error inserting row into table ${table.tableName}:")
+            exc.printStackTrace()
+            throw exc
+        }
     }
 
     /**
@@ -65,7 +80,13 @@ class UrielDatabase(
      * @return the number of rows affected by the update
      */
     fun <T : BaseTable<*>> update(table: T, block: UpdateStatementBuilder.(T) -> Unit): Int {
-        return database.update(table, block)
+        try {
+            return database.update(table, block)
+        } catch (exc: Exception) {
+            logger.error("Error updating table ${table.tableName}:")
+            exc.printStackTrace()
+            throw exc
+        }
     }
 
     /**
@@ -76,7 +97,13 @@ class UrielDatabase(
      * @return the number of rows deleted
      */
     fun <T : BaseTable<*>> delete(table: T, predicate: (T) -> ColumnDeclaring<Boolean>): Int {
-        return database.delete(table, predicate)
+        try {
+            return database.delete(table, predicate)
+        } catch (exc: Exception) {
+            logger.error("Error deleting rows from table ${table.tableName}:")
+            exc.printStackTrace()
+            throw exc
+        }
     }
 
 }

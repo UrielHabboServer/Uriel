@@ -3,7 +3,6 @@ package org.urielserv.uriel.game.habbos.subscriptions
 import org.ktorm.dsl.eq
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.HotelSettings
-import org.urielserv.uriel.database.enums.Bool
 import org.urielserv.uriel.database.schemas.UserSubscriptionsSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.Habbo
@@ -34,7 +33,7 @@ data class Subscription(
             }
         } else {
             Database.update(UserSubscriptionsSchema) {
-                it.isActive to Bool.FALSE
+                set(it.isActive, false)
 
                 where {
                     it.id eq id

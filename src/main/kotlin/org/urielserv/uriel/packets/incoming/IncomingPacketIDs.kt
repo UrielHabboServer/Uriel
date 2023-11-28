@@ -9,5 +9,9 @@ object IncomingPacketIDs {
 
     const val Pong = 2596
 
+    // Users
+    const val RetrieveUserData = 357
+    const val RetrieveUserLooks = 2742
+    const val UserUpdateLook = 2730
     
 }

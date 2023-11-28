@@ -29,7 +29,7 @@ class HabboSubscriptions(
                         row[UserSubscriptionsSchema.subscriptionType]!!,
                         row[UserSubscriptionsSchema.subscriptionStart]!!,
                         row[UserSubscriptionsSchema.subscriptionEnd]!!,
-                        row[UserSubscriptionsSchema.isActive]!!.toBoolean()
+                        row[UserSubscriptionsSchema.isActive]!!
                     )
                 )
             }
@@ -54,11 +54,11 @@ class HabboSubscriptions(
         subscriptions.add(subscription)
 
         Database.insert(UserSubscriptionsSchema) {
-            it.userId to habbo.id
-            it.subscriptionType to subscription.type
-            it.subscriptionStart to subscription.start
-            it.subscriptionEnd to subscription.end
-            it.isActive to subscription.isActive
+            set(it.userId, habbo.id)
+            set(it.subscriptionType, subscription.type)
+            set(it.subscriptionStart, subscription.start)
+            set(it.subscriptionEnd, subscription.end)
+            set(it.isActive, subscription.isActive)
         }
     }
 

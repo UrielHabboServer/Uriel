@@ -1,9 +1,8 @@
 package org.urielserv.uriel.database.schemas
 
 import org.ktorm.schema.Table
-import org.ktorm.schema.enum
+import org.ktorm.schema.boolean
 import org.ktorm.schema.int
-import org.urielserv.uriel.database.enums.Bool
 
 object UserEffectsSchema : Table<Nothing>("user_effects") {
 
@@ -16,6 +15,6 @@ object UserEffectsSchema : Table<Nothing>("user_effects") {
     val quantity = int("quantity")
 
     val activationTimestamp = int("activation_timestamp")
-    val isActive = enum<Bool>("is_active")
+    val isActive = boolean("is_active")
 
 }

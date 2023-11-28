@@ -14,10 +14,10 @@ import org.urielserv.uriel.configuration.UrielConfiguration
 import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
 import org.urielserv.uriel.game.habbos.UrielHabboManager
-import org.urielserv.uriel.game.habbos.wardrobe.UrielWardrobeManager
+import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
 import org.urielserv.uriel.networking.UrielServer
-import org.urielserv.uriel.packets.UrielPacketHandlerManager
+import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.UrielTickLoop
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
@@ -34,7 +34,6 @@ lateinit var Database: UrielDatabase
 
 lateinit var HabboManager: UrielHabboManager
 lateinit var FigureDataManager: UrielFigureDataManager
-lateinit var WardrobeManager: UrielWardrobeManager
 
 lateinit var Server: UrielServer
 lateinit var PacketHandlerManager: UrielPacketHandlerManager
@@ -77,12 +76,11 @@ suspend fun main() = runBlocking {
         )
     }
 
-    measureInitialProcess("Habbo Manager, Figure Data Manager & Wardrobe Manager") {
+    measureInitialProcess("Habbo Manager & Figure Data Manager") {
         HabboManager = UrielHabboManager()
         FigureDataManager = UrielFigureDataManager(
             pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
         )
-        WardrobeManager = UrielWardrobeManager()
     }
 
     measureInitialProcess("Server & Packet Handler Manager") {
@@ -141,7 +139,8 @@ private suspend fun measureInitialProcess(name: String, block: suspend () -> Uni
 
         logger.info("Initialised $name in ${timeTaken}ms")
     } catch (exc: Exception) {
-        logger.error("Failed to initialise $name", exc)
+        logger.error("Failed to initialise $name:")
+        exc.printStackTrace()
         exitProcess(1)
     }
 }
