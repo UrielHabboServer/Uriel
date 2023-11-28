@@ -49,14 +49,14 @@ class UserClubPacket(
         appendInt(0) // Past club days
         appendInt(calculateDays(0)) // Past VIP days
         appendInt(calculateMinutes(remainingTime)) // Minutes until expiration
-        appendInt(1000) // Minutes since last modified
+        appendInt(1000) // TODO: Minutes since last modified, figure out what it is
     }
 
     private fun calculateDays(time: Int) = floor(time / 86400.0).toInt().takeIf { it >= 1 } ?: 1
 
     private fun calculateMinutes(time: Int) = ceil(time / 60.0).toInt()
 
-    private fun hasEverBeenMember(): Boolean = false // TODO: pastTimeAsHC > 0
+    private fun hasEverBeenMember(): Boolean = false // TODO: Implement
 
     private fun determineResponseType(responseType: Int, timeRemaining: Int): Int =
         if (
