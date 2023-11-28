@@ -6,7 +6,11 @@ open class Job internal constructor(
     private val task: () -> Unit
 ) {
 
+    var isCancelled = false
+
     fun run() {
+        if (isCancelled) return
+
         task()
     }
 

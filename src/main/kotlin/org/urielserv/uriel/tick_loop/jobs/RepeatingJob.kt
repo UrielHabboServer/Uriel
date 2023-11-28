@@ -5,8 +5,4 @@ class RepeatingJob internal constructor(
     start: Int,
     val interval: Int,
     task: () -> Unit
-) : Job(id, start, task) {
-
-    var isCancelled = false
-
-}
+) : Job(id, start, task)

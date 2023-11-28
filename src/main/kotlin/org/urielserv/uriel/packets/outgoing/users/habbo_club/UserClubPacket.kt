@@ -60,7 +60,7 @@ class UserClubPacket(
 
     private fun determineResponseType(responseType: Int, timeRemaining: Int): Int =
         if (
-            responseType <= RESPONSE_TYPE_LOGIN
+            responseType == RESPONSE_TYPE_LOGIN
             && timeRemaining > 0 && HotelSettings.habboClub.discountEnabled
             && calculateDays(timeRemaining) <= HotelSettings.habboClub.discountDaysBeforeEnd
         ) RESPONSE_TYPE_DISCOUNT_AVAILABLE else responseType
