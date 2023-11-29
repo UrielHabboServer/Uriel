@@ -6,8 +6,8 @@ import org.urielserv.uriel.packets.incoming.handshake.ClientVersionPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.PongPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.SSOTicketPacketHandler
 import org.urielserv.uriel.packets.incoming.users.RetrieveUserDataPacketHandler
-import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.RetrieveUserSavedLooksPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserUpdateLookPacketHandler
+import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.RetrieveUserSavedLooksPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.UserAddSavedLookPacketHandler
 import java.io.ByteArrayInputStream
 

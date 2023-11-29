@@ -1,8 +1,6 @@
 package org.urielserv.uriel.game.habbos.wardrobe.figure_data
 
 import java.util.*
-import kotlin.collections.firstOrNull
-import kotlin.collections.isNotEmpty
 
 data class FigureDataSetType(
     val type: String,

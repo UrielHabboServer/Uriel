@@ -4,8 +4,6 @@ import org.ktorm.schema.Table
 import org.ktorm.schema.boolean
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
-import org.urielserv.uriel.database.schemas.rooms.RoomsSchema.bindTo
-import org.urielserv.uriel.database.schemas.users.UserEffectsSchema.references
 import org.urielserv.uriel.game.habbos.subscriptions.Subscription
 
 object UserSubscriptionsSchema : Table<Subscription>("user_subscriptions") {

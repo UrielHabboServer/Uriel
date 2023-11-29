@@ -4,8 +4,6 @@ import org.ktorm.schema.Table
 import org.ktorm.schema.enum
 import org.ktorm.schema.int
 import org.ktorm.schema.text
-import org.urielserv.uriel.database.schemas.users.UserSubscriptionsSchema.bindTo
-import org.urielserv.uriel.database.schemas.users.UserSubscriptionsSchema.references
 import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.habbos.inventory.looks.SavedLook
 

@@ -1,9 +1,6 @@
 package org.urielserv.uriel.game.habbos.subscriptions
 
-import org.ktorm.database.iterator
 import org.ktorm.dsl.eq
-import org.ktorm.dsl.select
-import org.ktorm.dsl.where
 import org.ktorm.entity.filter
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
