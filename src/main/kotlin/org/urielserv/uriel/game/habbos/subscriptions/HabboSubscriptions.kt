@@ -4,8 +4,10 @@ import org.ktorm.database.iterator
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.select
 import org.ktorm.dsl.where
+import org.ktorm.entity.filter
+import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UserSubscriptionsSchema
+import org.urielserv.uriel.database.schemas.users.UserSubscriptionsSchema
 import org.urielserv.uriel.game.habbos.Habbo
 
 @Suppress("unused")
@@ -16,23 +18,9 @@ class HabboSubscriptions(
     private val subscriptions = mutableListOf<Subscription>()
 
     init {
-        Database.from(UserSubscriptionsSchema)
-            .select()
-            .where(UserSubscriptionsSchema.userId eq habbo.id)
-            .rowSet
-            .iterator()
-            .forEach { row ->
-                subscriptions.add(
-                    Subscription(
-                        row[UserSubscriptionsSchema.id]!!,
-                        habbo,
-                        row[UserSubscriptionsSchema.subscriptionType]!!,
-                        row[UserSubscriptionsSchema.subscriptionStart]!!,
-                        row[UserSubscriptionsSchema.subscriptionEnd]!!,
-                        row[UserSubscriptionsSchema.isActive]!!
-                    )
-                )
-            }
+        Database.sequenceOf(UserSubscriptionsSchema)
+            .filter { it.userId eq habbo.info.id }
+            .forEach { subscriptions.add(it) }
     }
 
     fun checkIfExpired() {
@@ -54,7 +42,7 @@ class HabboSubscriptions(
         subscriptions.add(subscription)
 
         Database.insert(UserSubscriptionsSchema) {
-            set(it.userId, habbo.id)
+            set(it.userId, habbo.info.id)
             set(it.subscriptionType, subscription.type)
             set(it.subscriptionStart, subscription.start)
             set(it.subscriptionEnd, subscription.end)

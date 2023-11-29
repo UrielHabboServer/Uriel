@@ -1,5 +1,6 @@
 package org.urielserv.uriel.tick_loop
 
+import io.klogging.noCoLogger
 import org.urielserv.uriel.tick_loop.jobs.Job
 import org.urielserv.uriel.tick_loop.jobs.RepeatingJob
 import java.util.*
@@ -9,10 +10,13 @@ import kotlin.time.Duration
 
 class UrielTickLoop(private val ticksPerSecond: Int) {
 
+    private val expectedMaxTimePerTick = 1000 / ticksPerSecond
+
+    private val logger = noCoLogger(UrielTickLoop::class)
+
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
     private var ticks = 0
-    private var totalTicks = 0L
     var startTime = System.currentTimeMillis()
         private set
 
@@ -20,10 +24,8 @@ class UrielTickLoop(private val ticksPerSecond: Int) {
     private val jobs = mutableListOf<Job>()
     private val repeatingJobs = mutableListOf<RepeatingJob>()
 
-    var averageTps = 0.0
-        private set
-    var averageMspt = 0.0
-        private set
+    val tickStartTimes = mutableMapOf<Int, Long>()
+    val tickDurations = mutableMapOf<Int, Long>()
 
     init {
         executor.scheduleAtFixedRate(object : TimerTask() {
@@ -37,26 +39,57 @@ class UrielTickLoop(private val ticksPerSecond: Int) {
         val start = System.currentTimeMillis()
 
         ticks++
-        totalTicks++
 
-        jobs.filter { it.start == ticks }.forEach { it.run() }
+        tickStartTimes[ticks] = start
 
-        repeatingJobs.filter { it.start == ticks || (it.start < ticks && it.interval > 0 && (ticks - it.start) % it.interval == 0) }.forEach {
+        jobs.filter { it.start == ticks }.forEach {
             if (!it.isCancelled) {
-                it.run()
-            } else {
-                repeatingJobs.remove(it)
+                try {
+                    it.run()
+                } catch (exc: Exception) {
+                    logger.error("Error running Job #${it.id}:")
+                    exc.printStackTrace()
+                }
             }
+
+            jobs.remove(it)
         }
 
-        val elapsed = System.currentTimeMillis() - start
-        updateStatistics(elapsed)
+        repeatingJobs.filter { it.start == ticks || (it.start < ticks && it.interval > 0 && (ticks - it.start) % it.interval == 0) }
+            .forEach {
+                if (!it.isCancelled) {
+                    try {
+                        it.run()
+                    } catch (exc: Exception) {
+                        logger.error("Error running Repeating Job #${it.id}:")
+                        exc.printStackTrace()
+                    }
+                } else {
+                    repeatingJobs.remove(it)
+                }
+            }
+
+        val timeTaken = System.currentTimeMillis() - start
+
+        if (timeTaken > expectedMaxTimePerTick) {
+            logger.warn("Tick took ${timeTaken}ms, expected ${expectedMaxTimePerTick}ms")
+        }
+
+        tickDurations[ticks] = timeTaken
+
+        checkToClearTickData()
     }
 
-    private fun updateStatistics(elapsed: Long) {
-        val elapsedSeconds = elapsed.toDouble() / 1000.0
-        averageTps = totalTicks / elapsedSeconds
-        averageMspt = elapsed / totalTicks.toDouble()
+    private fun checkToClearTickData() {
+        if (tickStartTimes.size > STATISTICS_CACHE_SIZE) {
+            // remove first
+            tickStartTimes.remove(tickStartTimes.keys.first())
+        }
+
+        if (tickDurations.size > STATISTICS_CACHE_SIZE) {
+            // remove first
+            tickDurations.remove(tickDurations.keys.first())
+        }
     }
 
     fun end() {
@@ -84,6 +117,12 @@ class UrielTickLoop(private val ticksPerSecond: Int) {
         val ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
         val intervalTicks = (interval.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
         return createRepeatingJob(this.ticks + ticks, intervalTicks, task)
+    }
+
+    companion object {
+
+        const val STATISTICS_CACHE_SIZE = 1000
+
     }
 
 }

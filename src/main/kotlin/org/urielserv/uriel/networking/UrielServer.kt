@@ -10,7 +10,6 @@ import io.ktor.websocket.*
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.PacketHandlerManager
 import org.urielserv.uriel.extensions.readShort
-import org.urielserv.uriel.packets.incoming.IncomingPacketIDs
 import java.time.Duration
 
 /**
@@ -26,7 +25,7 @@ class UrielServer(
     val routePath: String = "/"
 ) {
 
-    private val logger = logger("uriel.networking.UrielServer")
+    private val logger = logger(UrielServer::class)
 
     private val server = embeddedServer(Netty, host = host, port = port) {
         module()

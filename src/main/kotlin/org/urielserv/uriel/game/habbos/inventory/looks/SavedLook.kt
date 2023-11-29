@@ -1,31 +1,29 @@
 package org.urielserv.uriel.game.habbos.inventory.looks
 
-import org.ktorm.dsl.eq
-import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UsersSchema
+import org.ktorm.entity.Entity
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboGender
+import org.urielserv.uriel.game.habbos.HabboInfo
 
-data class SavedLook(
-    val id: Int,
-    val habbo: Habbo,
+interface SavedLook : Entity<SavedLook> {
 
-    val slotId: Int,
-    val look: String,
-    val gender: HabboGender
-) : Cloneable {
+    companion object : Entity.Factory<SavedLook>()
 
-    fun apply() = apply(habbo)
+    val id: Int
+    val habboInfo: HabboInfo
+    val habbo: Habbo?
+        get() = habboInfo.habbo
+
+    val slotId: Int
+    var look: String
+    var gender: HabboGender
+
+    fun apply() = habbo?.let { apply(it) }
 
     fun apply(habbo: Habbo) {
-        Database.update(UsersSchema) {
-            set(it.look, look)
-            set(it.gender, gender)
-
-            where {
-                it.id eq habbo.id
-            }
-        }
+        habbo.info.look = look
+        habbo.info.gender = gender
+        habbo.info.flushChanges()
     }
 
 }

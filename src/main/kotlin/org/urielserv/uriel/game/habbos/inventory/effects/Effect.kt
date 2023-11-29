@@ -1,23 +1,27 @@
 package org.urielserv.uriel.game.habbos.inventory.effects
 
 import org.ktorm.dsl.eq
+import org.ktorm.entity.Entity
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UserEffectsSchema
+import org.urielserv.uriel.database.schemas.users.UserEffectsSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.Habbo
+import org.urielserv.uriel.game.habbos.HabboInfo
 
-class Effect(
-    val id: Int,
-    val habbo: Habbo,
+interface Effect : Entity<Effect> {
 
-    val effectId: Int,
+    val id: Int
+    val habboInfo: HabboInfo
+    val habbo: Habbo?
+        get() = habboInfo.habbo
 
-    val duration: Int,
-    val quantity: Int,
+    val effectId: Int
 
-    val activationTimestamp: Int,
+    val duration: Int
+    val quantity: Int
+
+    val activationTimestamp: Int
     var isActive: Boolean
-) {
 
     val timeUsed: Int
         get() = currentUnixSeconds - activationTimestamp

@@ -1,13 +1,11 @@
 package org.urielserv.uriel.game.habbos
 
 import io.klogging.noCoLogger
-import org.ktorm.database.iterator
 import org.ktorm.dsl.eq
-import org.ktorm.dsl.select
-import org.ktorm.dsl.where
+import org.ktorm.entity.find
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UsersSchema
+import org.urielserv.uriel.database.schemas.users.UsersSchema
 import org.urielserv.uriel.networking.UrielServerClient
 import java.security.SecureRandom
 import java.util.*
@@ -18,7 +16,7 @@ import java.util.*
 @Suppress("unused")
 class UrielHabboManager {
 
-    private val logger = noCoLogger("uriel.game.habbos.UrielHabboManager")
+    private val logger = noCoLogger(UrielHabboManager::class)
 
     private val habbos = mutableListOf<Habbo>()
 
@@ -39,7 +37,7 @@ class UrielHabboManager {
             Database.update(UsersSchema) {
                 set(it.ssoTicket, generateSafeSSOToken())
                 where {
-                    it.id eq habbo.id
+                    it.id eq habbo.info.id
                 }
             }
         }
@@ -48,68 +46,35 @@ class UrielHabboManager {
     }
 
     /**
-     * Builds a Habbo object based on the given user ID.
-     * Acts as a wrapper for the buildHabbo method that accepts an SSO ticket.
-     *
-     * @param id The user ID.
-     * @return The Habbo object, or null if no user with the given ID is found.
-     */
-    fun buildHabbo(id: Int): Habbo? {
-        val resultIterator = Database.from(UsersSchema)
-            .select()
-            .where(UsersSchema.id eq id)
-            .rowSet.iterator()
-
-        if (!resultIterator.hasNext()) {
-            return null
-        }
-
-        val result = resultIterator.next()
-
-        return buildHabbo(result[UsersSchema.ssoTicket] ?: "")
-    }
-
-    /**
      * Builds a Habbo object based on the provided SSO ticket.
      *
      * @param ssoTicket The SSO ticket used to identify the user.
      * @return A Habbo object if a user with the provided SSO ticket is found in the database, otherwise null.
      */
-    fun buildHabbo(ssoTicket: String): Habbo? {
-        val resultIterator = Database.from(UsersSchema)
-            .select()
-            .where(UsersSchema.ssoTicket eq ssoTicket)
-            .rowSet.iterator()
-
-        if (!resultIterator.hasNext()) {
-            return null
-        }
-
-        val result = resultIterator.next()
+    private fun buildHabbo(ssoTicket: String): Habbo? {
+        val habboInfo = Database.sequenceOf(UsersSchema)
+            .find {
+                it.ssoTicket eq ssoTicket
+            } ?: return null
 
         try {
-            val habboInfo = HabboInfo.Builder(result[UsersSchema.id] ?: 0)
-                .username(result[UsersSchema.username] ?: "")
-                .motto(result[UsersSchema.motto] ?: "")
-                .gender(result[UsersSchema.gender] ?: HabboGender.MALE)
-                .look(result[UsersSchema.look] ?: "")
-                .homeRoomId(result[UsersSchema.homeRoomId] ?: 0)
-                .build()
-
-            val habbo = Habbo(
-                id = result[UsersSchema.id] ?: 0,
-                info = habboInfo
-            )
-
-            habboInfo.habbo = habbo
-
-            return habbo
+            return Habbo(habboInfo)
         } catch (exc: Exception) {
             logger.error("Failed to build Habbo object for SSO ticket $ssoTicket:")
             exc.printStackTrace()
         }
 
         return null
+    }
+
+    /**
+     * Gets a Habbo object by their username.
+     *
+     * @param username The username of the Habbo to be retrieved.
+     * @return The Habbo object if found, otherwise null.
+     */
+    fun getHabboById(id: Int): Habbo? {
+        return habbos.firstOrNull { it.info.id == id }
     }
 
     /**

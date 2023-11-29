@@ -12,7 +12,7 @@ import java.io.ByteArrayInputStream
 
 class UserUpdateLookPacketHandler : PacketHandler {
 
-    private val logger = logger("uriel.packets.incoming.users.looks.UserUpdateLookPacketHandler")
+    private val logger = logger(UserUpdateLookPacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         if (client.habbo == null) {
@@ -40,6 +40,7 @@ class UserUpdateLookPacketHandler : PacketHandler {
 
         client.habbo!!.info.look = look
         client.habbo!!.info.gender = gender
+        client.habbo!!.info.flushChanges()
 
         UpdateUserLookPacket(client.habbo!!).send(client)
     }

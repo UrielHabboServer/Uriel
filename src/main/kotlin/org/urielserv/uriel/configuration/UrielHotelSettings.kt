@@ -38,7 +38,8 @@ data class UrielHotelSettings(
             val figureDataUrl: String,
             val validateLooksOnHabboClubExpire: Boolean,
             val validateLooksOnLogin: Boolean,
-            val validateLooksOnChange: Boolean
+            val validateLooksOnChange: Boolean,
+            val validateLooksOnSave: Boolean
             //val validateLooksOnFootballGate: Boolean
         )
 

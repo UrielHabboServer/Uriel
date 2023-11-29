@@ -8,8 +8,8 @@ import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.handshake.PingPacket
 import org.urielserv.uriel.packets.outgoing.handshake.AuthenticationOKPacket
+import org.urielserv.uriel.packets.outgoing.handshake.PingPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
 import org.urielserv.uriel.packets.outgoing.users.habbo_club.UserClubPacket
 import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectsPacket
@@ -18,7 +18,7 @@ import java.io.ByteArrayInputStream
 
 class SSOTicketPacketHandler : PacketHandler {
 
-    private val logger = logger("uriel.packets.incoming.handshake.SecureLoginPacketHandler")
+    private val logger = logger(SSOTicketPacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         val ssoTicket = packet.readString().replace(" ", "")

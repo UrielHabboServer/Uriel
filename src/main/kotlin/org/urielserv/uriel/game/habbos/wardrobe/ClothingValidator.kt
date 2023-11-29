@@ -10,7 +10,7 @@ import java.util.regex.Pattern
 
 object ClothingValidator {
 
-    private val logger = noCoLogger("uriel.game.habbos.wardrobe.UrielWardrobeManager")
+    private val logger = noCoLogger(ClothingValidator::class)
 
     fun validateLook(savedLook: SavedLook, isHabboClubMember: Boolean): String =
         validateLook(
@@ -50,7 +50,8 @@ object ClothingValidator {
                 if ((gender.equals("M", true) && isHabboClubMember && setType.mandatoryMale1) ||
                     (gender.equals("F", true) && isHabboClubMember && setType.mandatoryFemale1) ||
                     (gender.equals("M", true) && !isHabboClubMember && setType.mandatoryMale0) ||
-                    (gender.equals("F", true) && !isHabboClubMember && setType.mandatoryFemale0)) {
+                    (gender.equals("F", true) && !isHabboClubMember && setType.mandatoryFemale0)
+                ) {
                     parts[x.key] = listOf(x.key)
                 }
             }
@@ -70,8 +71,11 @@ object ClothingValidator {
                 var setId = data.getOrNull(1)?.toInt() ?: -1
                 var set = setType.sets[setId]
 
-                if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) || !set.canBeSelected || (set.canBeSold && !ownedClothing.contains(set.id)) ||
-                    (!set.gender.equals("U", true) && !set.gender.equals(gender, true))) {
+                if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) || !set.canBeSelected || (set.canBeSold && !ownedClothing.contains(
+                        set.id
+                    )) ||
+                    (!set.gender.equals("U", true) && !set.gender.equals(gender, true))
+                ) {
                     // Reassign set if validation fails
                     set = setType.getFirstNonClubSetForGender(gender)
                     set?.let { setId = it.id } ?: return@mapNotNull null
@@ -88,7 +92,11 @@ object ClothingValidator {
         return rebuiltParts.joinToString(".")
     }
 
-    private fun getValidColorIds(data: List<String>, palette: FigureDataPalette, isHabboClubMember: Boolean): List<Int> {
+    private fun getValidColorIds(
+        data: List<String>,
+        palette: FigureDataPalette,
+        isHabboClubMember: Boolean
+    ): List<Int> {
         val colorIds = mutableListOf<Int>()
         if (data.size >= 3) {
             palette.colors[data[2].toInt()]?.let { color ->

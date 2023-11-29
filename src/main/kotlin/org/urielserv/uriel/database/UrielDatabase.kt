@@ -5,6 +5,8 @@ import com.zaxxer.hikari.HikariDataSource
 import io.klogging.noCoLogger
 import org.ktorm.database.Database
 import org.ktorm.dsl.*
+import org.ktorm.entity.EntitySequence
+import org.ktorm.entity.sequenceOf
 import org.ktorm.schema.BaseTable
 import org.ktorm.schema.ColumnDeclaring
 
@@ -26,7 +28,7 @@ class UrielDatabase(
     databaseName: String
 ) {
 
-    private val logger = noCoLogger("uriel.database.UrielDatabase")
+    private val logger = noCoLogger(UrielDatabase::class)
 
     private val hikariConfig = HikariConfig().apply {
         jdbcUrl = "jdbc:mysql://$host:$port/$databaseName"
@@ -101,6 +103,22 @@ class UrielDatabase(
             return database.delete(table, predicate)
         } catch (exc: Exception) {
             logger.error("Error deleting rows from table ${table.tableName}:")
+            exc.printStackTrace()
+            throw exc
+        }
+    }
+
+    /**
+     * Creates an EntitySequence object from the given BaseTable object.
+     *
+     * @param table The BaseTable object to create the EntitySequence from.
+     * @return The created EntitySequence object.
+     */
+    fun <E : Any, T : BaseTable<E>> sequenceOf(table: T): EntitySequence<E, T> {
+        try {
+            return database.sequenceOf(table)
+        } catch (exc: Exception) {
+            logger.error("Error creating EntitySequence from table ${table.tableName}:")
             exc.printStackTrace()
             throw exc
         }

@@ -9,7 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class UrielFigureDataManager(pathUri: String) {
 
-    private val logger = noCoLogger("uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager")
+    private val logger = noCoLogger(UrielFigureDataManager::class)
 
     val palettes: MutableMap<Int, FigureDataPalette> = mutableMapOf()
     val setTypes: MutableMap<String, FigureDataSetType> = mutableMapOf()
@@ -47,14 +47,15 @@ class UrielFigureDataManager(pathUri: String) {
                 document.getElementsByTagName("sets") != null
     }
 
-    private fun getNodeList(document: Document, tagName: String) = document.getElementsByTagName(tagName).item(0).childNodes
+    private fun getNodeList(document: Document, tagName: String) =
+        document.getElementsByTagName(tagName).item(0).childNodes
 
     private fun parsePalettes(palettesList: NodeList) {
         palettesList.forEachNode { element ->
             val palette = createPalette(element)
 
             parseColors(element.childNodes) { color ->
-                palette.colors[color.id ] = color
+                palette.colors[color.id] = color
             }
 
             palettes[palette.id] = palette

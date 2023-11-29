@@ -1,8 +1,8 @@
 package org.urielserv.uriel.packets.outgoing.users
 
 import org.urielserv.uriel.game.habbos.Habbo
-import org.urielserv.uriel.packets.outgoing.Packet
 import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Packet
 
 class UserDataPacket(
     private val habbo: Habbo
@@ -11,7 +11,7 @@ class UserDataPacket(
     override val packetId = OutgoingPacketIDs.UserData
 
     override suspend fun construct() {
-        appendInt(habbo.id)
+        appendInt(habbo.info.id)
         appendString(habbo.info.username)
         appendString(habbo.info.look)
         appendString(habbo.info.gender.name)

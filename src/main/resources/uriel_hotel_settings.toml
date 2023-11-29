@@ -18,6 +18,7 @@ figureDataUrl = "https://habbo.com/gamedata/figuredata/0"
 validateLooksOnHabboClubExpire = true
 validateLooksOnLogin = true
 validateLooksOnChange = true
+validateLooksOnSave = true
 
 [habbos.inventory]
 storeItemDataOnPickUp = false

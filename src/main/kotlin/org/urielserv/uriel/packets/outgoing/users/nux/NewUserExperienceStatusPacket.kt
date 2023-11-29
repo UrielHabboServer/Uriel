@@ -1,7 +1,7 @@
 package org.urielserv.uriel.packets.outgoing.users.nux
 
-import org.urielserv.uriel.packets.outgoing.Packet
 import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Packet
 
 class NewUserExperienceStatusPacket(
     private val finishedNux: Boolean

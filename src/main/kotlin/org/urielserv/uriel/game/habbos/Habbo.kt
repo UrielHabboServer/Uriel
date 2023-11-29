@@ -7,11 +7,9 @@ import org.urielserv.uriel.networking.UrielServerClient
 /**
  * Represents a Habbo user.
  *
- * @param id The unique identifier of the Habbo user.
  * @param info The information of the Habbo user.
  */
-class Habbo(
-    val id: Int,
+class Habbo internal constructor(
     val info: HabboInfo,
 ) {
 
@@ -19,9 +17,5 @@ class Habbo(
 
     val inventory = HabboInventory(this)
     val subscriptions = HabboSubscriptions(this)
-
-    init {
-        info.habbo = this
-    }
 
 }

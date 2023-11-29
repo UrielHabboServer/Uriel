@@ -1,8 +1,8 @@
 package org.urielserv.uriel.packets.outgoing.users.inventory
 
 import org.urielserv.uriel.game.habbos.inventory.effects.Effect
-import org.urielserv.uriel.packets.outgoing.Packet
 import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Packet
 
 class UserEffectsPacket(
     private val effects: List<Effect>

@@ -4,8 +4,10 @@ import org.ktorm.database.iterator
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.select
 import org.ktorm.dsl.where
+import org.ktorm.entity.filter
+import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UserEffectsSchema
+import org.urielserv.uriel.database.schemas.users.UserEffectsSchema
 import org.urielserv.uriel.game.habbos.Habbo
 
 class InventoryEffects(
@@ -15,24 +17,9 @@ class InventoryEffects(
     private val effects = mutableListOf<Effect>()
 
     init {
-        Database.from(UserEffectsSchema)
-            .select()
-            .where(UserEffectsSchema.userId eq habbo.id)
-            .rowSet
-            .iterator()
-            .forEach { row ->
-                effects.add(
-                    Effect(
-                        row[UserEffectsSchema.id]!!,
-                        habbo,
-                        row[UserEffectsSchema.effectId]!!,
-                        row[UserEffectsSchema.duration]!!,
-                        row[UserEffectsSchema.quantity]!!,
-                        row[UserEffectsSchema.activationTimestamp]!!,
-                        row[UserEffectsSchema.isActive]!!
-                    )
-                )
-            }
+        Database.sequenceOf(UserEffectsSchema)
+            .filter { it.userId eq habbo.info.id }
+            .forEach { effects.add(it) }
     }
 
     fun checkIfExpired() {
@@ -52,7 +39,7 @@ class InventoryEffects(
         effects.add(effect)
 
         Database.insert(UserEffectsSchema) {
-            set(it.userId, habbo.id)
+            set(it.userId, habbo.info.id)
             set(it.effectId, effect.effectId)
             set(it.duration, effect.duration)
             set(it.quantity, effect.quantity)

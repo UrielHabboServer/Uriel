@@ -16,5 +16,5 @@ object OutgoingPacketIDs {
     const val UpdateUserLook = 2429
 
     const val NewUserExperienceStatus = 3738
-    
+
 }

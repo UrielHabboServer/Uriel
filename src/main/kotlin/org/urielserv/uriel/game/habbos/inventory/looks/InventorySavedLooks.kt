@@ -4,8 +4,11 @@ import org.ktorm.database.iterator
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.select
 import org.ktorm.dsl.where
+import org.ktorm.entity.add
+import org.ktorm.entity.filter
+import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.UserSavedLooksSchema
+import org.urielserv.uriel.database.schemas.users.UserSavedLooksSchema
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboGender
 
@@ -16,20 +19,9 @@ class InventorySavedLooks(
     private val savedLooks = mutableListOf<SavedLook>()
 
     init {
-        Database.from(UserSavedLooksSchema)
-            .select()
-            .where(UserSavedLooksSchema.userId eq habbo.id)
-            .rowSet
-            .iterator()
-            .forEach {
-                savedLooks.add(SavedLook(
-                    it[UserSavedLooksSchema.id]!!,
-                    habbo,
-                    it[UserSavedLooksSchema.slotId]!!,
-                    it[UserSavedLooksSchema.look]!!,
-                    it[UserSavedLooksSchema.gender]!!
-                ))
-            }
+        Database.sequenceOf(UserSavedLooksSchema)
+            .filter { it.userId eq habbo.info.id }
+            .forEach { savedLooks.add(it) }
     }
 
     fun getLook(slotId: Int): SavedLook? =
@@ -44,20 +36,15 @@ class InventorySavedLooks(
 
         if (existingLook == null) {
             Database.insert(UserSavedLooksSchema) {
-                set(it.userId, habbo.id)
+                set(it.userId, habbo.info.id)
                 set(it.slotId, slotId)
                 set(it.look, look)
                 set(it.gender, gender)
             }
         } else {
-            Database.update(UserSavedLooksSchema) {
-                set(it.look, look)
-                set(it.gender, gender)
-
-                where {
-                    it.id eq existingLook.id
-                }
-            }
+            existingLook.look = look
+            existingLook.gender = gender
+            existingLook.flushChanges()
         }
     }
 
@@ -66,15 +53,13 @@ class InventorySavedLooks(
 
         val existingLook = getLook(slotId) ?: return
 
-        Database.delete(UserSavedLooksSchema) {
-            it.id eq existingLook.id
-        }
+        existingLook.delete()
     }
 
     fun clearLooks() {
-        Database.delete(UserSavedLooksSchema) {
-            it.userId eq habbo.id
-        }
+        Database.sequenceOf(UserSavedLooksSchema)
+            .filter { it.userId eq habbo.info.id }
+            .forEach { it.delete() }
     }
 
 }

@@ -14,7 +14,6 @@ import org.urielserv.uriel.configuration.UrielConfiguration
 import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
 import org.urielserv.uriel.game.habbos.UrielHabboManager
-import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
@@ -25,7 +24,7 @@ import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.system.exitProcess
 
-private val logger = logger("uriel.Main")
+private val logger = logger("org.urielserv.uriel.Main")
 
 lateinit var Configuration: UrielConfiguration
 lateinit var HotelSettings: UrielHotelSettings
@@ -52,7 +51,7 @@ suspend fun main() = runBlocking {
         sink("stdout", RENDER_ANSI, STDOUT)
 
         logging {
-            fromLoggerBase("uriel", stopOnMatch = true)
+            fromLoggerBase("org.urielserv", stopOnMatch = true)
             fromMinLevel(Level.DEBUG) {
                 toSink("stdout")
             }

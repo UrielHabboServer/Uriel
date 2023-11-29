@@ -2,12 +2,13 @@ package org.urielserv.uriel.packets.incoming
 
 import io.klogging.logger
 import org.urielserv.uriel.networking.UrielServerClient
-import org.urielserv.uriel.packets.incoming.handshake.PongPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.ClientVersionPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.PongPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.SSOTicketPacketHandler
 import org.urielserv.uriel.packets.incoming.users.RetrieveUserDataPacketHandler
-import org.urielserv.uriel.packets.incoming.users.looks.RetrieveUserLooksPacketHandler
+import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.RetrieveUserSavedLooksPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserUpdateLookPacketHandler
+import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.UserAddSavedLookPacketHandler
 import java.io.ByteArrayInputStream
 
 /**
@@ -15,7 +16,7 @@ import java.io.ByteArrayInputStream
  */
 class UrielPacketHandlerManager {
 
-    private val logger = logger("uriel.packets.UrielPacketHandlerManager")
+    private val logger = logger(UrielPacketHandlerManager::class)
 
     private val packets = mutableMapOf<Short, PacketHandler>()
 
@@ -36,7 +37,8 @@ class UrielPacketHandlerManager {
 
     private fun registerUserPackets() {
         registerPacket(IncomingPacketIDs.RetrieveUserData, RetrieveUserDataPacketHandler())
-        registerPacket(IncomingPacketIDs.RetrieveUserLooks, RetrieveUserLooksPacketHandler())
+        registerPacket(IncomingPacketIDs.RetrieveUserSavedLooks, RetrieveUserSavedLooksPacketHandler())
+        registerPacket(IncomingPacketIDs.UserAddSavedLook, UserAddSavedLookPacketHandler())
         registerPacket(IncomingPacketIDs.UserUpdateLook, UserUpdateLookPacketHandler())
     }
 

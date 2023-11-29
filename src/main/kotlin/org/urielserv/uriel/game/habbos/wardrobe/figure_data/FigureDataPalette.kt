@@ -1,6 +1,6 @@
 package org.urielserv.uriel.game.habbos.wardrobe.figure_data
 
-import java.util.TreeMap
+import java.util.*
 
 data class FigureDataPalette(
     val id: Int,
@@ -8,8 +8,9 @@ data class FigureDataPalette(
 
     val colors: TreeMap<Int, Color> = TreeMap()
 
-    fun getFirstNonClubColor(): Color? = colors.values.firstOrNull { !it.requiresHabboClubMembership && it.canBeSelected }
-        ?: colors.values.firstOrNull()
+    fun getFirstNonClubColor(): Color? =
+        colors.values.firstOrNull { !it.requiresHabboClubMembership && it.canBeSelected }
+            ?: colors.values.firstOrNull()
 
     data class Color(
         val id: Int,
