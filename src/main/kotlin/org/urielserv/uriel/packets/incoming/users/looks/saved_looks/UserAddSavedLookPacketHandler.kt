@@ -19,7 +19,6 @@ class UserAddSavedLookPacketHandler : PacketHandler {
 
         val slotId = packet.readInt()
 
-
         if (slotId < 0 || slotId > 9) {
             logger.warn("${client.habbo!!.info.username} attempted to save a look with an invalid slot ID")
             return
