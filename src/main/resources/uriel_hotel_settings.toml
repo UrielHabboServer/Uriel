@@ -21,7 +21,7 @@ validateLooksOnChange = true
 validateLooksOnSave = true
 
 [habbos.inventory]
-storeItemDataOnPickUp = false
+storeFurniDataOnPickUp = false
 
 [habbos.subscription]
 deleteExpiredSubscriptions = true
