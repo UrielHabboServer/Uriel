@@ -1,4 +1,4 @@
-package org.urielserv.uriel.packets.incoming.users.looks.saved_looks
+package org.urielserv.uriel.packets.incoming.users.looks.wardrobe
 
 import io.klogging.logger
 import org.urielserv.uriel.HotelSettings
@@ -10,9 +10,9 @@ import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import java.io.ByteArrayInputStream
 
-class UserAddSavedLookPacketHandler : PacketHandler {
+class SaveWardrobeOutfitPacketHandler : PacketHandler {
 
-    private val logger = logger(UserAddSavedLookPacketHandler::class)
+    private val logger = logger(SaveWardrobeOutfitPacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         if (client.habbo == null) return

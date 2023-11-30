@@ -4,11 +4,11 @@ import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
 import org.urielserv.uriel.packets.outgoing.Packet
 
-class UpdateUserLookPacket(
+class UserFigurePacket(
     private val habbo: Habbo
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.UpdateUserLook
+    override val packetId = OutgoingPacketIDs.UserFigure
 
     override suspend fun construct() {
         appendString(habbo.info.look)

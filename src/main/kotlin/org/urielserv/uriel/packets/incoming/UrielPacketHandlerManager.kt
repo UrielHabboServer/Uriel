@@ -2,13 +2,13 @@ package org.urielserv.uriel.packets.incoming
 
 import io.klogging.logger
 import org.urielserv.uriel.networking.UrielServerClient
-import org.urielserv.uriel.packets.incoming.handshake.ClientVersionPacketHandler
-import org.urielserv.uriel.packets.incoming.handshake.PongPacketHandler
-import org.urielserv.uriel.packets.incoming.handshake.SSOTicketPacketHandler
-import org.urielserv.uriel.packets.incoming.users.RetrieveUserDataPacketHandler
-import org.urielserv.uriel.packets.incoming.users.looks.UserUpdateLookPacketHandler
-import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.RetrieveUserSavedLooksPacketHandler
-import org.urielserv.uriel.packets.incoming.users.looks.saved_looks.UserAddSavedLookPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.ClientPongPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandler
+import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
+import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
+import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
+import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
 import java.io.ByteArrayInputStream
 
 /**
@@ -30,16 +30,16 @@ class UrielPacketHandlerManager {
     }
 
     private fun registerHandshakePackets() {
-        registerPacket(IncomingPacketIDs.ClientVersion, ClientVersionPacketHandler())
-        registerPacket(IncomingPacketIDs.SSOTicket, SSOTicketPacketHandler())
-        registerPacket(IncomingPacketIDs.Pong, PongPacketHandler())
+        registerPacket(IncomingPacketIDs.ReleaseVersion, ReleaseVersionPacketHandler())
+        registerPacket(IncomingPacketIDs.SecurityTicket, SecurityTicketPacketHandler())
+        registerPacket(IncomingPacketIDs.ClientPong, ClientPongPacketHandler())
     }
 
     private fun registerUserPackets() {
-        registerPacket(IncomingPacketIDs.RetrieveUserData, RetrieveUserDataPacketHandler())
-        registerPacket(IncomingPacketIDs.RetrieveUserSavedLooks, RetrieveUserSavedLooksPacketHandler())
-        registerPacket(IncomingPacketIDs.UserAddSavedLook, UserAddSavedLookPacketHandler())
-        registerPacket(IncomingPacketIDs.UserUpdateLook, UserUpdateLookPacketHandler())
+        registerPacket(IncomingPacketIDs.UserInfo, UserInfoPacketHandler())
+        registerPacket(IncomingPacketIDs.GetWardrobe, GetWardrobePacketHandler())
+        registerPacket(IncomingPacketIDs.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
+        registerPacket(IncomingPacketIDs.UserFigure, UserFigurePacketHandler())
     }
 
     /**

@@ -1,16 +1,16 @@
-package org.urielserv.uriel.packets.incoming.users.looks.saved_looks
+package org.urielserv.uriel.packets.incoming.users.looks.wardrobe
 
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.users.looks.UserSavedLooksPacket
+import org.urielserv.uriel.packets.outgoing.users.looks.UserWardrobePagePacket
 import java.io.ByteArrayInputStream
 
-class RetrieveUserSavedLooksPacketHandler : PacketHandler {
+class GetWardrobePacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         if (client.habbo == null) return
 
-        UserSavedLooksPacket(client.habbo!!).send(client)
+        UserWardrobePagePacket(client.habbo!!).send(client)
     }
 
 }

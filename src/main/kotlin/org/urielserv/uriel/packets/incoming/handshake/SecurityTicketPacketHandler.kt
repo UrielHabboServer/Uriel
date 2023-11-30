@@ -8,25 +8,27 @@ import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.handshake.AuthenticationOKPacket
-import org.urielserv.uriel.packets.outgoing.handshake.PingPacket
+import org.urielserv.uriel.packets.outgoing.handshake.AuthenticatedPacket
+import org.urielserv.uriel.packets.outgoing.handshake.ClientPingPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
-import org.urielserv.uriel.packets.outgoing.users.habbo_club.UserClubPacket
-import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectsPacket
-import org.urielserv.uriel.packets.outgoing.users.nux.NewUserExperienceStatusPacket
+import org.urielserv.uriel.packets.outgoing.users.subscriptions.UserSubscriptionPacket
+import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
+import org.urielserv.uriel.packets.outgoing.users.NoobnessLevelPacket
 import java.io.ByteArrayInputStream
 
-class SSOTicketPacketHandler : PacketHandler {
+class SecurityTicketPacketHandler : PacketHandler {
 
-    private val logger = logger(SSOTicketPacketHandler::class)
+    private val logger = logger(SecurityTicketPacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
-        val ssoTicket = packet.readString().replace(" ", "")
-        val timeTaken = packet.readInt()
+        val ticket = packet.readString().replace(" ", "")
+        val time = packet.readInt()
 
-        client.nitroTimeTaken = timeTaken
+        if (client.nitroInformation != null) {
+            client.nitroInformation!!.time = time
+        }
 
-        if (ssoTicket.isEmpty()) {
+        if (ticket.isEmpty()) {
             client.dispose()
             logger.warn("Client ${client.ip}:${client.port} sent an empty SSO ticket")
             return
@@ -38,7 +40,7 @@ class SSOTicketPacketHandler : PacketHandler {
             return
         }
 
-        val habbo = HabboManager.loginHabbo(ssoTicket, client)
+        val habbo = HabboManager.loginHabbo(ticket, client)
 
         if (habbo == null) {
             client.dispose()
@@ -73,15 +75,15 @@ class SSOTicketPacketHandler : PacketHandler {
         - InventoryAchievementsComposer
          */
 
-        AuthenticationOKPacket().send(client)
+        AuthenticatedPacket().send(client)
         UserHomeRoomPacket(
             homeRoomId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId,
-            roomToEnterId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId
+            roomIdToEnter = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId
         ).send(client)
-        UserEffectsPacket(habbo.inventory.effects.toList()).send(client)
-        NewUserExperienceStatusPacket(true).send(client)
-        UserClubPacket(habbo, "HABBO_CLUB", UserClubPacket.RESPONSE_TYPE_LOGIN).send(client)
-        PingPacket().send(client)
+        UserEffectListPacket(habbo.inventory.effects.toList()).send(client)
+        NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)
+        UserSubscriptionPacket(habbo, "HABBO_CLUB", UserSubscriptionPacket.RESPONSE_TYPE_LOGIN).send(client)
+        ClientPingPacket().send(client)
     }
 
 }

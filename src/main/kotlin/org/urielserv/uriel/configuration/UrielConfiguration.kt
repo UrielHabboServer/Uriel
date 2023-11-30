@@ -40,6 +40,7 @@ data class UrielConfiguration(
 
     @Serializable
     data class Connections(
+        val onlyAllowNitro: Boolean,
         val maxConnectedClients: Int,
         val maxConnectionsPerIp: Int
     )

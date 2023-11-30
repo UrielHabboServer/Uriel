@@ -16,6 +16,7 @@ password = ""
 databaseName = "habbo"
 
 [connections]
+onlyAllowNitro = true
 maxConnectedClients = 1000 # -1 = unlimited
 maxConnectionsPerIp = 5 # -1 = unlimited
 

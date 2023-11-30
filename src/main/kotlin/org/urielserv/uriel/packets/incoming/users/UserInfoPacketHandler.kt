@@ -2,10 +2,10 @@ package org.urielserv.uriel.packets.incoming.users
 
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.users.UserDataPacket
+import org.urielserv.uriel.packets.outgoing.users.UserInfoPacket
 import java.io.ByteArrayInputStream
 
-class RetrieveUserDataPacketHandler : PacketHandler {
+class UserInfoPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         /*
@@ -17,7 +17,7 @@ class RetrieveUserDataPacketHandler : PacketHandler {
 
         if (client.habbo == null) return
 
-        UserDataPacket(client.habbo!!).send(client)
+        UserInfoPacket(client.habbo!!).send(client)
     }
 
 }

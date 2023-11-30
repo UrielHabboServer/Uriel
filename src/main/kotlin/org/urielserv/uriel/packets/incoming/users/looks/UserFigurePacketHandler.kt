@@ -7,23 +7,23 @@ import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.users.looks.UpdateUserLookPacket
+import org.urielserv.uriel.packets.outgoing.users.looks.UserFigurePacket
 import java.io.ByteArrayInputStream
 
-class UserUpdateLookPacketHandler : PacketHandler {
+class UserFigurePacketHandler : PacketHandler {
 
-    private val logger = logger(UserUpdateLookPacketHandler::class)
+    private val logger = logger(UserFigurePacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         if (client.habbo == null) {
             return
         }
 
-        val genderString = packet.readString()
+        val shortGender = packet.readString()
         var look = packet.readString()
 
         val gender = try {
-            HabboGender.tryFromShort(genderString)
+            HabboGender.tryFromShort(shortGender)
         } catch (ignored: Exception) {
             logger.warn("${client.habbo!!.info.username} attempted to set an invalid gender")
             return
@@ -42,7 +42,7 @@ class UserUpdateLookPacketHandler : PacketHandler {
         client.habbo!!.info.gender = gender
         client.habbo!!.info.flushChanges()
 
-        UpdateUserLookPacket(client.habbo!!).send(client)
+        UserFigurePacket(client.habbo!!).send(client)
     }
 
 }

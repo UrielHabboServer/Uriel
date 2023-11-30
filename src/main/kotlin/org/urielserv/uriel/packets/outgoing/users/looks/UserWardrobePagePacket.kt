@@ -4,11 +4,11 @@ import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
 import org.urielserv.uriel.packets.outgoing.Packet
 
-class UserSavedLooksPacket(
+class UserWardrobePagePacket(
     private val habbo: Habbo
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.UserSavedLooks
+    override val packetId = OutgoingPacketIDs.UserWardrobePage
 
     override suspend fun construct() {
         val looks = habbo.inventory.savedLooks.getLooks()

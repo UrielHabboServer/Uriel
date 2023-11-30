@@ -4,15 +4,15 @@ package org.urielserv.uriel.packets.incoming
 object IncomingPacketIDs {
 
     // Handshake
-    const val ClientVersion = 4000
-    const val SSOTicket = 2419
+    const val ReleaseVersion = 4000
+    const val SecurityTicket = 2419
 
-    const val Pong = 2596
+    const val ClientPong = 2596
 
     // Users
-    const val RetrieveUserData = 357
-    const val RetrieveUserSavedLooks = 2742
-    const val UserAddSavedLook = 800
-    const val UserUpdateLook = 2730
+    const val UserInfo = 357
+    const val GetWardrobe = 2742
+    const val SaveWardrobeOutfit = 800
+    const val UserFigure = 2730
 
 }
