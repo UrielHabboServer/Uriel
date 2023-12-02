@@ -5,6 +5,7 @@ import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.ClientPongPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandler
+import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
@@ -27,6 +28,7 @@ class UrielPacketHandlerManager {
     private fun registerAllPackets() {
         registerHandshakePackets()
         registerUserPackets()
+        registerNavigatorPackets()
     }
 
     private fun registerHandshakePackets() {
@@ -42,6 +44,10 @@ class UrielPacketHandlerManager {
         registerPacket(IncomingPacketIDs.UserFigure, UserFigurePacketHandler())
     }
 
+    private fun registerNavigatorPackets() {
+        registerPacket(IncomingPacketIDs.NavigatorInit, NavigatorInitPacketHandler())
+    }
+
     /**
      * Registers a packet with the specified packet ID and packet handler.
      *
@@ -50,6 +56,15 @@ class UrielPacketHandlerManager {
      */
     fun registerPacket(packetId: Int, packetHandler: PacketHandler) {
         packets[packetId.toShort()] = packetHandler
+    }
+
+    /**
+     * Unregisters a packet with the specified packet ID.
+     *
+     * @param packetId The ID of the packet to unregister.
+     */
+    fun unregisterPacket(packetId: Int) {
+        packets.remove(packetId.toShort())
     }
 
     /**

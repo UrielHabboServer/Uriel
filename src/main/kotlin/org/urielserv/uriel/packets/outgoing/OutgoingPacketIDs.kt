@@ -17,4 +17,12 @@ object OutgoingPacketIDs {
 
     const val NoobnessLevel = 3738
 
+    // Navigator
+    const val NavigatorSettings = 518
+    const val NavigatorMetadata = 3052
+    const val NavigatorLifted = 3104
+    const val NavigatorCollapsed = 1543
+    const val NavigatorSearches = 3984
+    const val NavigatorEventCategories = 3244
+
 }

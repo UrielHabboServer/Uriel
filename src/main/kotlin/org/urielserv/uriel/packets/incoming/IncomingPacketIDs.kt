@@ -15,4 +15,7 @@ object IncomingPacketIDs {
     const val SaveWardrobeOutfit = 800
     const val UserFigure = 2730
 
+    // Navigator
+    const val NavigatorInit = 2110
+
 }

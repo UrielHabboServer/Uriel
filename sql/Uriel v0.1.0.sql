@@ -61,6 +61,30 @@ CREATE TABLE user_looks
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
+DROP TABLE IF EXISTS user_navigator_window_settings;
+CREATE TABLE user_navigator_window_settings
+(
+    id                 INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    user_id            INT                            NOT NULL,
+    x                  INT     DEFAULT 100            NOT NULL,
+    y                  INT     DEFAULT 100            NOT NULL,
+    width              INT     DEFAULT 425            NOT NULL,
+    height             INT     DEFAULT 535            NOT NULL,
+    is_left_panel_open BOOLEAN DEFAULT false          NOT NULL,
+    results_mode       INT     DEFAULT 0              NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+DROP TABLE IF EXISTS user_navigator_saved_searches;
+CREATE TABLE user_navigator_saved_searches
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    user_id     INT                            NOT NULL,
+    search_code TEXT                           NOT NULL,
+    filter      TEXT                           NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 -- Rooms
 DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms

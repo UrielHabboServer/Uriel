@@ -84,6 +84,9 @@ class SecurityTicketPacketHandler : PacketHandler {
         NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)
         UserSubscriptionPacket(habbo, "HABBO_CLUB", UserSubscriptionPacket.RESPONSE_TYPE_LOGIN).send(client)
         ClientPingPacket().send(client)
+
+        // Add default navigator saved searches
+
     }
 
 }
