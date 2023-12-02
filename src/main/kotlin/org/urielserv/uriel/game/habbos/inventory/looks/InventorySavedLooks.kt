@@ -1,6 +1,7 @@
 package org.urielserv.uriel.game.habbos.inventory.looks
 
 import org.ktorm.dsl.eq
+import org.ktorm.entity.add
 import org.ktorm.entity.filter
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
@@ -31,12 +32,13 @@ class InventorySavedLooks(
         val existingLook = getLook(slotId)
 
         if (existingLook == null) {
-            Database.insert(UserSavedLooksSchema) {
-                set(it.userId, habbo.info.id)
-                set(it.slotId, slotId)
-                set(it.look, look)
-                set(it.gender, gender)
-            }
+            Database.sequenceOf(UserSavedLooksSchema)
+                .add(SavedLook {
+                    habboInfo = this@InventorySavedLooks.habbo.info
+                    this.slotId = slotId
+                    this.look = look
+                    this.gender = gender
+                })
         } else {
             existingLook.look = look
             existingLook.gender = gender

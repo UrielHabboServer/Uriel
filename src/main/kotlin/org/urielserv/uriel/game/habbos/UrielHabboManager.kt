@@ -18,7 +18,7 @@ class UrielHabboManager {
 
     private val logger = noCoLogger(UrielHabboManager::class)
 
-    private val habbos = mutableListOf<Habbo>()
+    private val habbos = mutableMapOf<Int, Habbo>()
 
     /**
      * Logs in a Habbo using the provided SSO ticket. If successful, a Habbo object representing the logged-in user is returned.
@@ -31,7 +31,7 @@ class UrielHabboManager {
         val habbo = buildHabbo(ssoTicket) ?: return null
 
         habbo.client = client
-        habbos.add(habbo)
+        habbos[habbo.info.id] = habbo
 
         if (Configuration.security.refreshSSOTicketOnLogin) {
             Database.update(UsersSchema) {
@@ -74,7 +74,7 @@ class UrielHabboManager {
      * @return The Habbo object if found, otherwise null.
      */
     fun getHabboById(id: Int): Habbo? {
-        return habbos.firstOrNull { it.info.id == id }
+        return habbos[id]
     }
 
     /**
@@ -84,7 +84,7 @@ class UrielHabboManager {
      * @param habbo The Habbo object to be removed.
      */
     fun unloadHabbo(habbo: Habbo) {
-        habbos.remove(habbo)
+        habbos.remove(habbo.info.id)
     }
 
     companion object {

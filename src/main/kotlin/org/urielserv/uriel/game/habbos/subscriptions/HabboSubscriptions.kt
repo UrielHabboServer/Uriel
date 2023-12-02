@@ -1,6 +1,7 @@
 package org.urielserv.uriel.game.habbos.subscriptions
 
 import org.ktorm.dsl.eq
+import org.ktorm.entity.add
 import org.ktorm.entity.filter
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
@@ -38,13 +39,14 @@ class HabboSubscriptions(
     fun registerSubscription(subscription: Subscription) {
         subscriptions.add(subscription)
 
-        Database.insert(UserSubscriptionsSchema) {
-            set(it.userId, habbo.info.id)
-            set(it.subscriptionType, subscription.type)
-            set(it.subscriptionStart, subscription.start)
-            set(it.subscriptionEnd, subscription.end)
-            set(it.isActive, subscription.isActive)
-        }
+        Database.sequenceOf(UserSubscriptionsSchema)
+            .add(Subscription {
+                habboInfo = this@HabboSubscriptions.habbo.info
+                type = subscription.type
+                start = subscription.start
+                end = subscription.end
+                isActive = subscription.isActive
+            })
     }
 
 }

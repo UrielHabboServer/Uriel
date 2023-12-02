@@ -15,9 +15,10 @@ import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
+import org.urielserv.uriel.game.rooms.UrielRoomManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
-import org.urielserv.uriel.tick_loop.UrielTickLoop
+import org.urielserv.uriel.tick_loop.TickLoop
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
@@ -34,10 +35,12 @@ lateinit var Database: UrielDatabase
 lateinit var HabboManager: UrielHabboManager
 lateinit var FigureDataManager: UrielFigureDataManager
 
+lateinit var RoomManager: UrielRoomManager
+
 lateinit var Server: UrielServer
 lateinit var PacketHandlerManager: UrielPacketHandlerManager
 
-lateinit var TickLoop: UrielTickLoop
+lateinit var HotelTickLoop: TickLoop
 
 var Ready = false
 
@@ -82,6 +85,10 @@ suspend fun main() = runBlocking {
         )
     }
 
+    measureInitialProcess("Room Manager") {
+        RoomManager = UrielRoomManager()
+    }
+
     measureInitialProcess("Server & Packet Handler Manager") {
         Server = UrielServer(
             host = Configuration.server.ip,
@@ -98,7 +105,7 @@ suspend fun main() = runBlocking {
     Ready = true
 
     measureInitialProcess("Tick Loop") {
-        TickLoop = UrielTickLoop(
+        HotelTickLoop = TickLoop(
             ticksPerSecond = Configuration.tickLoops.hotelTicksPerSecond
         )
     }

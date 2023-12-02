@@ -8,11 +8,11 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 
-class UrielTickLoop(private val ticksPerSecond: Int) {
+class TickLoop(private val ticksPerSecond: Int) {
 
     private val expectedMaxTimePerTick = 1000 / ticksPerSecond
 
-    private val logger = noCoLogger(UrielTickLoop::class)
+    private val logger = noCoLogger(TickLoop::class)
 
     private val executor = Executors.newSingleThreadScheduledExecutor()
 

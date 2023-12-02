@@ -1,6 +1,6 @@
 package org.urielserv.uriel.extensions
 
-import org.urielserv.uriel.TickLoop
+import org.urielserv.uriel.HotelTickLoop
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
  * @param task The task to be executed.
  */
 fun schedule(delay: Duration, task: () -> Unit) =
-    TickLoop.scheduleJob(delay, task)
+    HotelTickLoop.scheduleJob(delay, task)
 
 /**
  * Schedules a recurring job to be executed at specified intervals.
@@ -24,4 +24,4 @@ fun schedule(delay: Duration, task: () -> Unit) =
  *             This function takes no arguments and has no return value.
  */
 fun scheduleRepeating(interval: Duration, start: Duration = 0.seconds, task: () -> Unit) =
-    TickLoop.scheduleRepeatingJob(start, interval, task)
+    HotelTickLoop.scheduleRepeatingJob(start, interval, task)

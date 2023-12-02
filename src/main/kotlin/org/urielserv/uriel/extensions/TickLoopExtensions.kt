@@ -1,30 +1,30 @@
 package org.urielserv.uriel.extensions
 
-import org.urielserv.uriel.TickLoop
+import org.urielserv.uriel.HotelTickLoop
 
 val averageTps: Double
     get() {
-        if (TickLoop.tickStartTimes.isEmpty()) {
+        if (HotelTickLoop.tickStartTimes.isEmpty()) {
             return 0.0
         }
 
-        val earliestTickTime = TickLoop.tickStartTimes.minByOrNull { it.key }?.value ?: return 0.0
-        val latestTickTime = TickLoop.tickStartTimes.maxByOrNull { it.key }?.value ?: return 0.0
+        val earliestTickTime = HotelTickLoop.tickStartTimes.minByOrNull { it.key }?.value ?: return 0.0
+        val latestTickTime = HotelTickLoop.tickStartTimes.maxByOrNull { it.key }?.value ?: return 0.0
 
         val elapsedTimeInSeconds = (latestTickTime - earliestTickTime) / 1000.0
-        val totalTicks = TickLoop.tickStartTimes.size
+        val totalTicks = HotelTickLoop.tickStartTimes.size
 
         return totalTicks / elapsedTimeInSeconds
     }
 
 val averageMspt: Double
     get() {
-        if (TickLoop.tickDurations.isEmpty()) {
+        if (HotelTickLoop.tickDurations.isEmpty()) {
             return 0.0
         }
 
-        val totalMspt = TickLoop.tickDurations.values.sum().toDouble()
-        val totalTicks = TickLoop.tickDurations.size.toDouble()
+        val totalMspt = HotelTickLoop.tickDurations.values.sum().toDouble()
+        val totalTicks = HotelTickLoop.tickDurations.size.toDouble()
 
         return totalMspt / totalTicks
     }

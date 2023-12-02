@@ -1,6 +1,7 @@
 package org.urielserv.uriel.game.habbos.inventory.effects
 
 import org.ktorm.dsl.eq
+import org.ktorm.entity.add
 import org.ktorm.entity.filter
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
@@ -35,14 +36,15 @@ class InventoryEffects(
     fun registerEffect(effect: Effect) {
         effects.add(effect)
 
-        Database.insert(UserEffectsSchema) {
-            set(it.userId, habbo.info.id)
-            set(it.effectId, effect.effectId)
-            set(it.duration, effect.duration)
-            set(it.quantity, effect.quantity)
-            set(it.activationTimestamp, effect.activationTimestamp)
-            set(it.isActive, effect.isActive)
-        }
+        Database.sequenceOf(UserEffectsSchema)
+            .add(Effect {
+                habboInfo = this@InventoryEffects.habbo.info
+                effectId = effect.effectId
+                duration = effect.duration
+                quantity = effect.quantity
+                activationTimestamp = effect.activationTimestamp
+                isActive = effect.isActive
+            })
     }
 
     override fun iterator(): Iterator<Effect> {

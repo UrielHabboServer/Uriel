@@ -10,17 +10,19 @@ import org.urielserv.uriel.game.habbos.HabboInfo
 
 interface Effect : Entity<Effect> {
 
+    companion object : Entity.Factory<Effect>()
+
     val id: Int
-    val habboInfo: HabboInfo
+    var habboInfo: HabboInfo
     val habbo: Habbo?
         get() = habboInfo.habbo
 
-    val effectId: Int
+    var effectId: Int
 
-    val duration: Int
-    val quantity: Int
+    var duration: Int
+    var quantity: Int
 
-    val activationTimestamp: Int
+    var activationTimestamp: Int
     var isActive: Boolean
 
     val timeUsed: Int

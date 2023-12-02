@@ -10,11 +10,11 @@ interface SavedLook : Entity<SavedLook> {
     companion object : Entity.Factory<SavedLook>()
 
     val id: Int
-    val habboInfo: HabboInfo
+    var habboInfo: HabboInfo
     val habbo: Habbo?
         get() = habboInfo.habbo
 
-    val slotId: Int
+    var slotId: Int
     var look: String
     var gender: HabboGender
 

@@ -8,15 +8,17 @@ import org.urielserv.uriel.game.habbos.HabboInfo
 
 interface Subscription : Entity<Subscription> {
 
+    companion object : Entity.Factory<Subscription>()
+
     val id: Int
-    val habboInfo: HabboInfo
+    var habboInfo: HabboInfo
     val habbo: Habbo?
         get() = habboInfo.habbo
 
-    val type: String
+    var type: String
 
-    val start: Int
-    val end: Int
+    var start: Int
+    var end: Int
 
     var isActive: Boolean
 

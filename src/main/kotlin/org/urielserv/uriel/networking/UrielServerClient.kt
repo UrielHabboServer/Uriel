@@ -28,11 +28,11 @@ class UrielServerClient(
      * Suspends the execution and disposes the resources used by the client.
      *
      * This method closes the socket server session, removes the client from the server, and unloads the associated Habbo, if any.
-     *
-     * @throws Exception if an error occurs while disposing the resources.
      */
     suspend fun dispose() {
-        socketServerSession.close()
+        try {
+            socketServerSession.close()
+        } catch (ignored: Exception) { }
 
         Server.disposeClient(this)
         if (habbo != null)
