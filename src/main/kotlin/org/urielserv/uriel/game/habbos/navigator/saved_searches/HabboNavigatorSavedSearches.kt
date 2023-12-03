@@ -12,7 +12,7 @@ class HabboNavigatorSavedSearches(
     val habbo: Habbo
 ) {
 
-    private val savedSearches = mutableListOf<HabboNavigatorSavedSearch>()
+    private val savedSearches = mutableListOf<NavigatorSavedSearch>()
 
     init {
         Database.sequenceOf(UserNavigatorSavedSearchesSchema)
@@ -21,7 +21,7 @@ class HabboNavigatorSavedSearches(
 
         if (!hasSavedSearch("official-root")) {
             registerSavedSearch(
-                HabboNavigatorSavedSearch {
+                NavigatorSavedSearch {
                     searchCode = "official-root"
                     filter = ""
                 }
@@ -30,7 +30,7 @@ class HabboNavigatorSavedSearches(
 
         if (!hasSavedSearch("my-root")) {
             registerSavedSearch(
-                HabboNavigatorSavedSearch {
+                NavigatorSavedSearch {
                     searchCode = "my"
                     filter = ""
                 }
@@ -39,7 +39,7 @@ class HabboNavigatorSavedSearches(
 
         if (!hasSavedSearch("favorites")) {
             registerSavedSearch(
-                HabboNavigatorSavedSearch {
+                NavigatorSavedSearch {
                     searchCode = "favorites"
                     filter = ""
                 }
@@ -50,17 +50,17 @@ class HabboNavigatorSavedSearches(
     fun hasSavedSearch(searchCode: String): Boolean =
         savedSearches.any { it.searchCode == searchCode }
 
-    fun getSavedSearch(searchCode: String): HabboNavigatorSavedSearch? =
+    fun getSavedSearch(searchCode: String): NavigatorSavedSearch? =
         savedSearches.firstOrNull { it.searchCode == searchCode }
 
-    fun getSavedSearches(): List<HabboNavigatorSavedSearch> =
+    fun getSavedSearches(): List<NavigatorSavedSearch> =
         savedSearches.toList()
 
-    fun registerSavedSearch(savedSearch: HabboNavigatorSavedSearch) {
+    fun registerSavedSearch(savedSearch: NavigatorSavedSearch) {
         savedSearches.add(savedSearch)
 
         Database.sequenceOf(UserNavigatorSavedSearchesSchema)
-            .add(HabboNavigatorSavedSearch {
+            .add(NavigatorSavedSearch {
                 habboInfo = this@HabboNavigatorSavedSearches.habbo.info
                 searchCode = savedSearch.searchCode
                 filter = savedSearch.filter

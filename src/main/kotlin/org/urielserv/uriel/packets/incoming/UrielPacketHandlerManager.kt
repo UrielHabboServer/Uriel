@@ -6,6 +6,7 @@ import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandle
 import org.urielserv.uriel.packets.incoming.handshake.ClientPongPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
+import org.urielserv.uriel.packets.incoming.navigator.NavigatorSearchPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
@@ -46,6 +47,7 @@ class UrielPacketHandlerManager {
 
     private fun registerNavigatorPackets() {
         registerPacket(IncomingPacketIDs.NavigatorInit, NavigatorInitPacketHandler())
+        registerPacket(IncomingPacketIDs.NavigatorSearch, NavigatorSearchPacketHandler())
     }
 
     /**

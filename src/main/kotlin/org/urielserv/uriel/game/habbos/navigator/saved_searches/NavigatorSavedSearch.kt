@@ -4,9 +4,9 @@ import org.ktorm.entity.Entity
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo
 
-interface HabboNavigatorSavedSearch : Entity<HabboNavigatorSavedSearch> {
+interface NavigatorSavedSearch : Entity<NavigatorSavedSearch> {
 
-    companion object : Entity.Factory<HabboNavigatorSavedSearch>()
+    companion object : Entity.Factory<NavigatorSavedSearch>()
 
     val id: Int
     var habboInfo: HabboInfo

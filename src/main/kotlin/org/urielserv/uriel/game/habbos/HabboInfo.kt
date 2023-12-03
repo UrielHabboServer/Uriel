@@ -15,10 +15,6 @@ interface HabboInfo : Entity<HabboInfo> {
 
     var isOnline: Boolean
 
-    var credits: Int
-    var pixels: Int
-    var points: Int
-
     var homeRoomId: Int
 
     val habbo: Habbo?

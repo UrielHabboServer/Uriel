@@ -17,5 +17,6 @@ object IncomingPacketIDs {
 
     // Navigator
     const val NavigatorInit = 2110
+    const val NavigatorSearch = 249
 
 }

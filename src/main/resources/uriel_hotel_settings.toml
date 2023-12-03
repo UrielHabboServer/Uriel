@@ -11,7 +11,7 @@ discountEnabled = false
 discountDaysBeforeEnd = 7
 
 [habbos]
-
+currencyDefaults = { "credit" = 0, "ducket" = 0, "diamond" = 0 }
 
 [habbos.wardrobe]
 figureDataUrl = "https://habbo.com/gamedata/figuredata/0"

@@ -29,10 +29,6 @@ object UsersSchema : Table<HabboInfo>("users") {
     val look = text("look").bindTo { it.look }
     val gender = enum<HabboGender>("gender").bindTo { it.gender }
 
-    val credits = int("credits").bindTo { it.credits }
-    val pixels = int("pixels").bindTo { it.pixels }
-    val points = int("points").bindTo { it.points }
-
     val registrationIp = varchar("registration_ip")
     val currentIp = varchar("current_ip")
 

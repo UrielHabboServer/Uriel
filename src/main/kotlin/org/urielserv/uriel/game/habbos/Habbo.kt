@@ -2,14 +2,11 @@ package org.urielserv.uriel.game.habbos
 
 import org.ktorm.dsl.eq
 import org.ktorm.entity.add
-import org.ktorm.entity.filter
 import org.ktorm.entity.find
-import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.users.navigator.UserNavigatorSavedSearchesSchema
 import org.urielserv.uriel.database.schemas.users.navigator.UserNavigatorWindowSettingsSchema
+import org.urielserv.uriel.game.habbos.currencies.HabboCurrencies
 import org.urielserv.uriel.game.habbos.inventory.HabboInventory
-import org.urielserv.uriel.game.habbos.navigator.saved_searches.HabboNavigatorSavedSearch
 import org.urielserv.uriel.game.habbos.navigator.HabboNavigatorWindowSettings
 import org.urielserv.uriel.game.habbos.navigator.saved_searches.HabboNavigatorSavedSearches
 import org.urielserv.uriel.game.habbos.subscriptions.HabboSubscriptions
@@ -26,6 +23,7 @@ class Habbo internal constructor(
 
     var client: UrielServerClient? = null
 
+    val currencies = HabboCurrencies(this)
     val inventory = HabboInventory(this)
     val subscriptions = HabboSubscriptions(this)
 

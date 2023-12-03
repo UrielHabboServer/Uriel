@@ -13,8 +13,10 @@ import org.urielserv.uriel.Uriel.BuildConfig
 import org.urielserv.uriel.configuration.UrielConfiguration
 import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
+import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
+import org.urielserv.uriel.game.navigator.UrielNavigatorManager
 import org.urielserv.uriel.game.rooms.UrielRoomManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
@@ -32,10 +34,13 @@ lateinit var HotelSettings: UrielHotelSettings
 
 lateinit var Database: UrielDatabase
 
+lateinit var CurrencyManager: UrielCurrencyManager
+
 lateinit var HabboManager: UrielHabboManager
 lateinit var FigureDataManager: UrielFigureDataManager
 
 lateinit var RoomManager: UrielRoomManager
+lateinit var NavigatorManager: UrielNavigatorManager
 
 lateinit var Server: UrielServer
 lateinit var PacketHandlerManager: UrielPacketHandlerManager
@@ -78,6 +83,10 @@ suspend fun main() = runBlocking {
         )
     }
 
+    measureInitialProcess("Currency Manager") {
+        CurrencyManager = UrielCurrencyManager()
+    }
+
     measureInitialProcess("Habbo Manager & Figure Data Manager") {
         HabboManager = UrielHabboManager()
         FigureDataManager = UrielFigureDataManager(
@@ -85,8 +94,9 @@ suspend fun main() = runBlocking {
         )
     }
 
-    measureInitialProcess("Room Manager") {
+    measureInitialProcess("Room Manager & Navigator Manager") {
         RoomManager = UrielRoomManager()
+        NavigatorManager = UrielNavigatorManager()
     }
 
     measureInitialProcess("Server & Packet Handler Manager") {

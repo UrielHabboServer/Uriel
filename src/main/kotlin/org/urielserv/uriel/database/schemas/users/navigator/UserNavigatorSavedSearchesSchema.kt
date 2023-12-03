@@ -4,9 +4,9 @@ import org.ktorm.schema.Table
 import org.ktorm.schema.int
 import org.ktorm.schema.text
 import org.urielserv.uriel.database.schemas.users.UsersSchema
-import org.urielserv.uriel.game.habbos.navigator.saved_searches.HabboNavigatorSavedSearch
+import org.urielserv.uriel.game.habbos.navigator.saved_searches.NavigatorSavedSearch
 
-object UserNavigatorSavedSearchesSchema : Table<HabboNavigatorSavedSearch>("user_navigator_saved_searches") {
+object UserNavigatorSavedSearchesSchema : Table<NavigatorSavedSearch>("user_navigator_saved_searches") {
 
     val id = int("id").primaryKey().bindTo { it.id }
     val userId = int("user_id").references(UsersSchema) { it.habboInfo }
