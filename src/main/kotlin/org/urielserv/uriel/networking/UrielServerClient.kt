@@ -32,7 +32,8 @@ class UrielServerClient(
     suspend fun dispose() {
         try {
             socketServerSession.close()
-        } catch (ignored: Exception) { }
+        } catch (ignored: Exception) {
+        }
 
         Server.disposeClient(this)
         if (habbo != null)

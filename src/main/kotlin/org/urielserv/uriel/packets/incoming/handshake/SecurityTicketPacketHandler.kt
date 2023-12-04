@@ -10,10 +10,10 @@ import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.handshake.AuthenticatedPacket
 import org.urielserv.uriel.packets.outgoing.handshake.ClientPingPacket
-import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
-import org.urielserv.uriel.packets.outgoing.users.subscriptions.UserSubscriptionPacket
-import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
 import org.urielserv.uriel.packets.outgoing.users.NoobnessLevelPacket
+import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
+import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
+import org.urielserv.uriel.packets.outgoing.users.subscriptions.UserSubscriptionPacket
 import java.io.ByteArrayInputStream
 
 class SecurityTicketPacketHandler : PacketHandler {

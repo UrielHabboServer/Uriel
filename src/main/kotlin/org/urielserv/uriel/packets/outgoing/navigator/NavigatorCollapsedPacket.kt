@@ -6,7 +6,7 @@ import org.urielserv.uriel.packets.outgoing.Packet
 class NavigatorCollapsedPacket : Packet() {
 
     override val packetId = Outgoing.NavigatorCollapsed
-    
+
     override suspend fun construct() {
         appendInt(46)
         appendString("new_ads")
@@ -56,5 +56,5 @@ class NavigatorCollapsedPacket : Packet() {
         appendString("eventcategory__Jobs")
         appendString("eventcategory__Group Events")
     }
-    
+
 }

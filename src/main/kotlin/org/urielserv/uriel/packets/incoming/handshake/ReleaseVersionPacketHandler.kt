@@ -23,7 +23,8 @@ class ReleaseVersionPacketHandler : PacketHandler {
             val deviceCategory = UrielServerClient.NitroInformation.DeviceCategory.getFromNumber(deviceCategoryId)
 
             if (platform != UrielServerClient.NitroInformation.Platform.HTML5
-                && Configuration.connections.onlyAllowNitro) {
+                && Configuration.connections.onlyAllowNitro
+            ) {
                 logger.warn("Client ${client.ip}:${client.port} joined from a non-Nitro client, disconnecting")
                 client.dispose()
             }

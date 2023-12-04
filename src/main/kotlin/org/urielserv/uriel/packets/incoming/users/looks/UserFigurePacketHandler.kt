@@ -2,7 +2,6 @@ package org.urielserv.uriel.packets.incoming.users.looks
 
 import io.klogging.logger
 import org.urielserv.uriel.HotelSettings
-import org.urielserv.uriel.PermissionManager
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator

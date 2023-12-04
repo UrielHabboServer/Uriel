@@ -2,8 +2,8 @@ package org.urielserv.uriel.packets.incoming
 
 import io.klogging.logger
 import org.urielserv.uriel.networking.UrielServerClient
-import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.ClientPongPacketHandler
+import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorSearchPacketHandler

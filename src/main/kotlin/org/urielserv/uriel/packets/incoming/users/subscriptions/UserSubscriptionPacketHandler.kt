@@ -13,7 +13,9 @@ class UserSubscriptionPacketHandler : PacketHandler {
 
         val subscriptionType = packet.readString()
 
-        UserSubscriptionPacket(client.habbo!!, subscriptionType, UserSubscriptionPacket.RESPONSE_TYPE_NORMAL).send(client)
+        UserSubscriptionPacket(client.habbo!!, subscriptionType, UserSubscriptionPacket.RESPONSE_TYPE_NORMAL).send(
+            client
+        )
     }
 
 }
