@@ -13,7 +13,7 @@ VALUES (-1, 'credit');
 INSERT INTO currencies (nitro_id, name)
 VALUES (0, 'ducket');
 INSERT INTO currencies (nitro_id, name)
-VALUES (1, 'diamond');
+VALUES (5, 'diamond');
 
 -- Users
 DROP TABLE IF EXISTS users;

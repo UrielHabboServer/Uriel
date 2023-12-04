@@ -8,6 +8,11 @@ build:
     stage: build
     script:
         - gradle clean build
+    only:
+      changes:
+        - src/**/*
+        - build.gradle.kts
+        - settings.gradle.kts
     artifacts:
         paths:
         - build/libs/*.jar
