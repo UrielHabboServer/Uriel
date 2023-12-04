@@ -1,13 +1,13 @@
 package org.urielserv.uriel.packets.outgoing.users
 
-import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class NoobnessLevelPacket(
     private val noobnessLevel: Int
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.NoobnessLevel
+    override val packetId = Outgoing.NoobnessLevel
 
     override suspend fun construct() {
         appendInt(noobnessLevel)

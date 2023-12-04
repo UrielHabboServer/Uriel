@@ -35,23 +35,23 @@ class UrielPacketHandlerManager {
     }
 
     private fun registerHandshakePackets() {
-        registerPacket(IncomingPacketIDs.ReleaseVersion, ReleaseVersionPacketHandler())
-        registerPacket(IncomingPacketIDs.SecurityTicket, SecurityTicketPacketHandler())
-        registerPacket(IncomingPacketIDs.ClientPong, ClientPongPacketHandler())
+        registerPacket(Incoming.ReleaseVersion, ReleaseVersionPacketHandler())
+        registerPacket(Incoming.SecurityTicket, SecurityTicketPacketHandler())
+        registerPacket(Incoming.ClientPong, ClientPongPacketHandler())
     }
 
     private fun registerUserPackets() {
-        registerPacket(IncomingPacketIDs.UserInfo, UserInfoPacketHandler())
-        registerPacket(IncomingPacketIDs.UserSubscription, UserSubscriptionPacketHandler())
-        registerPacket(IncomingPacketIDs.UserCurrency, UserCurrencyPacketHandler())
-        registerPacket(IncomingPacketIDs.GetWardrobe, GetWardrobePacketHandler())
-        registerPacket(IncomingPacketIDs.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
-        registerPacket(IncomingPacketIDs.UserFigure, UserFigurePacketHandler())
+        registerPacket(Incoming.UserInfo, UserInfoPacketHandler())
+        registerPacket(Incoming.UserSubscription, UserSubscriptionPacketHandler())
+        registerPacket(Incoming.UserCurrency, UserCurrencyPacketHandler())
+        registerPacket(Incoming.GetWardrobe, GetWardrobePacketHandler())
+        registerPacket(Incoming.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
+        registerPacket(Incoming.UserFigure, UserFigurePacketHandler())
     }
 
     private fun registerNavigatorPackets() {
-        registerPacket(IncomingPacketIDs.NavigatorInit, NavigatorInitPacketHandler())
-        registerPacket(IncomingPacketIDs.NavigatorSearch, NavigatorSearchPacketHandler())
+        registerPacket(Incoming.NavigatorInit, NavigatorInitPacketHandler())
+        registerPacket(Incoming.NavigatorSearch, NavigatorSearchPacketHandler())
     }
 
     /**

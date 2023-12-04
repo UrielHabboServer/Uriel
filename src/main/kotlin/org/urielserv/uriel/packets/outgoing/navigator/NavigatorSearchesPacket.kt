@@ -1,14 +1,14 @@
 package org.urielserv.uriel.packets.outgoing.navigator
 
 import org.urielserv.uriel.game.habbos.Habbo
-import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class NavigatorSearchesPacket(
     private val habbo: Habbo
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.NavigatorSearches
+    override val packetId = Outgoing.NavigatorSearches
 
     override suspend fun construct() {
         val searches = habbo.navigatorSearches.getSavedSearches()

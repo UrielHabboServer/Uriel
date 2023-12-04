@@ -1,7 +1,7 @@
 package org.urielserv.uriel.packets.outgoing
 
 @Suppress("unused", "ConstPropertyName")
-object OutgoingPacketIDs {
+object Outgoing {
 
     // Handshake
     const val Authenticated = 2491

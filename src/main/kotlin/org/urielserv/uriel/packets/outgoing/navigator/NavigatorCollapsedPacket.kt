@@ -1,11 +1,11 @@
 package org.urielserv.uriel.packets.outgoing.navigator
 
-import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class NavigatorCollapsedPacket : Packet() {
 
-    override val packetId = OutgoingPacketIDs.NavigatorCollapsed
+    override val packetId = Outgoing.NavigatorCollapsed
     
     override suspend fun construct() {
         appendInt(46)

@@ -1,7 +1,7 @@
 package org.urielserv.uriel.packets.incoming
 
 @Suppress("unused", "ConstPropertyName")
-object IncomingPacketIDs {
+object Incoming {
 
     // Handshake
     const val ReleaseVersion = 4000

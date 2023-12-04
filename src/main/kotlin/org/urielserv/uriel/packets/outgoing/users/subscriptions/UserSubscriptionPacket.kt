@@ -3,7 +3,7 @@ package org.urielserv.uriel.packets.outgoing.users.subscriptions
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.subscriptions.Subscription
-import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -14,7 +14,7 @@ class UserSubscriptionPacket(
     private val responseType: Int
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.UserSubscription
+    override val packetId = Outgoing.UserSubscription
 
     override suspend fun construct() {
         appendString(subscriptionType.lowercase()) // productName

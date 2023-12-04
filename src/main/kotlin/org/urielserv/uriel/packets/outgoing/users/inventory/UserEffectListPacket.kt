@@ -1,14 +1,14 @@
 package org.urielserv.uriel.packets.outgoing.users.inventory
 
 import org.urielserv.uriel.game.habbos.inventory.effects.Effect
-import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class UserEffectListPacket(
     private val effects: List<Effect>
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.UserEffectList
+    override val packetId = Outgoing.UserEffectList
 
     override suspend fun construct() {
         appendInt(effects.size)

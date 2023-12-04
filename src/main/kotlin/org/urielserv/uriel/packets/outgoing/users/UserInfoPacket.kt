@@ -1,14 +1,14 @@
 package org.urielserv.uriel.packets.outgoing.users
 
 import org.urielserv.uriel.game.habbos.Habbo
-import org.urielserv.uriel.packets.outgoing.OutgoingPacketIDs
+import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class UserInfoPacket(
     private val habbo: Habbo
 ) : Packet() {
 
-    override val packetId = OutgoingPacketIDs.UserInfo
+    override val packetId = Outgoing.UserInfo
 
     override suspend fun construct() {
         appendInt(habbo.info.id)
