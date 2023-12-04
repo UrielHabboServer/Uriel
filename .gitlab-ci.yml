@@ -1,0 +1,14 @@
+image:
+    gradle:8.5-jdk21
+
+stages:
+  - build
+
+build:
+    stage: build
+    script:
+        - gradle clean build
+    artifacts:
+        paths:
+        - build/libs/*.jar
+        expire_in: 2 weeks
