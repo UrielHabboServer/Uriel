@@ -13,6 +13,6 @@ object CurrenciesSchema : Table<UrielCurrency>("currencies") {
 
     val name = varchar("name").bindTo { it.name }
     val isSeasonal = boolean("is_seasonal").bindTo { it.isSeasonal }
-    val default = int("default").bindTo { it.default }
+    val default = int("default_amount").bindTo { it.default }
 
 }

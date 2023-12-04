@@ -11,6 +11,8 @@ object IncomingPacketIDs {
 
     // Users
     const val UserInfo = 357
+    const val UserSubscription = 3166
+    const val UserCurrency = 273
     const val GetWardrobe = 2742
     const val SaveWardrobeOutfit = 800
     const val UserFigure = 2730

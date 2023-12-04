@@ -9,8 +9,9 @@ import org.urielserv.uriel.game.habbos.currencies.HabboCurrency
 object UserCurrenciesSchema : Table<HabboCurrency>("user_currencies") {
 
     val id = int("id").primaryKey().bindTo { it.id }
-    val currencyId = int("currency_id").references(CurrenciesSchema) { it.currency }
     val userId = int("user_id").references(UsersSchema) { it.habboInfo }
+    val currencyId = int("currency_id").references(CurrenciesSchema) { it.currency }
+
     val amount = int("amount").bindTo { it.amount }
 
 }

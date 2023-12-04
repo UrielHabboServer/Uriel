@@ -36,4 +36,12 @@ class HabboCurrencies(
         }
     }
 
+    fun getCurrency(currency: UrielCurrency): HabboCurrency? {
+        return currencies[currency.id]
+    }
+
+    fun getByName(name: String): HabboCurrency? {
+        return currencies.values.firstOrNull { it.currency.name == name || "${it.currency.name}s" == name }
+    }
+
 }

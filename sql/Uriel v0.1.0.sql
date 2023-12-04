@@ -43,8 +43,8 @@ DROP TABLE IF EXISTS user_currencies;
 CREATE TABLE user_currencies
 (
     id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    currency_id INT                            NOT NULL,
     user_id     INT                            NOT NULL,
+    currency_id INT                            NOT NULL,
     amount      INT                            NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (currency_id) REFERENCES currencies (id)

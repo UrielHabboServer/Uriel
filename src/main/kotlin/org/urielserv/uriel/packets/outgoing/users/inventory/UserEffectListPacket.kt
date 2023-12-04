@@ -12,7 +12,6 @@ class UserEffectListPacket(
 
     override suspend fun construct() {
         appendInt(effects.size)
-
         for (effect in effects) {
             appendInt(effect.effectId)
             appendInt(0) // subType; 0 = hand, 1 = full

@@ -8,7 +8,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 
-class TickLoop(private val ticksPerSecond: Int) {
+class TickLoop(
+    private val ticksPerSecond: Int
+) {
 
     private val expectedMaxTimePerTick = 1000 / ticksPerSecond
 

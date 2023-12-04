@@ -8,9 +8,11 @@ import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandle
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorSearchPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
+import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
+import org.urielserv.uriel.packets.incoming.users.subscriptions.UserSubscriptionPacketHandler
 import java.io.ByteArrayInputStream
 
 /**
@@ -40,6 +42,8 @@ class UrielPacketHandlerManager {
 
     private fun registerUserPackets() {
         registerPacket(IncomingPacketIDs.UserInfo, UserInfoPacketHandler())
+        registerPacket(IncomingPacketIDs.UserSubscription, UserSubscriptionPacketHandler())
+        registerPacket(IncomingPacketIDs.UserCurrency, UserCurrencyPacketHandler())
         registerPacket(IncomingPacketIDs.GetWardrobe, GetWardrobePacketHandler())
         registerPacket(IncomingPacketIDs.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
         registerPacket(IncomingPacketIDs.UserFigure, UserFigurePacketHandler())

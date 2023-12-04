@@ -67,6 +67,7 @@ class UserSubscriptionPacket(
 
     companion object {
 
+        const val RESPONSE_TYPE_NORMAL = 0
         const val RESPONSE_TYPE_LOGIN = 1
         const val RESPONSE_TYPE_PURCHASE = 2
         const val RESPONSE_TYPE_DISCOUNT_AVAILABLE = 3

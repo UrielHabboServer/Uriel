@@ -10,12 +10,11 @@ interface HabboCurrency : Entity<HabboCurrency> {
     companion object : Entity.Factory<HabboCurrency>()
 
     val id: Int
-    var currency: UrielCurrency
-
     var habboInfo: HabboInfo
     val habbo: Habbo?
         get() = habboInfo.habbo
 
+    var currency: UrielCurrency
     var amount: Int
 
 }
