@@ -36,7 +36,8 @@ CREATE TABLE users
     registration_ip            VARCHAR(255)                                                                                    NOT NULL,
     current_ip                 VARCHAR(255)                                                                                    NOT NULL,
     machine_id                 VARCHAR(255)                                                                                    NOT NULL,
-    home_room_id               INT                     DEFAULT 0                                                               NOT NULL
+    home_room_id               INT                     DEFAULT 0                                                               NOT NULL,
+    FOREIGN KEY (rank_id) REFERENCES ranks (id)
 );
 
 DROP TABLE IF EXISTS user_currencies;
