@@ -9,7 +9,9 @@ object RanksSchema : Table<Rank>("ranks") {
 
     val id = int("id").primaryKey().bindTo { it.id }
     val name = varchar("name").bindTo { it.name }
+
     val weight = int("weight").bindTo { it.weight }
+    val parent = int("parent").references(RanksSchema) { it.parent }
 
     val badge = varchar("badge").bindTo { it.badge }
 

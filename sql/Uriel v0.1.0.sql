@@ -128,6 +128,7 @@ CREATE TABLE ranks
     id           INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
     name         VARCHAR(255)                   NOT NULL,
     weight       INT                            NOT NULL,
+    parent_id    INT,
     badge        VARCHAR(255),
     prefix       VARCHAR(255),
     prefix_color VARCHAR(255)

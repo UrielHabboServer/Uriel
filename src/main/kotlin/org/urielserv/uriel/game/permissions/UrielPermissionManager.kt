@@ -41,6 +41,11 @@ class UrielPermissionManager {
             return rankPermission.allow
         }
 
+        // Fallback to parent rank permissions
+        if (rank.parent != null) {
+            return hasPermission(rank.parent!!, permission)
+        }
+
         return false
     }
 
