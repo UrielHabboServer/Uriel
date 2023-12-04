@@ -32,7 +32,7 @@ CREATE TABLE users
     is_online                  BOOLEAN                 DEFAULT false                                                           NOT NULL,
     motto                      VARCHAR(255)            DEFAULT 'Running on Uriel'                                              NOT NULL,
     look                       TEXT                    DEFAULT 'hr-115-42.hd-195-19.ch-3030-82.lg-275-1408.fa-1201.ca-1804-64' NOT NULL,
-    gender                     ENUM ('MALE', 'FEMALE') DEFAULT 'MALE'                                                             NOT NULL,
+    gender                     ENUM ('MALE', 'FEMALE') DEFAULT 'MALE'                                                          NOT NULL,
     registration_ip            VARCHAR(255)                                                                                    NOT NULL,
     current_ip                 VARCHAR(255)                                                                                    NOT NULL,
     machine_id                 VARCHAR(255)                                                                                    NOT NULL,
@@ -108,6 +108,38 @@ CREATE TABLE user_navigator_saved_searches
     search_code TEXT                           NOT NULL,
     filter      TEXT                           NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+DROP TABLE IF EXISTS user_permissions;
+CREATE TABLE user_permissions
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    user_id    INT                            NOT NULL,
+    permission VARCHAR(255)                   NOT NULL,
+    allow      BOOLEAN DEFAULT false          NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+-- Ranks
+DROP TABLE IF EXISTS ranks;
+CREATE TABLE ranks
+(
+    id           INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    name         VARCHAR(255)                   NOT NULL,
+    weight       INT                            NOT NULL,
+    badge        VARCHAR(255),
+    prefix       VARCHAR(255),
+    prefix_color VARCHAR(255)
+);
+
+DROP TABLE IF EXISTS rank_permissions;
+CREATE TABLE rank_permissions
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    rank_id    INT                            NOT NULL,
+    permission VARCHAR(255)                   NOT NULL,
+    allow      BOOLEAN DEFAULT false          NOT NULL,
+    FOREIGN KEY (rank_id) REFERENCES ranks (id)
 );
 
 -- Navigator

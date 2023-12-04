@@ -2,6 +2,7 @@ package org.urielserv.uriel.game.habbos
 
 import org.ktorm.entity.Entity
 import org.urielserv.uriel.HabboManager
+import org.urielserv.uriel.game.permissions.ranks.Rank
 
 interface HabboInfo : Entity<HabboInfo> {
 
@@ -12,6 +13,8 @@ interface HabboInfo : Entity<HabboInfo> {
 
     var look: String
     var gender: HabboGender
+
+    var rank: Rank
 
     var isOnline: Boolean
 

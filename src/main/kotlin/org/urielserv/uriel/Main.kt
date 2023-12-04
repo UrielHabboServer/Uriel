@@ -17,6 +17,8 @@ import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
 import org.urielserv.uriel.game.navigator.UrielNavigatorManager
+import org.urielserv.uriel.game.permissions.UrielPermissionManager
+import org.urielserv.uriel.game.permissions.ranks.UrielRankManager
 import org.urielserv.uriel.game.rooms.UrielRoomManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
@@ -33,6 +35,9 @@ lateinit var Configuration: UrielConfiguration
 lateinit var HotelSettings: UrielHotelSettings
 
 lateinit var Database: UrielDatabase
+
+lateinit var RankManager: UrielRankManager
+lateinit var PermissionManager: UrielPermissionManager
 
 lateinit var CurrencyManager: UrielCurrencyManager
 
@@ -81,6 +86,11 @@ suspend fun main() = runBlocking {
             password = Configuration.database.password,
             databaseName = Configuration.database.databaseName
         )
+    }
+
+    measureInitialProcess("Rank Manager & Permission Manager") {
+        RankManager = UrielRankManager()
+        PermissionManager = UrielPermissionManager()
     }
 
     measureInitialProcess("Currency Manager") {

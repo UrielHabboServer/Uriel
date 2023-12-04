@@ -1,6 +1,7 @@
 package org.urielserv.uriel.database.schemas.users
 
 import org.ktorm.schema.*
+import org.urielserv.uriel.database.schemas.ranks.RanksSchema
 import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.habbos.HabboInfo
 
@@ -17,7 +18,7 @@ object UsersSchema : Table<HabboInfo>("users") {
     val email = varchar("email")
     val isEmailVerified = boolean("is_email_verified")
 
-    val rankId = int("rank_id")
+    val rankId = int("rank_id").references(RanksSchema) { it.rank }
 
     val accountCreated = int("account_creation_timestamp")
 
