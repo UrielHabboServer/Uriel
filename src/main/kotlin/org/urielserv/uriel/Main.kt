@@ -40,12 +40,11 @@ lateinit var HotelSettings: UrielHotelSettings
 
 lateinit var Database: UrielDatabase
 
-lateinit var FigureDataManager: UrielFigureDataManager
-
 lateinit var RankManager: UrielRankManager
 lateinit var PermissionManager: UrielPermissionManager
 
 lateinit var CurrencyManager: UrielCurrencyManager
+lateinit var FigureDataManager: UrielFigureDataManager
 lateinit var HabboManager: UrielHabboManager
 
 lateinit var RoomManager: UrielRoomManager
@@ -96,19 +95,16 @@ suspend fun main() = runBlocking {
         )
     }
 
-    measureInitialProcess("Figure Data Manager") {
-        FigureDataManager = UrielFigureDataManager(
-            pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
-        )
-    }
-
     measureInitialProcess("Rank Manager & Permission Manager") {
         RankManager = UrielRankManager()
         PermissionManager = UrielPermissionManager()
     }
 
-    measureInitialProcess("Currency Manager & Habbo Manager") {
+    measureInitialProcess("Currency Manager, Figure Data Manager & Habbo Manager") {
         CurrencyManager = UrielCurrencyManager()
+        FigureDataManager = UrielFigureDataManager(
+            pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
+        )
         HabboManager = UrielHabboManager()
     }
 
