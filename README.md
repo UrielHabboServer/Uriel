@@ -1,7 +1,9 @@
 # Uriel Habbo Server
 Uriel aims to become the mainstream Habbo server, with a focus on performance & customisation.
 
-> Note: Uriel is not yet ready for production use. It is still in very early development.
+> [!IMPORTANT]
+> 
+> Uriel is not yet ready for production use. It is still in very early development.
 
 ## Goals
 * Per-room tick loops for Wired, Pathfinding, etc.
