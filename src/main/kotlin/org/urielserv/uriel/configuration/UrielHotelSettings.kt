@@ -28,7 +28,6 @@ data class UrielHotelSettings(
 
     @Serializable
     data class Habbos(
-        val currencyDefaults: Map<Int, Int>,
         val wardrobe: Wardrobe,
         val inventory: Inventory,
         val subscription: Subscription
@@ -36,6 +35,7 @@ data class UrielHotelSettings(
 
         @Serializable
         data class Wardrobe(
+            val cacheFigureData: Boolean,
             val figureDataUrl: String,
             val validateLooksOnHabboClubExpire: Boolean,
             val validateLooksOnLogin: Boolean,

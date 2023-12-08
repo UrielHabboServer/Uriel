@@ -17,7 +17,6 @@ class UserCurrencyPacket(
         appendInt(currencies.size)
         for (currency in currencies) {
             val habboCurrency = habbo.currencies.getCurrency(currency) ?: continue
-
             appendInt(currency.nitroId)
             appendInt(habboCurrency.amount)
         }

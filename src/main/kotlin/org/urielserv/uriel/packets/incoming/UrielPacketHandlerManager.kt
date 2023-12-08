@@ -82,7 +82,7 @@ class UrielPacketHandlerManager {
      * @throws NoSuchElementException if the packetId does not exist in the packets map.
      */
     suspend fun handlePacket(packetId: Short, client: UrielServerClient, packet: ByteArrayInputStream) {
-        if (packets.containsKey(packetId)) {
+        if (packetId in packets) {
             try {
                 packets[packetId]?.handle(client, packet)
             } catch (exc: Exception) {

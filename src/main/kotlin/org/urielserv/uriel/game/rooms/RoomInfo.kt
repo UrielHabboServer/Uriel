@@ -3,6 +3,7 @@ package org.urielserv.uriel.game.rooms
 import org.ktorm.entity.Entity
 import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.game.habbos.HabboInfo
+import org.urielserv.uriel.game.navigator.NavigatorPublicCategory
 
 interface RoomInfo : Entity<RoomInfo> {
 
@@ -12,6 +13,7 @@ interface RoomInfo : Entity<RoomInfo> {
     var name: String
     var description: String
     var category: Int
+    var publicCategory: NavigatorPublicCategory?
     var tags: String
 
     var model: String

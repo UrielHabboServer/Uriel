@@ -17,12 +17,4 @@ class UrielRankManager {
         return ranks.firstOrNull { it.id == id }
     }
 
-    fun getRank(name: String): Rank? {
-        return ranks.firstOrNull { it.name == name }
-    }
-
-    fun getRanks(): List<Rank> {
-        return ranks.toList()
-    }
-
 }

@@ -1,6 +1,7 @@
 package org.urielserv.uriel.database.schemas.rooms
 
 import org.ktorm.schema.*
+import org.urielserv.uriel.database.schemas.navigator.NavigatorPublicCategoriesSchema
 import org.urielserv.uriel.database.schemas.users.UsersSchema
 import org.urielserv.uriel.game.rooms.RoomAccessType
 import org.urielserv.uriel.game.rooms.RoomInfo
@@ -12,7 +13,8 @@ object RoomsSchema : Table<RoomInfo>("rooms") {
 
     val name = varchar("name").bindTo { it.name }
     val description = text("description").bindTo { it.description }
-    val category = int("category").bindTo { it.category }
+    val category = int("navigator_category").bindTo { it.category }
+    val publicCategory = int("navigator_public_category").references(NavigatorPublicCategoriesSchema) { it.publicCategory }
     val tags = text("tags").bindTo { it.tags }
 
     val model = varchar("model").bindTo { it.model }

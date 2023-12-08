@@ -11,7 +11,7 @@ object RanksSchema : Table<Rank>("ranks") {
     val name = varchar("name").bindTo { it.name }
 
     val weight = int("weight").bindTo { it.weight }
-    val parent = int("parent").references(RanksSchema) { it.parent }
+    val parent = int("parent_id").bindTo { it.parentId }
 
     val badge = varchar("badge").bindTo { it.badge }
 

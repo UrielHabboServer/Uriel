@@ -8,12 +8,12 @@ CREATE TABLE currencies
     name           VARCHAR(255)                   NOT NULL,
     default_amount INT     DEFAULT 0              NOT NULL
 );
-INSERT INTO currencies (nitro_id, name)
-VALUES (-1, 'credit');
-INSERT INTO currencies (nitro_id, name)
-VALUES (0, 'ducket');
-INSERT INTO currencies (nitro_id, name)
-VALUES (5, 'diamond');
+INSERT INTO currencies (nitro_id, is_seasonal, name)
+VALUES (-1, false, 'credit');
+INSERT INTO currencies (nitro_id, is_seasonal, name)
+VALUES (0, true, 'ducket');
+INSERT INTO currencies (nitro_id,is_seasonal, name)
+VALUES (5, true, 'diamond');
 
 -- Users
 DROP TABLE IF EXISTS users;
@@ -37,7 +37,8 @@ CREATE TABLE users
     current_ip                 VARCHAR(255)                                                                                    NOT NULL,
     machine_id                 VARCHAR(255)                                                                                    NOT NULL,
     home_room_id               INT                     DEFAULT 0                                                               NOT NULL,
-    FOREIGN KEY (rank_id) REFERENCES ranks (id)
+    FOREIGN KEY (rank_id) REFERENCES ranks (id),
+    INDEX (sso_ticket, username)
 );
 
 DROP TABLE IF EXISTS user_currencies;
@@ -131,8 +132,15 @@ CREATE TABLE ranks
     parent_id    INT,
     badge        VARCHAR(255),
     prefix       VARCHAR(255),
-    prefix_color VARCHAR(255)
+    prefix_color VARCHAR(255),
+    FOREIGN KEY (parent_id) REFERENCES ranks (id)
 );
+INSERT INTO ranks (name, weight)
+VALUES ('Default', 0);
+INSERT INTO ranks (name, weight, parent_id)
+VALUES ('Moderator', 100, 1);
+INSERT INTO ranks (name, weight, parent_id)
+VALUES ('Administrator', 200, 2);
 
 DROP TABLE IF EXISTS rank_permissions;
 CREATE TABLE rank_permissions
@@ -171,44 +179,45 @@ VALUES ('Safety', false, true, 0);
 DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms
 (
-    id                      INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    ownerId                 INT                            NOT NULL,
-    name                    VARCHAR(255)                   NOT NULL,
-    description             TEXT         DEFAULT ''        NOT NULL,
-    category                INT          DEFAULT 1         NOT NULL,
-    tags                    TEXT(255)    DEFAULT ''        NOT NULL,
-    model                   VARCHAR(255) DEFAULT 'model_a' NOT NULL,
-    is_custom_model         BOOLEAN      DEFAULT false     NOT NULL,
-    access_type             VARCHAR(255) DEFAULT 'OPEN'    NOT NULL,
-    password                VARCHAR(255) DEFAULT ''        NOT NULL,
-    users                   INT          DEFAULT 0         NOT NULL,
-    max_users               INT          DEFAULT 25        NOT NULL,
-    score                   INT          DEFAULT 0         NOT NULL,
-    is_public               BOOLEAN      DEFAULT false     NOT NULL,
-    is_staff_picked         BOOLEAN      DEFAULT false     NOT NULL,
-    creation_timestamp      LONG         DEFAULT 0         NOT NULL,
-    wallpaper               VARCHAR(255) DEFAULT '0.0'     NOT NULL,
-    floor_pattern           VARCHAR(255) DEFAULT '0.0'     NOT NULL,
-    landscape               VARCHAR(255) DEFAULT '0.0'     NOT NULL,
-    wall_thickness          INT          DEFAULT 0         NOT NULL,
-    floor_thickness         INT          DEFAULT 0         NOT NULL,
-    wall_height             INT          DEFAULT -1        NOT NULL,
-    are_walls_hidden        BOOLEAN      DEFAULT false     NOT NULL,
-    are_wireds_hidden       BOOLEAN      DEFAULT false     NOT NULL,
-    allow_other_pets        BOOLEAN      DEFAULT false     NOT NULL,
-    allow_other_pets_to_eat BOOLEAN      DEFAULT false     NOT NULL,
-    chat_mode               INT          DEFAULT 0         NOT NULL,
-    chat_weight             INT          DEFAULT 1         NOT NULL,
-    chat_scrolling_speed    INT          DEFAULT 1         NOT NULL,
-    chat_hearing_distance   INT          DEFAULT 50        NOT NULL,
-    chat_flood_protection   INT          DEFAULT 2         NOT NULL,
-    who_can_kick            INT          DEFAULT 0         NOT NULL,
-    who_can_ban             INT          DEFAULT 0         NOT NULL,
-    who_can_mute            INT          DEFAULT 0         NOT NULL,
-    trading_mode            INT          DEFAULT 2         NOT NULL,
-    roller_speed            INT          DEFAULT 4         NOT NULL,
-    is_promoted             BOOLEAN      DEFAULT false     NOT NULL,
-    is_for_sale             BOOLEAN      DEFAULT false     NOT NULL,
+    id                           INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    ownerId                      INT                            NOT NULL,
+    name                         VARCHAR(255)                   NOT NULL,
+    description                  TEXT         DEFAULT ''        NOT NULL,
+    navigator_category_id        INT          DEFAULT 1         NOT NULL,
+    navigator_public_category_id INT          DEFAULT 0,
+    tags                         TEXT(255)    DEFAULT ''        NOT NULL,
+    model                        VARCHAR(255) DEFAULT 'model_a' NOT NULL,
+    is_custom_model              BOOLEAN      DEFAULT false     NOT NULL,
+    access_type                  VARCHAR(255) DEFAULT 'OPEN'    NOT NULL,
+    password                     VARCHAR(255) DEFAULT ''        NOT NULL,
+    users                        INT          DEFAULT 0         NOT NULL,
+    max_users                    INT          DEFAULT 25        NOT NULL,
+    score                        INT          DEFAULT 0         NOT NULL,
+    is_public                    BOOLEAN      DEFAULT false     NOT NULL,
+    is_staff_picked              BOOLEAN      DEFAULT false     NOT NULL,
+    creation_timestamp           LONG         DEFAULT 0         NOT NULL,
+    wallpaper                    VARCHAR(255) DEFAULT '0.0'     NOT NULL,
+    floor_pattern                VARCHAR(255) DEFAULT '0.0'     NOT NULL,
+    landscape                    VARCHAR(255) DEFAULT '0.0'     NOT NULL,
+    wall_thickness               INT          DEFAULT 0         NOT NULL,
+    floor_thickness              INT          DEFAULT 0         NOT NULL,
+    wall_height                  INT          DEFAULT -1        NOT NULL,
+    are_walls_hidden             BOOLEAN      DEFAULT false     NOT NULL,
+    are_wireds_hidden            BOOLEAN      DEFAULT false     NOT NULL,
+    allow_other_pets             BOOLEAN      DEFAULT false     NOT NULL,
+    allow_other_pets_to_eat      BOOLEAN      DEFAULT false     NOT NULL,
+    chat_mode                    INT          DEFAULT 0         NOT NULL,
+    chat_weight                  INT          DEFAULT 1         NOT NULL,
+    chat_scrolling_speed         INT          DEFAULT 1         NOT NULL,
+    chat_hearing_distance        INT          DEFAULT 50        NOT NULL,
+    chat_flood_protection        INT          DEFAULT 2         NOT NULL,
+    who_can_kick                 INT          DEFAULT 0         NOT NULL,
+    who_can_ban                  INT          DEFAULT 0         NOT NULL,
+    who_can_mute                 INT          DEFAULT 0         NOT NULL,
+    trading_mode                 INT          DEFAULT 2         NOT NULL,
+    roller_speed                 INT          DEFAULT 4         NOT NULL,
+    is_promoted                  BOOLEAN      DEFAULT false     NOT NULL,
+    is_for_sale                  BOOLEAN      DEFAULT false     NOT NULL,
     FOREIGN KEY (ownerId) REFERENCES users (id)
 );
 

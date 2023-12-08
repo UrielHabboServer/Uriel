@@ -1,10 +1,15 @@
 package org.urielserv.uriel.game.habbos.wardrobe.figure_data
 
 import io.klogging.noCoLogger
+import org.urielserv.uriel.HotelSettings
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
+import java.io.File
+import java.net.URI
+import java.net.URL
+import java.nio.file.Files
 import javax.xml.parsers.DocumentBuilderFactory
 
 class UrielFigureDataManager(pathUri: String) {
@@ -15,7 +20,11 @@ class UrielFigureDataManager(pathUri: String) {
     val setTypes: MutableMap<String, FigureDataSetType> = mutableMapOf()
 
     init {
-        val document = createDocument(pathUri)
+        val document = if (HotelSettings.habbos.wardrobe.cacheFigureData) {
+            createCachedDocument(pathUri)
+        } else {
+            createDocument(pathUri)
+        }
 
         palettes.clear()
         setTypes.clear()
@@ -26,6 +35,33 @@ class UrielFigureDataManager(pathUri: String) {
             parsePalettes(getNodeList(document, "colors"))
             parseSetTypes(getNodeList(document, "sets"))
         }
+    }
+
+    private fun createCachedDocument(pathUri: String): Document {
+        // Prepare cache/ directory
+        val cacheDirectory = File("cache")
+
+        if (!cacheDirectory.exists()) {
+            cacheDirectory.mkdir()
+        }
+
+        // Download the file from the URL and save it to a local file
+        val file = File("cache/figuredata.xml")
+
+        if (!file.exists()) {
+            logger.info("Downloading Figure Data document from $pathUri")
+
+            val url = URI(pathUri).toURL()
+            val connection = url.openConnection()
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0")
+
+            Files.copy(connection.getInputStream(), file.toPath())
+        } else {
+            logger.info("Using cached Figure Data document")
+        }
+
+        // Create the document from the local file
+        return createDocument(file.toURI().toString())
     }
 
     private fun createDocument(pathUri: String): Document {

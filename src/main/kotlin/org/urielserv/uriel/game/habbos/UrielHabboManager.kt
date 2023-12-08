@@ -18,7 +18,7 @@ class UrielHabboManager {
 
     private val logger = noCoLogger(UrielHabboManager::class)
 
-    private val habbos = mutableMapOf<Int, Habbo>()
+    private val connectedHabbos = mutableMapOf<Int, Habbo>()
 
     /**
      * Logs in a Habbo using the provided SSO ticket. If successful, a Habbo object representing the logged-in user is returned.
@@ -31,7 +31,7 @@ class UrielHabboManager {
         val habbo = buildHabbo(ssoTicket) ?: return null
 
         habbo.client = client
-        habbos[habbo.info.id] = habbo
+        connectedHabbos[habbo.info.id] = habbo
 
         if (Configuration.security.refreshSSOTicketOnLogin) {
             Database.update(UsersSchema) {
@@ -52,12 +52,12 @@ class UrielHabboManager {
      * @return A Habbo object if a user with the provided SSO ticket is found in the database, otherwise null.
      */
     private fun buildHabbo(ssoTicket: String): Habbo? {
-        val habboInfo = Database.sequenceOf(UsersSchema)
-            .find {
-                it.ssoTicket eq ssoTicket
-            } ?: return null
-
         try {
+            val habboInfo = Database.sequenceOf(UsersSchema)
+                .find {
+                    it.ssoTicket eq ssoTicket
+                } ?: return null
+            
             return Habbo(habboInfo)
         } catch (exc: Exception) {
             logger.error("Failed to build Habbo object for SSO ticket $ssoTicket:")
@@ -68,13 +68,23 @@ class UrielHabboManager {
     }
 
     /**
-     * Gets a Habbo object by their username.
+     * Gets a Habbo object by their ID.
      *
-     * @param username The username of the Habbo to be retrieved.
+     * @param id The ID of the Habbo to be found.
      * @return The Habbo object if found, otherwise null.
      */
-    fun getHabboById(id: Int): Habbo? {
-        return habbos[id]
+    fun getConnectedHabboById(id: Int): Habbo? {
+        return connectedHabbos[id]
+    }
+
+    /**
+     * Gets a Habbo object by their username.
+     *
+     * @param username The username of the Habbo to be found.
+     * @return The Habbo object if found, otherwise null.
+     */
+    fun getConnectedHabboByUsername(username: String): Habbo? {
+        return connectedHabbos.values.firstOrNull { it.info.username == username }
     }
 
     /**
@@ -84,7 +94,7 @@ class UrielHabboManager {
      * @param habbo The Habbo object to be removed.
      */
     fun unloadHabbo(habbo: Habbo) {
-        habbos.remove(habbo.info.id)
+        connectedHabbos.remove(habbo.info.id)
     }
 
     companion object {

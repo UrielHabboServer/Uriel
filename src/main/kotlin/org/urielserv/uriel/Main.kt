@@ -4,15 +4,19 @@ import com.akuleshov7.ktoml.Toml
 import io.klogging.Level
 import io.klogging.config.loggingConfiguration
 import io.klogging.logger
+import io.klogging.noCoLogger
 import io.klogging.rendering.RENDER_ANSI
 import io.klogging.sending.STDOUT
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
+import org.ktorm.dsl.eq
+import org.ktorm.entity.find
 import org.urielserv.uriel.Uriel.BuildConfig
 import org.urielserv.uriel.configuration.UrielConfiguration
 import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
+import org.urielserv.uriel.database.schemas.users.UsersSchema
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
@@ -36,13 +40,13 @@ lateinit var HotelSettings: UrielHotelSettings
 
 lateinit var Database: UrielDatabase
 
+lateinit var FigureDataManager: UrielFigureDataManager
+
 lateinit var RankManager: UrielRankManager
 lateinit var PermissionManager: UrielPermissionManager
 
 lateinit var CurrencyManager: UrielCurrencyManager
-
 lateinit var HabboManager: UrielHabboManager
-lateinit var FigureDataManager: UrielFigureDataManager
 
 lateinit var RoomManager: UrielRoomManager
 lateinit var NavigatorManager: UrielNavigatorManager
@@ -71,6 +75,10 @@ suspend fun main() = runBlocking {
         }
     }
 
+    Thread.setDefaultUncaughtExceptionHandler { _, exc ->
+        exc.printStackTrace()
+    }
+
     logger.info("Starting Uriel, please wait...")
 
     measureInitialProcess("Configuration & Hotel Settings") {
@@ -88,20 +96,20 @@ suspend fun main() = runBlocking {
         )
     }
 
+    measureInitialProcess("Figure Data Manager") {
+        FigureDataManager = UrielFigureDataManager(
+            pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
+        )
+    }
+
     measureInitialProcess("Rank Manager & Permission Manager") {
         RankManager = UrielRankManager()
         PermissionManager = UrielPermissionManager()
     }
 
-    measureInitialProcess("Currency Manager") {
+    measureInitialProcess("Currency Manager & Habbo Manager") {
         CurrencyManager = UrielCurrencyManager()
-    }
-
-    measureInitialProcess("Habbo Manager & Figure Data Manager") {
         HabboManager = UrielHabboManager()
-        FigureDataManager = UrielFigureDataManager(
-            pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
-        )
     }
 
     measureInitialProcess("Room Manager & Navigator Manager") {

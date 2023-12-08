@@ -43,7 +43,7 @@ object ClothingValidator {
         }
 
         FigureDataManager.setTypes.entries
-            .filter { !parts.containsKey(it.key) }
+            .filter { it.key !in parts }
             .forEach { x ->
                 val setType: FigureDataSetType = x.value
 
@@ -71,9 +71,7 @@ object ClothingValidator {
                 var setId = data.getOrNull(1)?.toInt() ?: -1
                 var set = setType.sets[setId]
 
-                if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) || !set.canBeSelected || (set.canBeSold && !ownedClothing.contains(
-                        set.id
-                    )) ||
+                if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) || !set.canBeSelected || (set.canBeSold && set.id !in ownedClothing) ||
                     (!set.gender.equals("U", true) && !set.gender.equals(gender, true))
                 ) {
                     // Reassign set if validation fails
