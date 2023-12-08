@@ -15,3 +15,7 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
+      with:
+        name: build
+        path: build/libs/
+        retention-days: 14
