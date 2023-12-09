@@ -11,7 +11,6 @@ Uriel aims to become the mainstream Habbo server, with a focus on performance & 
 * Easy packet creation & handling.
 * Both a plugin system & a scripting system to allow for easy & powerful customisation.
 * A powerful, yet easy to use, permission system, similar to Minecraft's.
-* Easy migration via an utility to convert from Arcturus Morningstar.
 
 ## Initial Roadmap
 * [x] Handshake & Authentication
