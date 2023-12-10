@@ -42,7 +42,7 @@ class NavigatorHotelViewTab : NavigatorTab {
                     NavigatorListMode.FORCE_THUMBNAIL,
                     RoomManager.getRoomsByFlatCategory(category).filter {
                         it.info.accessType != RoomAccessType.INVISIBLE || canSeeInvisibleRooms
-                    }.toMutableList()
+                    }.sortedByDescending { it.info.users }.toMutableList()
                 )
             )
         }
