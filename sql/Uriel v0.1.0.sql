@@ -12,7 +12,7 @@ INSERT INTO currencies (nitro_id, is_seasonal, name)
 VALUES (-1, false, 'credit');
 INSERT INTO currencies (nitro_id, is_seasonal, name)
 VALUES (0, true, 'ducket');
-INSERT INTO currencies (nitro_id,is_seasonal, name)
+INSERT INTO currencies (nitro_id, is_seasonal, name)
 VALUES (5, true, 'diamond');
 
 -- Users
@@ -88,30 +88,6 @@ CREATE TABLE user_looks
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-DROP TABLE IF EXISTS user_navigator_window_settings;
-CREATE TABLE user_navigator_window_settings
-(
-    id                 INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    user_id            INT                            NOT NULL,
-    x                  INT     DEFAULT 100            NOT NULL,
-    y                  INT     DEFAULT 100            NOT NULL,
-    width              INT     DEFAULT 425            NOT NULL,
-    height             INT     DEFAULT 535            NOT NULL,
-    is_left_panel_open BOOLEAN DEFAULT false          NOT NULL,
-    results_mode       INT     DEFAULT 0              NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-);
-
-DROP TABLE IF EXISTS user_navigator_saved_searches;
-CREATE TABLE user_navigator_saved_searches
-(
-    id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    user_id     INT                            NOT NULL,
-    search_code TEXT                           NOT NULL,
-    filter      TEXT                           NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-);
-
 DROP TABLE IF EXISTS user_permissions;
 CREATE TABLE user_permissions
 (
@@ -175,23 +151,53 @@ VALUES ('Room Bundles', false, true, 0);
 INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
 VALUES ('Safety', false, true, 0);
 
+DROP TABLE IF EXISTS navigator_flat_categories;
+CREATE TABLE navigator_flat_categories
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    caption       VARCHAR(255)                   NOT NULL,
+    minimum_rank  INT     DEFAULT 1              NOT NULL,
+    maximum_users INT     DEFAULT 100            NOT NULL,
+    is_public     BOOLEAN DEFAULT false          NOT NULL,
+    allow_trading BOOLEAN DEFAULT false          NOT NULL,
+    order_num     INT     DEFAULT 0              NOT NULL
+);
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.BC}');
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.BUILDING}');
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.CHAT}');
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.FANSITE}');
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.GAMES}');
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.HELP}');
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.LIFE}');
+INSERT INTO navigator_flat_categories (caption, minimum_rank, is_public)
+VALUES ('${navigator.flatcategory.global.OFFICIAL}', 3, true);
+INSERT INTO navigator_flat_categories (caption)
+VALUES ('${navigator.flatcategory.global.PARTY}');
+
 -- Rooms
 DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms
 (
     id                           INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    ownerId                      INT                            NOT NULL,
+    owner_id                     INT                            NOT NULL,
     name                         VARCHAR(255)                   NOT NULL,
     description                  TEXT         DEFAULT ''        NOT NULL,
-    navigator_category_id        INT          DEFAULT 1         NOT NULL,
-    navigator_public_category_id INT          DEFAULT 0,
+    navigator_public_category_id INT,
+    navigator_flat_category_id   INT          DEFAULT 1         NOT NULL,
     tags                         TEXT(255)    DEFAULT ''        NOT NULL,
     model                        VARCHAR(255) DEFAULT 'model_a' NOT NULL,
     is_custom_model              BOOLEAN      DEFAULT false     NOT NULL,
     access_type                  VARCHAR(255) DEFAULT 'OPEN'    NOT NULL,
     password                     VARCHAR(255) DEFAULT ''        NOT NULL,
     users                        INT          DEFAULT 0         NOT NULL,
-    max_users                    INT          DEFAULT 25        NOT NULL,
+    maximum_users                INT          DEFAULT 25        NOT NULL,
     score                        INT          DEFAULT 0         NOT NULL,
     is_public                    BOOLEAN      DEFAULT false     NOT NULL,
     is_staff_picked              BOOLEAN      DEFAULT false     NOT NULL,
@@ -206,6 +212,8 @@ CREATE TABLE rooms
     are_wireds_hidden            BOOLEAN      DEFAULT false     NOT NULL,
     allow_other_pets             BOOLEAN      DEFAULT false     NOT NULL,
     allow_other_pets_to_eat      BOOLEAN      DEFAULT false     NOT NULL,
+    allow_walkthrough            BOOLEAN      DEFAULT false     NOT NULL,
+    allow_diagonal_movement      BOOLEAN      DEFAULT false     NOT NULL,
     chat_mode                    INT          DEFAULT 0         NOT NULL,
     chat_weight                  INT          DEFAULT 1         NOT NULL,
     chat_scrolling_speed         INT          DEFAULT 1         NOT NULL,
@@ -218,7 +226,8 @@ CREATE TABLE rooms
     roller_speed                 INT          DEFAULT 4         NOT NULL,
     is_promoted                  BOOLEAN      DEFAULT false     NOT NULL,
     is_for_sale                  BOOLEAN      DEFAULT false     NOT NULL,
-    FOREIGN KEY (ownerId) REFERENCES users (id)
+    FOREIGN KEY (owner_id) REFERENCES users (id),
+    FOREIGN KEY (navigator_flat_category_id) REFERENCES navigator_flat_categories (id)
 );
 
 DROP TABLE IF EXISTS room_moodlights;

@@ -1,6 +1,7 @@
 package org.urielserv.uriel.database.schemas.rooms
 
 import org.ktorm.schema.*
+import org.urielserv.uriel.database.schemas.navigator.NavigatorFlatCategoriesSchema
 import org.urielserv.uriel.database.schemas.navigator.NavigatorPublicCategoriesSchema
 import org.urielserv.uriel.database.schemas.users.UsersSchema
 import org.urielserv.uriel.game.rooms.RoomAccessType
@@ -13,8 +14,8 @@ object RoomsSchema : Table<RoomInfo>("rooms") {
 
     val name = varchar("name").bindTo { it.name }
     val description = text("description").bindTo { it.description }
-    val category = int("navigator_category").bindTo { it.category }
-    val publicCategory = int("navigator_public_category").references(NavigatorPublicCategoriesSchema) { it.publicCategory }
+    val flatCategory = int("navigator_flat_category_id").references(NavigatorFlatCategoriesSchema) { it.flatCategory }
+    val publicCategory = int("navigator_public_category_id").references(NavigatorPublicCategoriesSchema) { it.publicCategory }
     val tags = text("tags").bindTo { it.tags }
 
     val model = varchar("model").bindTo { it.model }
@@ -24,7 +25,7 @@ object RoomsSchema : Table<RoomInfo>("rooms") {
     val password = varchar("password").bindTo { it.password }
 
     val users = int("users").bindTo { it.users }
-    val maxUsers = int("max_users").bindTo { it.maxUsers }
+    val maximumUsers = int("maximum_users").bindTo { it.maximumUsers }
 
     val score = int("score").bindTo { it.score }
 
@@ -42,10 +43,10 @@ object RoomsSchema : Table<RoomInfo>("rooms") {
     val wallHeight = int("wall_height").bindTo { it.wallHeight }
 
     val areWallsHidden = boolean("are_walls_hidden").bindTo { it.areWallsHidden }
-    val areWiredsHidden = boolean("are_wired_hidden").bindTo { it.areWiredsHidden }
+    val areWiredsHidden = boolean("are_wireds_hidden").bindTo { it.areWiredsHidden }
 
-    val canWalkthrough = boolean("can_walkthrough").bindTo { it.canWalkthrough }
-    val canMoveDiagonally = boolean("can_move_diagonally").bindTo { it.canMoveDiagonally }
+    val allowWalkthrough = boolean("allow_walkthrough").bindTo { it.allowWalkthrough }
+    val allowDiagonalMovement = boolean("allow_diagonal_movement").bindTo { it.allowDiagonalMovement }
 
     val allowOtherPets = boolean("allow_other_pets").bindTo { it.allowOtherPets }
     val allowOtherPetsToEat = boolean("allow_other_pets_to_eat").bindTo { it.allowOtherPetsToEat }

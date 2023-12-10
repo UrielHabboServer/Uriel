@@ -7,7 +7,14 @@ import org.urielserv.uriel.game.permissions.ranks.Rank
 interface HabboInfo : Entity<HabboInfo> {
 
     val id: Int
+
     var username: String
+    var password: String
+
+    var ssoTicket: String
+
+    var email: String
+    var isEmailVerified: Boolean
 
     var motto: String
 
@@ -16,7 +23,16 @@ interface HabboInfo : Entity<HabboInfo> {
 
     var rank: Rank
 
+    var accountCreation: Int
+
+    var lastLogin: Int
+    var lastOnline: Int
     var isOnline: Boolean
+
+    var registrationIp: String
+    var currentIp: String
+
+    var machineId: String
 
     var homeRoomId: Int
 

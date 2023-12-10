@@ -2,9 +2,14 @@ package org.urielserv.uriel.game.rooms
 
 import io.klogging.logger
 import org.ktorm.dsl.eq
+import org.ktorm.entity.filter
 import org.ktorm.entity.find
+import org.ktorm.entity.map
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.database.schemas.rooms.RoomsSchema
+import org.urielserv.uriel.game.habbos.Habbo
+import org.urielserv.uriel.game.navigator.NavigatorFlatCategory
+import org.urielserv.uriel.game.navigator.NavigatorPublicCategory
 
 /**
  * The UrielRoomManager class is responsible for managing the rooms in the game.
@@ -23,6 +28,48 @@ class UrielRoomManager {
      */
     fun getRoomById(id: Int): Room? {
         return rooms[id] ?: buildRoom(id)
+    }
+
+    fun getRoomsByPublicCategory(category: NavigatorPublicCategory): List<Room> {
+        return Database.sequenceOf(RoomsSchema)
+            .filter { it.publicCategory eq category.id }
+            .map { getRoomById(it.id) }
+            .filterNotNull()
+    }
+
+    fun getRoomsByFlatCategory(category: NavigatorFlatCategory): List<Room> {
+        return Database.sequenceOf(RoomsSchema)
+            .filter { it.flatCategory eq category.id }
+            .map { getRoomById(it.id) }
+            .filterNotNull()
+    }
+
+    fun getRoomsByOwner(ownerId: Int): List<Room> {
+        return Database.sequenceOf(RoomsSchema)
+            .filter { it.ownerId eq ownerId }
+            .map { getRoomById(it.id) }
+            .filterNotNull()
+    }
+
+    fun getRoomsByOwner(habbo: Habbo): List<Room> {
+        return Database.sequenceOf(RoomsSchema)
+            .filter { it.ownerId eq habbo.info.id }
+            .map { getRoomById(it.id) }
+            .filterNotNull()
+    }
+
+    fun getPublicRooms(): List<Room> {
+        return rooms.values.filter {
+            it.info.isPublic
+        }
+    }
+
+    fun getPopularRooms(): List<Room> {
+        return rooms.values.filter {
+            it.info.users > 0
+        }.sortedByDescending {
+            it.info.users
+        }
     }
 
     /**

@@ -17,21 +17,4 @@ interface NavigatorPublicCategory : Entity<NavigatorPublicCategory> {
     var isVisible: Boolean
     var order: Int
 
-    fun getRooms(): List<Room> {
-        val roomInfos = Database.sequenceOf(RoomsSchema)
-            .filter {
-                it.publicCategory eq id
-            }
-
-        val rooms = mutableListOf<Room>()
-
-        for (roomInfo in roomInfos) {
-            RoomManager.getRoomById(roomInfo.id)?.let {
-                rooms.add(it)
-            }
-        }
-
-        return rooms.toList()
-    }
-
 }

@@ -6,6 +6,7 @@ import org.ktorm.entity.find
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.database.schemas.users.UsersSchema
+import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.networking.UrielServerClient
 import java.security.SecureRandom
 import java.util.*
@@ -32,6 +33,11 @@ class UrielHabboManager {
 
         habbo.client = client
         connectedHabbos[habbo.info.id] = habbo
+
+        habbo.info.isOnline = true
+        habbo.info.lastLogin = currentUnixSeconds
+
+        habbo.info.registrationIp = client.ip
 
         if (Configuration.security.refreshSSOTicketOnLogin) {
             Database.update(UsersSchema) {
@@ -94,6 +100,9 @@ class UrielHabboManager {
      * @param habbo The Habbo object to be removed.
      */
     fun unloadHabbo(habbo: Habbo) {
+        habbo.info.isOnline = false
+        habbo.info.lastOnline = currentUnixSeconds
+
         connectedHabbos.remove(habbo.info.id)
     }
 

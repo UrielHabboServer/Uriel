@@ -9,6 +9,8 @@ class NavigatorEventCategories : Packet() {
 
     override suspend fun construct() {
         appendInt(0)
+
+        // TODO: Implement
     }
 
 }

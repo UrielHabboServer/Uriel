@@ -3,6 +3,7 @@ package org.urielserv.uriel.game.rooms
 import org.ktorm.entity.Entity
 import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.game.habbos.HabboInfo
+import org.urielserv.uriel.game.navigator.NavigatorFlatCategory
 import org.urielserv.uriel.game.navigator.NavigatorPublicCategory
 
 interface RoomInfo : Entity<RoomInfo> {
@@ -12,8 +13,8 @@ interface RoomInfo : Entity<RoomInfo> {
 
     var name: String
     var description: String
-    var category: Int
     var publicCategory: NavigatorPublicCategory?
+    var flatCategory: NavigatorFlatCategory
     var tags: String
 
     var model: String
@@ -23,7 +24,7 @@ interface RoomInfo : Entity<RoomInfo> {
     var password: String
 
     var users: Int
-    var maxUsers: Int
+    var maximumUsers: Int
 
     var score: Int
 
@@ -43,8 +44,8 @@ interface RoomInfo : Entity<RoomInfo> {
     var areWallsHidden: Boolean
     var areWiredsHidden: Boolean
 
-    var canWalkthrough: Boolean
-    var canMoveDiagonally: Boolean
+    var allowWalkthrough: Boolean
+    var allowDiagonalMovement: Boolean
 
     var allowOtherPets: Boolean
     var allowOtherPetsToEat: Boolean
