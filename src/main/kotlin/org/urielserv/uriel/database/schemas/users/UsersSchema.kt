@@ -33,8 +33,6 @@ object UsersSchema : Table<HabboInfo>("users") {
     val registrationIp = varchar("registration_ip").bindTo { it.registrationIp }
     val currentIp = varchar("current_ip").bindTo { it.currentIp }
 
-    val machineId = varchar("machine_id").bindTo { it.machineId }
-
     val homeRoomId = int("home_room_id").bindTo { it.homeRoomId }
 
 }

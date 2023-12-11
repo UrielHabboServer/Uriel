@@ -35,7 +35,6 @@ CREATE TABLE users
     gender                     ENUM ('MALE', 'FEMALE') DEFAULT 'MALE'                                                          NOT NULL,
     registration_ip            VARCHAR(255)                                                                                    NOT NULL,
     current_ip                 VARCHAR(255)                                                                                    NOT NULL,
-    machine_id                 VARCHAR(255)                                                                                    NOT NULL,
     home_room_id               INT                     DEFAULT 0                                                               NOT NULL,
     FOREIGN KEY (rank_id) REFERENCES ranks (id),
     INDEX (sso_ticket, username)

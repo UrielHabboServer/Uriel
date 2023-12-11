@@ -32,8 +32,6 @@ interface HabboInfo : Entity<HabboInfo> {
     var registrationIp: String
     var currentIp: String
 
-    var machineId: String
-
     var homeRoomId: Int
 
     val habbo: Habbo?
