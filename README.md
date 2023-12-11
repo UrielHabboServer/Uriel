@@ -14,8 +14,8 @@ Uriel aims to become the mainstream Habbo server, with a focus on performance & 
 
 ## Initial Roadmap
 * [x] Handshake & Authentication
-* [ ] Navigator
-* [ ] Rooms
+* [x] Navigator *(mostly done, missing a tab and some details)*
+* [ ] Rooms *(in progress)*
 * [ ] Chat
 * [ ] Inventory
 * [ ] Furniture
