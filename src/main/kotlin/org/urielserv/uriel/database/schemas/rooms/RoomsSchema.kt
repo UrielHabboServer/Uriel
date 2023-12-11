@@ -18,8 +18,7 @@ object RoomsSchema : Table<RoomInfo>("rooms") {
     val publicCategory = int("navigator_public_category_id").references(NavigatorPublicCategoriesSchema) { it.publicCategory }
     val tags = text("tags").bindTo { it.tags }
 
-    val model = varchar("model").bindTo { it.model }
-    val isCustomModel = boolean("is_custom_model").bindTo { it.isCustomModel }
+    val modelId = int("model_id").references(RoomModelsSchema) { it.model }
 
     val accessType = enum<RoomAccessType>("access_type").bindTo { it.accessType }
     val password = varchar("password").bindTo { it.password }

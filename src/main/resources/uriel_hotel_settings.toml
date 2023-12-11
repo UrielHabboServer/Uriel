@@ -12,6 +12,10 @@ discountDaysBeforeEnd = 7
 
 [habbos]
 
+[habbos.rooms]
+maxRoomsWithHabboClub = 35
+maxRooms = 25
+
 [habbos.wardrobe]
 cacheFigureData = true
 figureDataUrl = "https://habbo.com/gamedata/figuredata/0"

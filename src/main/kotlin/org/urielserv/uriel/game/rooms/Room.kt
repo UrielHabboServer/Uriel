@@ -1,10 +1,79 @@
 package org.urielserv.uriel.game.rooms
 
+import org.urielserv.uriel.game.habbos.Habbo
+import org.urielserv.uriel.game.habbos.HabboRoomState
+import org.urielserv.uriel.game.rooms.tiles.RoomTileMap
 import org.urielserv.uriel.packets.outgoing.Packet
+import org.urielserv.uriel.packets.outgoing.rooms.*
 
 class Room internal constructor(
     val info: RoomInfo,
 ) {
+
+    private val habbos = mutableListOf<Habbo>()
+
+    var tileMap: RoomTileMap? = null
+        private set
+
+    private var isLoaded = false
+
+    private fun load() {
+        tileMap = RoomTileMap(info.model)
+
+        isLoaded = true
+    }
+
+    suspend fun enter(habbo: Habbo, force: Boolean = false) {
+        if (!isLoaded) {
+            load()
+        }
+
+        if (habbo.room != null && habbo.room != this) {
+            //TODO: habbo.room!!.leave(habbo)
+        }
+
+        // TODO: Add support for doorbell, password and room bans
+        prepareEnter(habbo)
+    }
+
+    private suspend fun prepareEnter(habbo: Habbo) {
+        habbo.room = this
+        habbos.add(habbo)
+
+        RoomOpenPacket().send(habbo)
+        RoomModelNamePacket(this).send(habbo)
+
+        if (info.wallpaper != "0.0") {
+            RoomPaintPacket("wallpaper", info.wallpaper).send(habbo)
+        }
+
+        if (info.floorPattern != "0.0") {
+            RoomPaintPacket("floor", info.floorPattern).send(habbo)
+        }
+
+        RoomPaintPacket("landscape", info.landscape).send(habbo)
+
+        // After this, the client sends a FurnitureAlisases packet, which will trigger the next step
+    }
+
+    internal suspend fun finishEnter(habbo: Habbo) {
+        habbo.roomState = HabboRoomState(
+            habbo,
+            tileMap!!.doorTile,
+            tileMap!!.doorDirection
+        )
+
+        /*
+        FUNDAMENTAL PACKETS (probably)
+        habbo.getClient().sendResponse(RoomPaneComposer(room, room.isOwner(habbo)))
+        habbo.getClient().sendResponse(RoomThicknessComposer(room))
+        habbo.getClient().sendResponse(RoomDataComposer(room, habbo.getClient().getHabbo(), false, true))
+         */
+
+        RoomInfoOwnerPacket(this, habbo.info.id == info.ownerHabboInfo.id).send(habbo)
+        RoomThicknessPacket(this).send(habbo)
+        RoomInfoPacket(this, habbo, roomForward = false, roomEnter = true).send(habbo)
+    }
 
     fun appendToPacket(packet: Packet) {
         packet.appendInt(info.id)

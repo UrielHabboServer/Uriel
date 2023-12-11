@@ -2,11 +2,14 @@ package org.urielserv.uriel.game.rooms
 
 import org.ktorm.entity.Entity
 import org.urielserv.uriel.RoomManager
+import org.urielserv.uriel.database.schemas.rooms.RoomsSchema
 import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.game.navigator.NavigatorFlatCategory
 import org.urielserv.uriel.game.navigator.NavigatorPublicCategory
 
 interface RoomInfo : Entity<RoomInfo> {
+
+    companion object : Entity.Factory<RoomInfo>()
 
     val id: Int
     var ownerHabboInfo: HabboInfo
@@ -17,8 +20,7 @@ interface RoomInfo : Entity<RoomInfo> {
     var flatCategory: NavigatorFlatCategory
     var tags: String
 
-    var model: String
-    var isCustomModel: Boolean
+    var model: RoomModel
 
     var accessType: RoomAccessType
     var password: String

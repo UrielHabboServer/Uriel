@@ -1,6 +1,6 @@
 package org.urielserv.uriel.packets.incoming
 
-@Suppress("unused", "ConstPropertyName")
+@Suppress("ConstPropertyName")
 object Incoming {
 
     // Handshake
@@ -20,5 +20,13 @@ object Incoming {
     // Navigator
     const val NavigatorInit = 2110
     const val NavigatorSearch = 249
+
+    // Rooms
+    const val GetUserFlatCats = 3027
+    const val RoomCreate = 2752
+    const val RoomEnter = 2312
+    const val RoomModel = 2300
+
+    const val FurnitureAliases = 3898
 
 }

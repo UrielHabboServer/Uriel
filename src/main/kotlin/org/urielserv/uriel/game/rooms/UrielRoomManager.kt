@@ -1,24 +1,38 @@
 package org.urielserv.uriel.game.rooms
 
 import io.klogging.logger
+import io.klogging.noCoLogger
 import org.ktorm.dsl.eq
-import org.ktorm.entity.filter
-import org.ktorm.entity.find
-import org.ktorm.entity.map
+import org.ktorm.entity.*
 import org.urielserv.uriel.Database
+import org.urielserv.uriel.NavigatorManager
+import org.urielserv.uriel.database.schemas.rooms.RoomModelsSchema
 import org.urielserv.uriel.database.schemas.rooms.RoomsSchema
+import org.urielserv.uriel.extensions.hasPermission
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.navigator.NavigatorFlatCategory
 import org.urielserv.uriel.game.navigator.NavigatorPublicCategory
+import javax.xml.crypto.Data
 
 /**
  * The UrielRoomManager class is responsible for managing the rooms in the game.
  */
 class UrielRoomManager {
 
-    private val logger = logger<UrielRoomManager>()
+    private val logger = noCoLogger<UrielRoomManager>()
 
     private val rooms = mutableMapOf<Int, Room>()
+    private val roomModels = mutableMapOf<String, RoomModel>()
+
+    init {
+        Database.sequenceOf(RoomModelsSchema).forEach {
+            roomModels[it.name] = it
+        }
+    }
+
+    fun getRoomModelByName(name: String): RoomModel? {
+        return roomModels[name]
+    }
 
     /**
      * Gets a Room by its ID.
@@ -69,6 +83,33 @@ class UrielRoomManager {
             it.info.users > 0
         }.sortedByDescending {
             it.info.users
+        }
+    }
+
+    fun createRoom(owner: Habbo, name: String, description: String, model: RoomModel, flatCategory: NavigatorFlatCategory, maxVisitors: Int, tradingMode: Int): Room? {
+        if (!owner.hasPermission("uriel.rooms.can_create_rooms")) return null
+
+        try {
+            val roomInfo = RoomInfo {
+                this.ownerHabboInfo = owner.info
+
+                this.name = name
+                this.description = description
+                this.flatCategory = flatCategory
+
+                this.model = model
+
+                this.maximumUsers = maxVisitors
+                this.tradingMode = tradingMode
+            }
+
+            Database.sequenceOf(RoomsSchema).add(roomInfo)
+
+            return buildRoom(roomInfo.id)
+        } catch (exc: Exception) {
+            logger.error("Failed to create room")
+            exc.printStackTrace()
+            return null
         }
     }
 

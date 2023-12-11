@@ -19,10 +19,24 @@ object Outgoing {
 
     const val NoobnessLevel = 3738
 
-    // Navigator
-    const val NavigatorMetadata = 3052
+    const val DesktopView = 122
 
+    // Navigator
+    const val NavigatorCategories = 1562
+    const val NavigatorMetadata = 3052
     const val NavigatorEventCategories = 3244
     const val NavigatorSearch = 2690
+
+    // Rooms
+    const val CanCreateRoom = 378
+    const val RoomCreated = 1304
+    const val RoomOpen = 758
+    const val RoomModelName = 2031
+    const val RoomPaint = 2454
+    const val RoomInfoOwner = 749
+    const val RoomThickness = 3547
+    const val RoomInfo = 687
+    const val RoomHeightmap = 2753
+    const val RoomModel = 1301
 
 }

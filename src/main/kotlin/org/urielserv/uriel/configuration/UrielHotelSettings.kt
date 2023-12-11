@@ -30,8 +30,15 @@ data class UrielHotelSettings(
     data class Habbos(
         val wardrobe: Wardrobe,
         val inventory: Inventory,
-        val subscription: Subscription
+        val subscription: Subscription,
+        val rooms: Rooms
     ) {
+
+        @Serializable
+        data class Rooms(
+            val maxRoomsWithHabboClub: Int,
+            val maxRooms: Int
+        )
 
         @Serializable
         data class Wardrobe(

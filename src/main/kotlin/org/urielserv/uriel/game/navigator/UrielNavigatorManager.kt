@@ -85,8 +85,16 @@ class UrielNavigatorManager {
         return publicCategories.toList()
     }
 
+    fun getPublicCategory(id: Int): NavigatorPublicCategory? {
+        return publicCategories.firstOrNull { it.id == id }
+    }
+
     fun getFlatCategories(): List<NavigatorFlatCategory> {
         return flatCategories.toList()
+    }
+
+    fun getFlatCategory(id: Int): NavigatorFlatCategory? {
+        return flatCategories.firstOrNull { it.id == id }
     }
 
 }
