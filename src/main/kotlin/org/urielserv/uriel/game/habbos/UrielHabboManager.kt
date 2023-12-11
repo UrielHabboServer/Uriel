@@ -10,9 +10,10 @@ import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.networking.UrielServerClient
 import java.security.SecureRandom
 import java.util.*
+import org.urielserv.uriel.packets.outgoing.rooms.HabboBroadcastMessage
 
-/**
- * The UrielHabboManager class is responsible for managing the Habbo users.
+/** 
+ * The UrielHabboManager class is responsible for managing the Habbo users. 
  */
 @Suppress("unused")
 class UrielHabboManager {
@@ -28,8 +29,14 @@ class UrielHabboManager {
      * @param client The UrielServerClient object to be associated with the logged-in Habbo.
      * @return The logged-in Habbo object if successful, null otherwise.
      */
-    fun loginHabbo(ssoTicket: String, client: UrielServerClient): Habbo? {
+    suspend fun loginHabbo(ssoTicket: String, client: UrielServerClient): Habbo? {
         val habbo = buildHabbo(ssoTicket) ?: return null
+        val oldHabbo = connectedHabbos[habbo.info.id]
+
+        if (oldHabbo != null) {
+            HabboBroadcastMessage("todo logout localize text").send(oldHabbo)
+            oldHabbo.client?.dispose()
+        }
 
         habbo.client = client
         connectedHabbos[habbo.info.id] = habbo

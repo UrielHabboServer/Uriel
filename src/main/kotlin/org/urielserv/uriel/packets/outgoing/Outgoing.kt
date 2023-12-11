@@ -39,4 +39,6 @@ object Outgoing {
     const val RoomHeightmap = 2753
     const val RoomModel = 1301
 
+    // Alerts
+    const val GenericAlert = 3801
 }
