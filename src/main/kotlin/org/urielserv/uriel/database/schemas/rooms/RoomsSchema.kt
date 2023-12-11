@@ -15,7 +15,8 @@ object RoomsSchema : Table<RoomInfo>("rooms") {
     val name = varchar("name").bindTo { it.name }
     val description = text("description").bindTo { it.description }
     val flatCategory = int("navigator_flat_category_id").references(NavigatorFlatCategoriesSchema) { it.flatCategory }
-    val publicCategory = int("navigator_public_category_id").references(NavigatorPublicCategoriesSchema) { it.publicCategory }
+    val publicCategory =
+        int("navigator_public_category_id").references(NavigatorPublicCategoriesSchema) { it.publicCategory }
     val tags = text("tags").bindTo { it.tags }
 
     val modelId = int("model_id").references(RoomModelsSchema) { it.model }

@@ -1,18 +1,15 @@
 package org.urielserv.uriel.game.rooms
 
-import io.klogging.logger
 import io.klogging.noCoLogger
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.NavigatorManager
 import org.urielserv.uriel.database.schemas.rooms.RoomModelsSchema
 import org.urielserv.uriel.database.schemas.rooms.RoomsSchema
 import org.urielserv.uriel.extensions.hasPermission
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.navigator.NavigatorFlatCategory
 import org.urielserv.uriel.game.navigator.NavigatorPublicCategory
-import javax.xml.crypto.Data
 
 /**
  * The UrielRoomManager class is responsible for managing the rooms in the game.
@@ -86,7 +83,15 @@ class UrielRoomManager {
         }
     }
 
-    fun createRoom(owner: Habbo, name: String, description: String, model: RoomModel, flatCategory: NavigatorFlatCategory, maxVisitors: Int, tradingMode: Int): Room? {
+    fun createRoom(
+        owner: Habbo,
+        name: String,
+        description: String,
+        model: RoomModel,
+        flatCategory: NavigatorFlatCategory,
+        maxVisitors: Int,
+        tradingMode: Int
+    ): Room? {
         if (!owner.hasPermission("uriel.rooms.can_create_rooms")) return null
 
         try {

@@ -14,7 +14,7 @@ class NavigatorAnythingSearchFilter : NavigatorSearchFilter {
                 it.info.name.startsWith(data, true)
                         || it.info.ownerHabboInfo.username.startsWith(data, true)
                         || tags.any { tag -> tag.startsWith(data, true) }
-                        // TODO: Add support for searching by group name
+                // TODO: Add support for searching by group name
             }
         }
 

@@ -7,7 +7,10 @@ import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandle
 import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorSearchPacketHandler
-import org.urielserv.uriel.packets.incoming.rooms.*
+import org.urielserv.uriel.packets.incoming.rooms.GetUserFlatCatsPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.RoomCreatePacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.RoomEnterPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.RoomModelPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
@@ -60,7 +63,10 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.GetUserFlatCats, GetUserFlatCatsPacketHandler())
         registerPacket(Incoming.RoomCreate, RoomCreatePacketHandler())
         registerPacket(Incoming.RoomEnter, RoomEnterPacketHandler())
-        registerPacket(Incoming.RoomModel, RoomModelPacketHandler()) // --> RoomModelPacketHandler finishes loading the room
+        registerPacket(
+            Incoming.RoomModel,
+            RoomModelPacketHandler()
+        ) // --> RoomModelPacketHandler finishes loading the room
         registerPacket(Incoming.FurnitureAliases, RoomModelPacketHandler())
     }
 

@@ -1,7 +1,6 @@
 package org.urielserv.uriel.packets.outgoing.rooms.heightmap
 
 import org.urielserv.uriel.game.rooms.Room
-import org.urielserv.uriel.game.rooms.tiles.RoomTileState
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 

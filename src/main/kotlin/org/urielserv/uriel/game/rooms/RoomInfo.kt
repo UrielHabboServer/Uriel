@@ -2,7 +2,6 @@ package org.urielserv.uriel.game.rooms
 
 import org.ktorm.entity.Entity
 import org.urielserv.uriel.RoomManager
-import org.urielserv.uriel.database.schemas.rooms.RoomsSchema
 import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.game.navigator.NavigatorFlatCategory
 import org.urielserv.uriel.game.navigator.NavigatorPublicCategory

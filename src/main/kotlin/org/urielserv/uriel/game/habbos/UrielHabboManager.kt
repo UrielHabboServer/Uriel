@@ -63,7 +63,7 @@ class UrielHabboManager {
                 .find {
                     it.ssoTicket eq ssoTicket
                 } ?: return null
-            
+
             return Habbo(habboInfo)
         } catch (exc: Exception) {
             logger.error("Failed to build Habbo object for SSO ticket $ssoTicket:")

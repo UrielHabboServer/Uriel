@@ -4,10 +4,10 @@ import org.urielserv.uriel.NavigatorManager
 import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.extensions.hasPermission
 import org.urielserv.uriel.game.habbos.Habbo
-import org.urielserv.uriel.game.navigator.searches.display.NavigatorDisplayMode
-import org.urielserv.uriel.game.navigator.searches.display.NavigatorListMode
 import org.urielserv.uriel.game.navigator.searches.NavigatorSearchAction
 import org.urielserv.uriel.game.navigator.searches.NavigatorSearchResultList
+import org.urielserv.uriel.game.navigator.searches.display.NavigatorDisplayMode
+import org.urielserv.uriel.game.navigator.searches.display.NavigatorListMode
 import org.urielserv.uriel.game.rooms.RoomAccessType
 
 class NavigatorHotelViewTab : NavigatorTab {

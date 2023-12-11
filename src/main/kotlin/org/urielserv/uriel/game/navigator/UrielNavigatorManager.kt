@@ -5,10 +5,10 @@ import org.urielserv.uriel.Database
 import org.urielserv.uriel.database.schemas.navigator.NavigatorFlatCategoriesSchema
 import org.urielserv.uriel.database.schemas.navigator.NavigatorPublicCategoriesSchema
 import org.urielserv.uriel.game.navigator.searches.filters.*
-import org.urielserv.uriel.game.navigator.tabs.NavigatorTab
 import org.urielserv.uriel.game.navigator.tabs.NavigatorHotelViewTab
 import org.urielserv.uriel.game.navigator.tabs.NavigatorMyViewTab
 import org.urielserv.uriel.game.navigator.tabs.NavigatorOfficialViewTab
+import org.urielserv.uriel.game.navigator.tabs.NavigatorTab
 
 class UrielNavigatorManager {
 

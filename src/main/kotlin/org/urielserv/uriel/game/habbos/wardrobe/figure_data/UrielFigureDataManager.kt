@@ -8,7 +8,6 @@ import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import java.io.File
 import java.net.URI
-import java.net.URL
 import java.nio.file.Files
 import javax.xml.parsers.DocumentBuilderFactory
 

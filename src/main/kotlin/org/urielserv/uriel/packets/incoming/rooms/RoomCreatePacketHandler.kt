@@ -42,7 +42,8 @@ class RoomCreatePacketHandler : PacketHandler {
 
         logger.info("RoomCreatePacketHandler: roomName=$roomName, roomDescription=$roomDescription, modelName=$modelName, categoryId=$categoryId, maxVisitors=$maxVisitors, tradeType=$tradeType")
 
-        val room = RoomManager.createRoom(client.habbo!!, roomName, roomDescription, model, category, maxVisitors, tradeType)!!
+        val room =
+            RoomManager.createRoom(client.habbo!!, roomName, roomDescription, model, category, maxVisitors, tradeType)!!
 
         logger.info("RoomCreatePacketHandler: room=$room")
 

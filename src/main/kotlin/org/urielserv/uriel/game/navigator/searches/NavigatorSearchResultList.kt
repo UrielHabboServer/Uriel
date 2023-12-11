@@ -1,7 +1,6 @@
 package org.urielserv.uriel.game.navigator.searches
 
 import org.urielserv.uriel.game.navigator.searches.display.NavigatorDisplayMode
-import org.urielserv.uriel.game.navigator.searches.display.NavigatorDisplayOrder
 import org.urielserv.uriel.game.navigator.searches.display.NavigatorListMode
 import org.urielserv.uriel.game.rooms.Room
 import org.urielserv.uriel.packets.outgoing.Packet
