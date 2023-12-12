@@ -23,6 +23,7 @@ import org.urielserv.uriel.game.rooms.UrielRoomManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
+import org.urielserv.uriel.core.texts.UrielLocalizer
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
@@ -35,6 +36,7 @@ lateinit var Configuration: UrielConfiguration
 lateinit var HotelSettings: UrielHotelSettings
 
 lateinit var Database: UrielDatabase
+lateinit var Localizer: UrielLocalizer
 
 lateinit var RankManager: UrielRankManager
 lateinit var PermissionManager: UrielPermissionManager
@@ -89,6 +91,10 @@ suspend fun main() = runBlocking {
             password = Configuration.database.password,
             databaseName = Configuration.database.databaseName
         )
+    }
+
+    measureInitialProcess("Localizer") {
+        Localizer = UrielLocalizer()
     }
 
     measureInitialProcess("Rank Manager & Permission Manager") {
