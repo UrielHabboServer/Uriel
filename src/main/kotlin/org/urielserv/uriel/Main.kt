@@ -10,10 +10,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
+import org.ktorm.entity.toList
 import org.urielserv.uriel.Uriel.BuildConfig
 import org.urielserv.uriel.configuration.UrielConfiguration
 import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
+import org.urielserv.uriel.database.schemas.HotelSettingsOverridesSchema
 import org.urielserv.uriel.extensions.schedule
 import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
@@ -31,6 +33,10 @@ import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
 import kotlin.io.path.readText
+import kotlin.reflect.KMutableProperty
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.isAccessible
 import kotlin.system.exitProcess
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -99,6 +105,8 @@ suspend fun main() = runBlocking {
             databaseName = Configuration.database.databaseName
         )
     }
+
+    loadDatabaseHotelSettingsOverrides()
 
     measureInitialProcess("Localizer") {
         Localizer = UrielLocalizer()
@@ -172,6 +180,48 @@ private suspend inline fun <reified T> loadTomlFile(pathString: String): T {
     val contents = path.readText()
 
     return Toml.decodeFromString<T>(contents)
+}
+
+private suspend fun loadDatabaseHotelSettingsOverrides() {
+    val hotelSettingsOverrides = Database.sequenceOf(HotelSettingsOverridesSchema).toList()
+
+    // use reflection to change the values in the HotelSettings object
+    for (hotelSettingsOverride in hotelSettingsOverrides) {
+        val parts = hotelSettingsOverride.path.split(".")
+
+        var currentObject: Any = HotelSettings
+        for (part in parts) {
+            val field = currentObject::class.memberProperties.firstOrNull { it.name == part }
+
+            if (field == null) {
+                logger.error("Could not find field $part in HotelSettings override ${hotelSettingsOverride.path}")
+                continue
+            }
+
+            field.isAccessible = true
+
+            if (field !is KMutableProperty<*>) {
+                logger.error("Field $part in HotelSettings override ${hotelSettingsOverride.path} is not mutable")
+                continue
+            }
+
+            try {
+                when (field.getter.call(currentObject)!!::class) {
+                    String::class -> field.setter.call(currentObject, hotelSettingsOverride.value)
+                    Int::class -> field.setter.call(currentObject, hotelSettingsOverride.value.toInt())
+                    Long::class -> field.setter.call(currentObject, hotelSettingsOverride.value.toLong())
+                    Double::class -> field.setter.call(currentObject, hotelSettingsOverride.value.toDouble())
+                    Float::class -> field.setter.call(currentObject, hotelSettingsOverride.value.toFloat())
+                    Boolean::class -> field.setter.call(currentObject, hotelSettingsOverride.value.toBoolean())
+                    else ->
+                        currentObject = field.getter.call(currentObject) ?: continue
+                }
+            } catch (exc: Exception) {
+                logger.error("Failed to set field $part in HotelSettings override ${hotelSettingsOverride.path}:")
+                exc.printStackTrace()
+            }
+        }
+    }
 }
 
 private suspend fun measureInitialProcess(name: String, block: suspend () -> Unit) {

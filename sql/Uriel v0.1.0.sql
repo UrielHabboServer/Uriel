@@ -1216,13 +1216,19 @@ CREATE TABLE navigator_flat_categories
     order_num           INT     DEFAULT 0              NOT NULL
 );
 
-DROP TABLE IF EXISTS `uriel_texts`;
-CREATE TABLE `uriel_texts`
+DROP TABLE IF EXISTS uriel_texts;
+CREATE TABLE uriel_texts
 (
     `key` VARCHAR(255) NOT NULL,
     value VARCHAR(255) DEFAULT NULL
 );
-
-INSERT INTO `uriel_texts` (`key`, value)
+INSERT INTO uriel_texts (`key`, value)
 VALUES ('uriel.error.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
        ('uriel.error.connection', 'Connection Error');
+
+DROP TABLE IF EXISTS uriel_hotel_settings_overrides;
+CREATE TABLE uriel_hotel_settings_overrides
+(
+    `path` VARCHAR(255) NOT NULL,
+    value  VARCHAR(255) DEFAULT NULL
+);
