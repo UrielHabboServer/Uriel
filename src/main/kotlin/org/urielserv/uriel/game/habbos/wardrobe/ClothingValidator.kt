@@ -57,9 +57,9 @@ object ClothingValidator {
             }
         }
 
-        for (lookpart in newLookParts) {
-            if (lookpart.contains("-")) {
-                addPart(lookpart.split("-").toTypedArray())
+        for (lookPart in newLookParts) {
+            if (lookPart.contains("-")) {
+                addPart(lookPart.split("-").toTypedArray())
             }
         }
 
@@ -73,6 +73,7 @@ object ClothingValidator {
                             (isFemale && !isHabboClubMember && !setType.mandatoryFemale0) ||
                             (isMale && isHabboClubMember && !setType.mandatoryMale1) ||
                             (isFemale && isHabboClubMember && !setType.mandatoryFemale1) -> return@forEach
+
                     else -> parts[key] = arrayOf(key)
                 }
             }
@@ -146,6 +147,7 @@ object ClothingValidator {
         isHabboClubMember: Boolean
     ): Pair<Int?, Int?> {
         val color1 = determineColor(data, palette, 2, isHabboClubMember)
+
         val color2 = if (set?.canChangeColors!!) {
             determineColor(data, palette, 3, isHabboClubMember)
         } else {
