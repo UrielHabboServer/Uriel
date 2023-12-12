@@ -131,6 +131,8 @@ class UrielServer(
                     PacketHandlerManager.handlePacket(packetId, client, byteStream)
                 }
 
+                client.dispose()
+
                 logger.debug("Client disconnected from ${client.ip}:${client.port}")
 
                 disposeClient(client)
