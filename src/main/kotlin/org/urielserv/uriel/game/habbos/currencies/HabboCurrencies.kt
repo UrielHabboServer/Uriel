@@ -44,8 +44,6 @@ class HabboCurrencies(
                 habboCurrency = newCurrency
             }
 
-            println("Interval: ${currency.autoTimerTime.toDuration()}")
-
             if (currency.autoTimerTime.toDuration() > 0.seconds) {
                 currencyTimerTasks[habboCurrency] = scheduleRepeating(
                     interval = currency.autoTimerTime.toDuration(),
