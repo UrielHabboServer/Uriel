@@ -36,8 +36,6 @@ class UrielServerClient(
         }
 
         Server.disposeClient(this)
-        if (habbo != null)
-            HabboManager.unloadHabbo(habbo!!)
     }
 
     suspend fun send(bytes: ByteArray) {

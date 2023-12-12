@@ -10,7 +10,7 @@ import kotlin.time.Duration.Companion.seconds
  * @param delay The delay before executing the task.
  * @param task The task to be executed.
  */
-fun schedule(delay: Duration, task: () -> Unit) =
+fun schedule(delay: Duration, task: suspend () -> Unit) =
     HotelTickLoop.scheduleJob(delay, task)
 
 /**
@@ -18,10 +18,10 @@ fun schedule(delay: Duration, task: () -> Unit) =
  *
  * @param interval The interval between subsequent executions of the task.
  *                 The duration is specified in milliseconds.
- * @param start The delay before the first execution of the task.
+ * @param delay The delay before the first execution of the task.
  *              The duration is specified in milliseconds.
  * @param task A function representing the task to be executed.
  *             This function takes no arguments and has no return value.
  */
-fun scheduleRepeating(interval: Duration, start: Duration = 0.seconds, task: () -> Unit) =
-    HotelTickLoop.scheduleRepeatingJob(start, interval, task)
+fun scheduleRepeating(interval: Duration, delay: Duration = 0.seconds, task: suspend () -> Unit) =
+    HotelTickLoop.scheduleRepeatingJob(delay, interval, task)

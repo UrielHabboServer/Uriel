@@ -15,7 +15,7 @@ object CurrenciesSchema : Table<UrielCurrency>("currencies") {
     val isSeasonal = boolean("is_seasonal").bindTo { it.isSeasonal }
     val default = int("default_amount").bindTo { it.default }
 
-    val autoTimer = int("auto_timer").bindTo { it.autoTimer }
-    val toGive = int("to_give").bindTo { it.toGive }
+    val autoTimerTime = varchar("auto_timer_time").bindTo { it.autoTimerTime }
+    val autoTimerAmount = int("auto_timer_amount").bindTo { it.toGive }
 
 }

@@ -12,6 +12,7 @@ import java.security.SecureRandom
 import java.util.*
 import org.urielserv.uriel.packets.outgoing.notifications.SimpleAlertMessagePacket
 import org.urielserv.uriel.Localizer
+import org.urielserv.uriel.extensions.text
 
 /** 
  * The UrielHabboManager class is responsible for managing the Habbo users. 
@@ -35,8 +36,8 @@ class UrielHabboManager {
         val oldHabbo = connectedHabbos[habbo.info.id]
 
         if (oldHabbo != null) {
-            SimpleAlertMessagePacket(Localizer.getString("error.login.elsewhere"), Localizer.getString("error.connection")).send(oldHabbo)
-            oldHabbo.client?.dispose()
+            SimpleAlertMessagePacket(text("uriel.error.login_elsewhere"), text("uriel.error.connection")).send(oldHabbo)
+            oldHabbo.disconnect()
         }
 
         habbo.client = client
@@ -46,6 +47,8 @@ class UrielHabboManager {
         habbo.info.lastLogin = currentUnixSeconds
 
         habbo.info.registrationIp = client.ip
+
+        habbo.info.flushChanges()
 
         if (Configuration.security.refreshSSOTicketOnLogin) {
             Database.update(UsersSchema) {
@@ -108,11 +111,6 @@ class UrielHabboManager {
      * @param habbo The Habbo object to be removed.
      */
     fun unloadHabbo(habbo: Habbo) {
-        habbo.info.isOnline = false
-        habbo.info.lastOnline = currentUnixSeconds
-
-        habbo.unload()
-
         connectedHabbos.remove(habbo.info.id)
     }
 

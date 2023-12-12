@@ -12,4 +12,5 @@ class HabboBroadcastMessagePacket(
     override suspend fun construct() {
         appendString(message)
     }
+
 }

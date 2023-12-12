@@ -1,6 +1,5 @@
 package org.urielserv.uriel.packets.outgoing.notifications
 
-import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 

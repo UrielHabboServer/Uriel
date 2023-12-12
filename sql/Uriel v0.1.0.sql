@@ -2,20 +2,18 @@
 DROP TABLE IF EXISTS currencies;
 CREATE TABLE currencies
 (
-    id             INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    nitro_id       INT                            NOT NULL,
-    is_seasonal    BOOLEAN DEFAULT false          NOT NULL,
-    name           VARCHAR(255)                   NOT NULL,
-    default_amount INT     DEFAULT 0              NOT NULL,
-    auto_timer     int     DEFAULT 0              NOT NUll,
-    to__give       int     DEFAULT 0              NOT NULL
+    id                INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    nitro_id          INT                            NOT NULL,
+    is_seasonal       BOOLEAN      DEFAULT false     NOT NULL,
+    name              VARCHAR(255)                   NOT NULL,
+    default_amount    INT          DEFAULT 0         NOT NULL,
+    auto_timer_time   VARCHAR(255) DEFAULT '0s'      NOT NUll,
+    auto_timer_amount INT          DEFAULT 0         NOT NULL
 );
 INSERT INTO currencies (nitro_id, is_seasonal, name)
-VALUES (-1, false, 'credit');
-INSERT INTO currencies (nitro_id, is_seasonal, name)
-VALUES (0, true, 'ducket');
-INSERT INTO currencies (nitro_id, is_seasonal, name)
-VALUES (5, true, 'diamond');
+VALUES (-1, false, 'credit'),
+       (0, true, 'ducket'),
+       (5, true, 'diamond');
 
 -- Users
 DROP TABLE IF EXISTS users;
@@ -115,9 +113,8 @@ CREATE TABLE ranks
 INSERT INTO ranks (name, weight)
 VALUES ('Default', 0);
 INSERT INTO ranks (name, weight, parent_id)
-VALUES ('Moderator', 100, 1);
-INSERT INTO ranks (name, weight, parent_id)
-VALUES ('Administrator', 200, 2);
+VALUES ('Moderator', 100, 1),
+       ('Administrator', 200, 2);
 
 DROP TABLE IF EXISTS rank_permissions;
 CREATE TABLE rank_permissions
@@ -142,17 +139,12 @@ CREATE TABLE navigator_public_categories
     order_num  INT     DEFAULT 0              NOT NULL
 );
 INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
-VALUES ('Staff Picks', false, true, 0);
-INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
-VALUES ('Official Games', false, true, 0);
-INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
-VALUES ('Official Fansites', false, true, 0);
-INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
-VALUES ('BAW: Builders at Work', false, true, 0);
-INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
-VALUES ('Room Bundles', false, true, 0);
-INSERT INTO navigator_public_categories (name, has_image, is_visible, order_num)
-VALUES ('Safety', false, true, 0);
+VALUES ('Staff Picks', false, true, 0),
+       ('Official Games', false, true, 0),
+       ('Official Fansites', false, true, 0),
+       ('BAW: Builders at Work', false, true, 0),
+       ('Room Bundles', false, true, 0),
+       ('Safety', false, true, 0);
 
 DROP TABLE IF EXISTS navigator_flat_categories;
 CREATE TABLE navigator_flat_categories
@@ -166,23 +158,16 @@ CREATE TABLE navigator_flat_categories
     order_num           INT     DEFAULT 0              NOT NULL
 );
 INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.BC}');
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.BUILDING}');
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.CHAT}');
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.FANSITE}');
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.GAMES}');
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.HELP}');
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.LIFE}');
+VALUES ('${navigator.flatcategory.global.BC}'),
+       ('${navigator.flatcategory.global.BUILDING}'),
+       ('${navigator.flatcategory.global.CHAT}'),
+       ('${navigator.flatcategory.global.FANSITE}'),
+       ('${navigator.flatcategory.global.GAMES}'),
+       ('${navigator.flatcategory.global.HELP}'),
+       ('${navigator.flatcategory.global.LIFE}'),
+       ('${navigator.flatcategory.global.PARTY}');
 INSERT INTO navigator_flat_categories (caption, minimum_rank_weight, is_public)
 VALUES ('${navigator.flatcategory.global.OFFICIAL}', 200, true);
-INSERT INTO navigator_flat_categories (caption)
-VALUES ('${navigator.flatcategory.global.PARTY}');
 
 -- Rooms
 DROP TABLE IF EXISTS rooms;
@@ -1232,11 +1217,12 @@ CREATE TABLE navigator_flat_categories
 );
 
 DROP TABLE IF EXISTS `uriel_texts`;
-CREATE TABLE `uriel_texts` (
-  `key`   varchar(255)         NOT NULL,
-  `value` varchar(255) DEFAULT     NULL
+CREATE TABLE `uriel_texts`
+(
+    `key` VARCHAR(255) NOT NULL,
+    value VARCHAR(255) DEFAULT NULL
 );
 
-INSERT INTO `uriel_texts` (`key`, `value`) VALUES
-('error.login.elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
-('error.connection', 'Connection Error');
+INSERT INTO `uriel_texts` (`key`, value)
+VALUES ('uriel.error.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
+       ('uriel.error.connection', 'Connection Error');

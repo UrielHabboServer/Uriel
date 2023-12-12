@@ -2,7 +2,7 @@ package org.urielserv.uriel.tick_loop.jobs
 
 class RepeatingJob internal constructor(
     id: Int,
-    start: Int,
+    delay: Int,
     val interval: Int,
-    task: () -> Unit
-) : Job(id, start, task)
+    task: suspend () -> Unit
+) : Job(id, delay, task)

@@ -1,6 +1,7 @@
 package org.urielserv.uriel.tick_loop
 
 import io.klogging.noCoLogger
+import kotlinx.coroutines.runBlocking
 import org.urielserv.uriel.tick_loop.jobs.Job
 import org.urielserv.uriel.tick_loop.jobs.RepeatingJob
 import java.util.*
@@ -32,19 +33,19 @@ class TickLoop(
     init {
         executor.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                tick()
+                runBlocking { tick() }
             }
         }, 0, 1000 / ticksPerSecond.toLong(), TimeUnit.MILLISECONDS)
     }
 
-    fun tick() {
+    suspend fun tick() {
         val start = System.currentTimeMillis()
 
         ticks++
 
         tickStartTimes[ticks] = start
 
-        jobs.filter { it.start == ticks }.forEach {
+        jobs.filter { it.delay == ticks }.forEach {
             if (!it.isCancelled) {
                 try {
                     it.run()
@@ -57,7 +58,7 @@ class TickLoop(
             jobs.remove(it)
         }
 
-        repeatingJobs.filter { it.start == ticks || (it.start < ticks && it.interval > 0 && (ticks - it.start) % it.interval == 0) }
+        repeatingJobs.filter { it.delay == ticks || (it.delay < ticks && it.interval > 0 && (ticks - it.delay) % it.interval == 0) }
             .forEach {
                 if (!it.isCancelled) {
                     try {
@@ -98,26 +99,32 @@ class TickLoop(
         executor.shutdown()
     }
 
-    private fun createJob(start: Int, task: () -> Unit): Job {
+    private fun createJob(start: Int, task: suspend () -> Unit): Job {
         val job = Job(currentJobCount++, start, task)
         jobs.add(job)
         return job
     }
 
-    private fun createRepeatingJob(start: Int, interval: Int, task: () -> Unit): RepeatingJob {
+    private fun createRepeatingJob(start: Int, interval: Int, task: suspend () -> Unit): RepeatingJob {
         val job = RepeatingJob(currentJobCount++, start, interval, task)
         repeatingJobs.add(job)
         return job
     }
 
-    fun scheduleJob(delay: Duration, task: () -> Unit): Job {
-        val ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
+    fun scheduleJob(delay: Duration, task: suspend () -> Unit): Job {
+        var ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
+
+        if (this.ticks + ticks <= this.ticks) ticks++ // run it next tick if it's already passed
+
         return createJob(this.ticks + ticks, task)
     }
 
-    fun scheduleRepeatingJob(delay: Duration, interval: Duration, task: () -> Unit): RepeatingJob {
-        val ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
+    fun scheduleRepeatingJob(delay: Duration, interval: Duration, task: suspend () -> Unit): RepeatingJob {
+        var ticks = (delay.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
         val intervalTicks = (interval.inWholeMilliseconds / (1000 / ticksPerSecond)).toInt()
+
+        if (this.ticks + ticks <= this.ticks) ticks++ // run it next tick if it's already passed
+
         return createRepeatingJob(this.ticks + ticks, intervalTicks, task)
     }
 

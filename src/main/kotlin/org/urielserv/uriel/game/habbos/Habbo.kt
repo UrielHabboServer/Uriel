@@ -1,5 +1,7 @@
 package org.urielserv.uriel.game.habbos
 
+import org.urielserv.uriel.HabboManager
+import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.currencies.HabboCurrencies
 import org.urielserv.uriel.game.habbos.inventory.HabboInventory
 import org.urielserv.uriel.game.habbos.subscriptions.HabboSubscriptions
@@ -27,22 +29,20 @@ class Habbo internal constructor(
     var room: Room? = null
     var roomState: HabboRoomState? = null
 
-    private val habboTicker: RepeatingJob
-    private var ticks = 0
+    suspend fun disconnect() {
+        info.isOnline = false
+        info.lastOnline = currentUnixSeconds
 
-    init {
-        habboTicker = scheduleRepeating(1.seconds, 0.seconds) { onTick() }
+        info.flushChanges()
+
+        unload()
     }
 
-    fun unload() {
-        habboTicker.isCancelled = true
+    private suspend fun unload() {
+        client?.dispose()
+        HabboManager.unloadHabbo(this)
+
         currencies.unload()
-    }
-
-    fun onTick() {
-        ticks++
-
-        currencies.onTick(ticks)
     }
 
 }

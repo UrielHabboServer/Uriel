@@ -1,6 +1,7 @@
 package org.urielserv.uriel.game.currencies
 
 import org.ktorm.entity.Entity
+import kotlin.time.Duration
 
 interface UrielCurrency : Entity<UrielCurrency> {
 
@@ -11,7 +12,7 @@ interface UrielCurrency : Entity<UrielCurrency> {
     var isSeasonal: Boolean
     var default: Int
     
-    var autoTimer: Int
+    var autoTimerTime: String
     var toGive: Int
 
 }
