@@ -16,6 +16,6 @@ object CurrenciesSchema : Table<UrielCurrency>("currencies") {
     val default = int("default_amount").bindTo { it.default }
 
     val autoTimerTime = varchar("auto_timer_time").bindTo { it.autoTimerTime }
-    val autoTimerAmount = int("auto_timer_amount").bindTo { it.toGive }
+    val autoTimerAmount = int("auto_timer_amount").bindTo { it.autoTimerAmount }
 
 }

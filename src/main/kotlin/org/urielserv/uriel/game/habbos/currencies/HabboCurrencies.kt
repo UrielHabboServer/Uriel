@@ -11,8 +11,6 @@ import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.extensions.toDuration
 import org.urielserv.uriel.game.currencies.UrielCurrency
 import org.urielserv.uriel.game.habbos.Habbo
-import org.urielserv.uriel.packets.outgoing.notifications.ActivityPointNotificationMessagePacket
-import org.urielserv.uriel.packets.outgoing.users.currencies.UserCreditsPacket
 import org.urielserv.uriel.tick_loop.jobs.RepeatingJob
 import kotlin.time.Duration.Companion.seconds
 
@@ -44,21 +42,13 @@ class HabboCurrencies(
                 habboCurrency = newCurrency
             }
 
-            if (currency.autoTimerTime.toDuration() > 0.seconds) {
-                currencyTimerTasks[habboCurrency] = scheduleRepeating(
-                    interval = currency.autoTimerTime.toDuration(),
-                    delay = currency.autoTimerTime.toDuration()
-                ) {
-                    val oldAmount = habboCurrency.amount
-                    val givenAmount = currency.toGive
+            if (currency.autoTimerTime.toDuration() <= 0.seconds) continue
 
-                    habboCurrency.amount += currency.toGive
-
-                    if (currency.nitroId == -1)
-                        UserCreditsPacket(habbo).send(habbo)
-                    else
-                        ActivityPointNotificationMessagePacket(oldAmount, givenAmount, currency.nitroId).send(habbo)
-                }
+            currencyTimerTasks[habboCurrency] = scheduleRepeating(
+                interval = currency.autoTimerTime.toDuration(),
+                delay = currency.autoTimerTime.toDuration()
+            ) {
+                habboCurrency.modifyBy(currency.autoTimerAmount)
             }
         }
     }

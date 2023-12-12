@@ -1,7 +1,6 @@
 package org.urielserv.uriel.game.currencies
 
 import org.ktorm.entity.Entity
-import kotlin.time.Duration
 
 interface UrielCurrency : Entity<UrielCurrency> {
 
@@ -13,6 +12,6 @@ interface UrielCurrency : Entity<UrielCurrency> {
     var default: Int
     
     var autoTimerTime: String
-    var toGive: Int
+    var autoTimerAmount: Int
 
 }
