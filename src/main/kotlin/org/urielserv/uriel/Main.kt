@@ -27,6 +27,8 @@ import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
 import org.urielserv.uriel.locale.UrielLocalizer
+import org.urielserv.uriel.events.UrielEventDispatcher
+import org.urielserv.uriel.events.Event
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
@@ -39,6 +41,8 @@ private val logger = logger("org.urielserv.uriel.Main")
 
 lateinit var Configuration: UrielConfiguration
 lateinit var HotelSettings: UrielHotelSettings
+
+lateinit var EventDispatcher: UrielEventDispatcher
 
 lateinit var Database: UrielDatabase
 lateinit var Localizer: UrielLocalizer
@@ -82,6 +86,8 @@ suspend fun main() = runBlocking {
             shutdown()
         }
     })
+
+    EventDispatcher = UrielEventDispatcher()
 
     logger.info("Starting Uriel, please wait...")
 
@@ -134,6 +140,8 @@ suspend fun main() = runBlocking {
     launch {
         Server.start()
     }
+
+    EventDispatcher.dispatch(Event.OnLoad)
 
     Ready = true
 
