@@ -1,4 +1,4 @@
-package org.urielserv.uriel.core.events
+package org.urielserv.uriel.core.event_dispatcher
 
 class UrielEventDispatcher {
 

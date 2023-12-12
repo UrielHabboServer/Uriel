@@ -15,7 +15,6 @@ import org.urielserv.uriel.core.configuration.UrielConfiguration
 import org.urielserv.uriel.core.configuration.UrielHotelSettings
 import org.urielserv.uriel.core.database.UrielDatabase
 import org.urielserv.uriel.core.database.schemas.HotelSettingsOverridesSchema
-import org.urielserv.uriel.core.events.CancellableUrielEvent
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
@@ -27,8 +26,9 @@ import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
 import org.urielserv.uriel.core.locale.UrielLocalizer
-import org.urielserv.uriel.core.events.UrielEventDispatcher
-import org.urielserv.uriel.core.events.Events
+import org.urielserv.uriel.core.event_dispatcher.UrielEventDispatcher
+import org.urielserv.uriel.core.event_dispatcher.Events
+import org.urielserv.uriel.core.event_dispatcher.UrielEvent
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
@@ -145,7 +145,7 @@ suspend fun main() = runBlocking {
     }
 
     Ready = true
-    EventDispatcher.dispatch(Events.Load, CancellableUrielEvent())
+    EventDispatcher.dispatch(Events.Load, UrielEvent())
 
     measureInitialProcess("Tick Loop") {
         HotelTickLoop = TickLoop(

@@ -1,8 +1,11 @@
 package org.urielserv.uriel.packets.incoming.handshake
 
 import io.klogging.logger
+import org.urielserv.uriel.EventDispatcher
 import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.HotelSettings
+import org.urielserv.uriel.core.event_dispatcher.Events
+import org.urielserv.uriel.core.event_dispatcher.events.users.UserLoginEvent
 import org.urielserv.uriel.extensions.readInt
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
@@ -49,6 +52,14 @@ class SecurityTicketPacketHandler : PacketHandler {
         }
 
         client.habbo = habbo
+
+        val event = UserLoginEvent(habbo, ticket)
+        EventDispatcher.dispatch(Events.UserLogin, event)
+
+        if (event.isCancelled) {
+            habbo.disconnect()
+            return
+        }
 
         if (HotelSettings.habbos.wardrobe.validateLooksOnLogin) {
             // Make sure the player's look is valid
