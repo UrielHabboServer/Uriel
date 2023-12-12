@@ -36,7 +36,7 @@ class UrielHabboManager {
         val oldHabbo = connectedHabbos[habbo.info.id]
 
         if (oldHabbo != null) {
-            habbo.notifications.sendAlert(
+            oldHabbo.notifications.sendAlert(
                 text("uriel.error.login_elsewhere"),
                 text("uriel.error.connection")
             )

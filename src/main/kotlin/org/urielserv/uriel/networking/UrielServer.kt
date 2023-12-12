@@ -131,7 +131,11 @@ class UrielServer(
                     PacketHandlerManager.handlePacket(packetId, client, byteStream)
                 }
 
-                client.dispose()
+                if (client.habbo != null) {
+                    client.habbo!!.disconnect()
+                } else {
+                    client.dispose()
+                }
 
                 logger.debug("Client disconnected from ${client.ip}:${client.port}")
 

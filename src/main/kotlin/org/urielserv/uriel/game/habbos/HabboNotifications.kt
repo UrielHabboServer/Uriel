@@ -8,17 +8,17 @@ class HabboNotifications(
 ) {
 
     /**
-     * Sends habbo alert
+     * Sends an alert message to the Habbo
      *
      * @param message Message to show
-     * @param title Without title, will default to Message From Habbo Hotel
+     * @param title Without title, will default to "Message From Habbo Hotel"
      */
     suspend fun sendAlert(message: String, title: String? = null) {
         SimpleAlertMessagePacket(message, title).send(habbo)
     }
 
     /**
-     * Sends habbo notifications, bubble alert, window etc
+     * Sends the Habbo a notification, bubble alert, window, etc...
      *
      * @param type Key of notification
      * @param args display, title, message, linkTitle, linkUrl, image ... etc

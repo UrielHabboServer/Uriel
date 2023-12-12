@@ -10,55 +10,55 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UrielHotelSettings(
-    val hotel: Hotel,
-    val habboClub: HabboClub,
-    val habbos: Habbos
+    var hotel: Hotel,
+    var habboClub: HabboClub,
+    var habbos: Habbos
 ) {
 
     @Serializable
     data class Hotel(
-        val defaultRoomId: Int
+        var defaultRoomId: Int
     )
 
     @Serializable
     data class HabboClub(
-        val discountEnabled: Boolean,
-        val discountDaysBeforeEnd: Int
+        var discountEnabled: Boolean,
+        var discountDaysBeforeEnd: Int
     )
 
     @Serializable
     data class Habbos(
-        val wardrobe: Wardrobe,
-        val inventory: Inventory,
-        val subscription: Subscription,
-        val rooms: Rooms
+        var wardrobe: Wardrobe,
+        var inventory: Inventory,
+        var subscription: Subscription,
+        var rooms: Rooms
     ) {
 
         @Serializable
         data class Rooms(
-            val maxRoomsWithHabboClub: Int,
-            val maxRooms: Int
+            var maxRoomsWithHabboClub: Int,
+            var maxRooms: Int
         )
 
         @Serializable
         data class Wardrobe(
-            val cacheFigureData: Boolean,
-            val figureDataUrl: String,
-            val validateLooksOnHabboClubExpire: Boolean,
-            val validateLooksOnLogin: Boolean,
-            val validateLooksOnChange: Boolean,
-            val validateLooksOnSave: Boolean
-            //val validateLooksOnFootballGate: Boolean
+            var cacheFigureData: Boolean,
+            var figureDataUrl: String,
+            var validateLooksOnHabboClubExpire: Boolean,
+            var validateLooksOnLogin: Boolean,
+            var validateLooksOnChange: Boolean,
+            var validateLooksOnSave: Boolean
+            //var validateLooksOnFootballGate: Boolean
         )
 
         @Serializable
         data class Inventory(
-            val storeFurniDataOnPickUp: Boolean
+            var storeFurniDataOnPickUp: Boolean
         )
 
         @Serializable
         data class Subscription(
-            val deleteExpiredSubscriptions: Boolean
+            var deleteExpiredSubscriptions: Boolean
         )
 
     }
