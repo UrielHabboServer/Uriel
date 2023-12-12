@@ -53,7 +53,7 @@ data class FigureDataSetType(
     ) {
 
         val requiresHabboClubMembership: Boolean
-            get() = clubType != 0
+            get() = clubType > 0
 
     }
 

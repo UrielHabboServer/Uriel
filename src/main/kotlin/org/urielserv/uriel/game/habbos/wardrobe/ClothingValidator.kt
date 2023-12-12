@@ -6,6 +6,7 @@ import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.inventory.looks.SavedLook
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.FigureDataPalette
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.FigureDataSetType
+import java.util.*
 
 object ClothingValidator {
 
@@ -38,25 +39,18 @@ object ClothingValidator {
         }
 
         val newLookParts = look.split(".").toTypedArray()
-        val parts = extractValidParts(newLookParts, gender, isHabboClubMember)
+        val lookParts = mutableListOf<String>()
 
-        return buildLook(parts, gender, isHabboClubMember, ownedClothing)
-    }
-
-    private fun extractValidParts(
-        newLookParts: Array<String>,
-        gender: String,
-        isHabboClubMember: Boolean
-    ): Map<String, Array<String>> {
-        val parts = mutableMapOf<String, Array<String>>()
+        val parts: MutableMap<String, Array<String>> = TreeMap()
 
         fun addPart(data: Array<String>) {
-            val setType = FigureDataManager.setTypes[data[0]]
+            val setType: FigureDataSetType? = FigureDataManager.setTypes[data[0]]
             if (setType != null) {
                 parts[data[0]] = data
             }
         }
 
+        // Add mandatory setTypes
         for (lookPart in newLookParts) {
             if (lookPart.contains("-")) {
                 addPart(lookPart.split("-").toTypedArray())
@@ -78,17 +72,6 @@ object ClothingValidator {
                 }
             }
 
-        return parts
-    }
-
-    private fun buildLook(
-        parts: Map<String, Array<String>>,
-        gender: String,
-        isHabboClubMember: Boolean,
-        ownedClothing: List<Int>
-    ): String {
-        val lookParts = mutableListOf<String>()
-
         parts.forEach { (_, data) ->
             try {
                 if (data.isNotEmpty()) {
@@ -96,80 +79,66 @@ object ClothingValidator {
                     val palette = FigureDataManager.palettes[setType.paletteId]
 
                     if (palette == null) {
-                        logger.error("Couldn't find palette for set type ${setType.type}")
+                        logger.error("Palette ${setType.paletteId} does not exist")
                         return@forEach
                     }
 
-                    val (setId, set) = findValidSet(setType, data, gender, isHabboClubMember, ownedClothing)
+                    var setId = (if (data.size >= 2) data[1] else "-1").toInt()
+                    var set = setType.sets[setId]
+
+                    if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) ||
+                        !set.canBeSelected || (set.canBeSold && !ownedClothing.contains(set.id)) ||
+                        (!set.gender.equals("U", ignoreCase = true) && !set.gender.equals(gender, ignoreCase = true))
+                    ) {
+                        set = setType.getFirstNonClubSetForGender(gender)
+                        setId = set!!.id
+                    }
 
                     val dataParts = mutableListOf<String>()
 
-                    val (color1, color2) = determineColors(data, set, palette, isHabboClubMember)
+                    var color1 = -1
+                    var color2 = -1
 
-                    dataParts.addAll(listOfNotNull(setType.type, "$setId", color1?.toString(), color2?.toString()))
+                    if (set.canChangeColors) {
+                        color1 = if (data.size >= 3) data[2].toInt() else -1
+
+                        val color = palette.colors[color1]
+
+                        if (color == null || (color.requiresHabboClubMembership && !isHabboClubMember)) {
+                            color1 = palette.getFirstNonClubColor()!!.id
+                        }
+                    }
+
+                    if (data.size >= 4 && set.canChangeColors) {
+                        color2 = data[3].toInt()
+
+                        val color: FigureDataPalette.Color? = palette.colors[color2]
+
+                        if (color == null || (color.requiresHabboClubMembership && !isHabboClubMember)) {
+                            color2 = palette.getFirstNonClubColor()!!.id
+                        }
+                    }
+
+                    dataParts.add(setType.type)
+                    dataParts.add("$setId")
+
+                    if (color1 > -1) {
+                        dataParts.add("$color1")
+                    }
+
+                    if (color2 > -1) {
+                        dataParts.add("$color2")
+                    }
 
                     lookParts.add(dataParts.joinToString("-"))
                 }
             } catch (exc: Exception) {
-                logger.error("Couldn't successfully validate look part: ${data.joinToString("-")}")
+                logger.error("Error in clothing validation")
                 exc.printStackTrace()
             }
         }
 
         return lookParts.joinToString(".")
-    }
-
-    private fun findValidSet(
-        setType: FigureDataSetType,
-        data: Array<String>,
-        gender: String,
-        isHabboClubMember: Boolean,
-        ownedClothing: List<Int>
-    ): Pair<Int, FigureDataSetType.Set?> {
-        var setId = (if (data.size >= 2) data[1] else "-1").toInt()
-        var set: FigureDataSetType.Set? = setType.sets[setId]
-
-        if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) ||
-            !set.canBeSelected || (set.canBeSold && !ownedClothing.contains(set.id)) ||
-            (!set.gender.equals("U", ignoreCase = true) && !set.gender.equals(gender, ignoreCase = true))
-        ) {
-            set = setType.getFirstNonClubSetForGender(gender)
-            setId = set!!.id
-        }
-
-        return setId to set
-    }
-
-    private fun determineColors(
-        data: Array<String>,
-        set: FigureDataSetType.Set?,
-        palette: FigureDataPalette,
-        isHabboClubMember: Boolean
-    ): Pair<Int?, Int?> {
-        val color1 = determineColor(data, palette, 2, isHabboClubMember)
-
-        val color2 = if (set?.canChangeColors!!) {
-            determineColor(data, palette, 3, isHabboClubMember)
-        } else {
-            null
-        }
-
-        return color1 to color2
-    }
-
-    private fun determineColor(
-        data: Array<String>,
-        palette: FigureDataPalette,
-        index: Int,
-        isHabboClubMember: Boolean
-    ): Int {
-        val color = if (data.size >= index + 1) data[index].toIntOrNull() ?: -1 else -1
-
-        return if (palette.colors[color]?.requiresHabboClubMembership!! && !isHabboClubMember) {
-            palette.getFirstNonClubColor()!!.id
-        } else {
-            color
-        }
     }
 
 }

@@ -2,13 +2,11 @@ package org.urielserv.uriel.game.habbos.wardrobe.figure_data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
-import java.util.*
 
 @Serializable
 data class FigureDataPalette(
     val id: Int,
-    @SerialName("colors") val colorsInternal: List<Color>
+    @SerialName("colors") private val colorsInternal: List<Color>
 ) {
 
     val colors: Map<Int, Color>
@@ -28,7 +26,7 @@ data class FigureDataPalette(
     ) {
 
         val requiresHabboClubMembership: Boolean
-            get() = clubType != 0
+            get() = clubType > 0
 
     }
 
