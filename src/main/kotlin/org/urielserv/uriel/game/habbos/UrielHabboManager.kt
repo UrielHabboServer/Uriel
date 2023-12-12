@@ -114,6 +114,12 @@ class UrielHabboManager {
         connectedHabbos.remove(habbo.info.id)
     }
 
+    internal suspend fun shutdown() {
+        for (habbo in connectedHabbos.values) {
+            habbo.disconnect()
+        }
+    }
+
     companion object {
 
         /**

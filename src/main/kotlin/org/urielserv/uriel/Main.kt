@@ -77,9 +77,11 @@ suspend fun main() = runBlocking {
         }
     }
 
-    Thread.setDefaultUncaughtExceptionHandler { _, exc ->
-        exc.printStackTrace()
-    }
+    Runtime.getRuntime().addShutdownHook(Thread {
+        runBlocking {
+            shutdown()
+        }
+    })
 
     logger.info("Starting Uriel, please wait...")
 
@@ -140,6 +142,12 @@ suspend fun main() = runBlocking {
             ticksPerSecond = Configuration.tickLoops.hotelTicksPerSecond
         )
     }
+}
+
+private suspend fun shutdown() {
+    logger.info("Shutting down Uriel...")
+
+    HabboManager.shutdown()
 }
 
 private suspend inline fun <reified T> loadTomlFile(pathString: String): T {
