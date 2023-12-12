@@ -43,4 +43,5 @@ object Outgoing {
     const val GenericAlert = 3801
     const val SimpleAlert = 5100
     const val ActivityPointNotification = 2275
+    const val NotificationList = 1992
 }

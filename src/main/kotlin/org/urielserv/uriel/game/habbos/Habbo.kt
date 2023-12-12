@@ -7,6 +7,7 @@ import org.urielserv.uriel.game.habbos.inventory.HabboInventory
 import org.urielserv.uriel.game.habbos.subscriptions.HabboSubscriptions
 import org.urielserv.uriel.game.rooms.Room
 import org.urielserv.uriel.networking.UrielServerClient
+import org.urielserv.uriel.game.habbos.HabboNotifications
 
 /**
  * Represents a Habbo user.
