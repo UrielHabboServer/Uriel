@@ -29,10 +29,11 @@ class Room internal constructor(
         }
 
         if (habbo.room != null && habbo.room != this) {
-            //TODO: habbo.room!!.leave(habbo)
+            habbo.room!!.leave(habbo)
         }
 
         // TODO: Add support for doorbell, password and room bans
+
         prepareEnter(habbo)
     }
 
@@ -73,6 +74,13 @@ class Room internal constructor(
         RoomInfoOwnerPacket(this, habbo.info.id == info.ownerHabboInfo.id).send(habbo)
         RoomThicknessPacket(this).send(habbo)
         RoomInfoPacket(this, habbo, roomForward = false, roomEnter = true).send(habbo)
+    }
+
+    fun leave(habbo: Habbo) {
+        habbo.room = null
+        habbo.roomState = null
+
+        habbos.remove(habbo)
     }
 
     fun appendToPacket(packet: Packet) {

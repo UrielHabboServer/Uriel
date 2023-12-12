@@ -11,6 +11,7 @@ import org.urielserv.uriel.packets.incoming.rooms.GetUserFlatCatsPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.RoomCreatePacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.RoomEnterPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.RoomModelPacketHandler
+import org.urielserv.uriel.packets.incoming.users.DesktopViewPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
@@ -52,6 +53,8 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.GetWardrobe, GetWardrobePacketHandler())
         registerPacket(Incoming.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
         registerPacket(Incoming.UserFigure, UserFigurePacketHandler())
+
+        registerPacket(Incoming.DesktopView, DesktopViewPacketHandler())
     }
 
     private fun registerNavigatorPackets() {
@@ -63,11 +66,8 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.GetUserFlatCats, GetUserFlatCatsPacketHandler())
         registerPacket(Incoming.RoomCreate, RoomCreatePacketHandler())
         registerPacket(Incoming.RoomEnter, RoomEnterPacketHandler())
-        registerPacket(
-            Incoming.RoomModel,
-            RoomModelPacketHandler()
-        ) // --> RoomModelPacketHandler finishes loading the room
-        registerPacket(Incoming.FurnitureAliases, RoomModelPacketHandler())
+        registerPacket(Incoming.RoomModel, RoomModelPacketHandler()) // -> finishes loading the room
+        registerPacket(Incoming.FurnitureAliases, RoomModelPacketHandler()) // -> finishes loading the room
     }
 
     /**
