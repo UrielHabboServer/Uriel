@@ -42,7 +42,6 @@ data class UrielHotelSettings(
 
         @Serializable
         data class Wardrobe(
-            var cacheFigureData: Boolean,
             var figureDataUrl: String,
             var validateLooksOnHabboClubExpire: Boolean,
             var validateLooksOnLogin: Boolean,

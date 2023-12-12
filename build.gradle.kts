@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
-    kotlin("plugin.serialization") version "1.9.0"
+    kotlin("jvm") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.21"
 
     id("io.ktor.plugin") version "2.3.5"
     id("com.github.gmazzo.buildconfig") version "4.1.2"
@@ -20,6 +20,7 @@ dependencies {
     implementation("io.klogging:slf4j-klogging:0.5.6")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     implementation("io.ktor:ktor-server-core")
     implementation("io.ktor:ktor-server-netty")

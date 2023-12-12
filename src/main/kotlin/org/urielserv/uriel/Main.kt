@@ -121,7 +121,7 @@ suspend fun main() = runBlocking {
     measureInitialProcess("Currency Manager, Figure Data Manager & Habbo Manager") {
         CurrencyManager = UrielCurrencyManager()
         FigureDataManager = UrielFigureDataManager(
-            pathUri = HotelSettings.habbos.wardrobe.figureDataUrl
+            url = HotelSettings.habbos.wardrobe.figureDataUrl
         )
         HabboManager = UrielHabboManager()
     }
