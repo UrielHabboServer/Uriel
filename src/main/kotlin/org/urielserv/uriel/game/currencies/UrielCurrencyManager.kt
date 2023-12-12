@@ -2,7 +2,7 @@ package org.urielserv.uriel.game.currencies
 
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.currencies.CurrenciesSchema
+import org.urielserv.uriel.core.database.schemas.currencies.CurrenciesSchema
 import org.urielserv.uriel.game.habbos.Habbo
 import kotlinx.coroutines.runBlocking
 import org.urielserv.uriel.packets.outgoing.users.currencies.UserCreditsPacket

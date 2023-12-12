@@ -4,8 +4,8 @@ import io.klogging.noCoLogger
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.rooms.RoomModelsSchema
-import org.urielserv.uriel.database.schemas.rooms.RoomsSchema
+import org.urielserv.uriel.core.database.schemas.rooms.RoomModelsSchema
+import org.urielserv.uriel.core.database.schemas.rooms.RoomsSchema
 import org.urielserv.uriel.extensions.hasPermission
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.navigator.NavigatorFlatCategory

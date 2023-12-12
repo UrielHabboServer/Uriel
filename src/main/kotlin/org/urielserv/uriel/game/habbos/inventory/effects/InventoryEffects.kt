@@ -5,7 +5,7 @@ import org.ktorm.entity.add
 import org.ktorm.entity.filter
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.users.UserEffectsSchema
+import org.urielserv.uriel.core.database.schemas.users.UserEffectsSchema
 import org.urielserv.uriel.game.habbos.Habbo
 
 class InventoryEffects(

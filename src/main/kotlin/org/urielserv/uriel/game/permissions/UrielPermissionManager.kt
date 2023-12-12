@@ -2,8 +2,8 @@ package org.urielserv.uriel.game.permissions
 
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.ranks.RankPermissionsSchema
-import org.urielserv.uriel.database.schemas.users.UserPermissionsSchema
+import org.urielserv.uriel.core.database.schemas.ranks.RankPermissionsSchema
+import org.urielserv.uriel.core.database.schemas.users.UserPermissionsSchema
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.permissions.ranks.Rank
 

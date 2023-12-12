@@ -6,7 +6,7 @@ import org.ktorm.entity.add
 import org.ktorm.entity.find
 import org.urielserv.uriel.CurrencyManager
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.users.UserCurrenciesSchema
+import org.urielserv.uriel.core.database.schemas.users.UserCurrenciesSchema
 import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.extensions.toDuration
 import org.urielserv.uriel.game.currencies.UrielCurrency

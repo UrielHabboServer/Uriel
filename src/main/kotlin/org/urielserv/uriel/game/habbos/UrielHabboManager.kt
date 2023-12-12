@@ -5,7 +5,7 @@ import org.ktorm.dsl.eq
 import org.ktorm.entity.find
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.users.UsersSchema
+import org.urielserv.uriel.core.database.schemas.users.UsersSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.networking.UrielServerClient
 import java.security.SecureRandom

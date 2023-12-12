@@ -5,7 +5,7 @@ import org.ktorm.entity.add
 import org.ktorm.entity.filter
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.users.UserSavedLooksSchema
+import org.urielserv.uriel.core.database.schemas.users.UserSavedLooksSchema
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboGender
 

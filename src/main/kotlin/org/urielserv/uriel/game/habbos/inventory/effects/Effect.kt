@@ -3,7 +3,7 @@ package org.urielserv.uriel.game.habbos.inventory.effects
 import org.ktorm.dsl.eq
 import org.ktorm.entity.Entity
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.users.UserEffectsSchema
+import org.urielserv.uriel.core.database.schemas.users.UserEffectsSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo

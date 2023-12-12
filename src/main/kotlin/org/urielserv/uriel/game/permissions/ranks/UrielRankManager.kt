@@ -2,7 +2,7 @@ package org.urielserv.uriel.game.permissions.ranks
 
 import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
-import org.urielserv.uriel.database.schemas.ranks.RanksSchema
+import org.urielserv.uriel.core.database.schemas.ranks.RanksSchema
 
 class UrielRankManager {
 
