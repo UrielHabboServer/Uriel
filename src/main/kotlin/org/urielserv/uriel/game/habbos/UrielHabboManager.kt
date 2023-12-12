@@ -10,7 +10,8 @@ import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.networking.UrielServerClient
 import java.security.SecureRandom
 import java.util.*
-import org.urielserv.uriel.packets.outgoing.rooms.HabboBroadcastMessage
+import org.urielserv.uriel.packets.outgoing.notifications.SimpleAlertMessagePacket
+import org.urielserv.uriel.Localizer
 
 /** 
  * The UrielHabboManager class is responsible for managing the Habbo users. 
@@ -34,7 +35,7 @@ class UrielHabboManager {
         val oldHabbo = connectedHabbos[habbo.info.id]
 
         if (oldHabbo != null) {
-            HabboBroadcastMessage("todo logout localize text").send(oldHabbo)
+            SimpleAlertMessagePacket(Localizer.getString("error.login.elsewhere"), Localizer.getString("error.connection")).send(oldHabbo)
             oldHabbo.client?.dispose()
         }
 

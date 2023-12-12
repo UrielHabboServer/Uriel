@@ -1,9 +1,9 @@
-package org.urielserv.uriel.packets.outgoing.rooms
+package org.urielserv.uriel.packets.outgoing.notifications
 
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
-class HabboBroadcastMessage(
+class HabboBroadcastMessagePacket(
     private val message: String
 ) : Packet() {
 
