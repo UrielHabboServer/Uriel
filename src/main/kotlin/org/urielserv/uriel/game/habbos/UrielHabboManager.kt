@@ -36,7 +36,11 @@ class UrielHabboManager {
         val oldHabbo = connectedHabbos[habbo.info.id]
 
         if (oldHabbo != null) {
-            SimpleAlertMessagePacket(text("uriel.error.login_elsewhere"), text("uriel.error.connection")).send(oldHabbo)
+            habbo.notifications.sendAlert(
+                text("uriel.error.login_elsewhere"),
+                text("uriel.error.connection")
+            )
+
             oldHabbo.disconnect()
         }
 
@@ -112,6 +116,10 @@ class UrielHabboManager {
      */
     fun unloadHabbo(habbo: Habbo) {
         connectedHabbos.remove(habbo.info.id)
+    }
+
+    fun getHabbos(): List<Habbo> {
+        return connectedHabbos.values.toList()
     }
 
     internal suspend fun shutdown() {

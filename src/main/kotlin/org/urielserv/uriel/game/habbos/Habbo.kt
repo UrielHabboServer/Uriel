@@ -7,9 +7,6 @@ import org.urielserv.uriel.game.habbos.inventory.HabboInventory
 import org.urielserv.uriel.game.habbos.subscriptions.HabboSubscriptions
 import org.urielserv.uriel.game.rooms.Room
 import org.urielserv.uriel.networking.UrielServerClient
-import org.urielserv.uriel.extensions.scheduleRepeating
-import org.urielserv.uriel.tick_loop.jobs.RepeatingJob
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * Represents a Habbo user.
@@ -25,6 +22,8 @@ class Habbo internal constructor(
     val currencies = HabboCurrencies(this)
     val inventory = HabboInventory(this)
     val subscriptions = HabboSubscriptions(this)
+
+    val notifications = HabboNotifications(this)
 
     var room: Room? = null
     var roomState: HabboRoomState? = null

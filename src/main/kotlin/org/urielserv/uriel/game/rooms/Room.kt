@@ -54,7 +54,7 @@ class Room internal constructor(
 
         RoomPaintPacket("landscape", info.landscape).send(habbo)
 
-        // After this, the client sends a FurnitureAlisases packet, which will trigger the next step
+        // After this, the client sends a FurnitureAlisases / RoomModel packet, which will trigger finishEnter
     }
 
     internal suspend fun finishEnter(habbo: Habbo) {
@@ -64,12 +64,8 @@ class Room internal constructor(
             tileMap!!.doorDirection
         )
 
-        /*
-        FUNDAMENTAL PACKETS (probably)
-        habbo.getClient().sendResponse(RoomPaneComposer(room, room.isOwner(habbo)))
-        habbo.getClient().sendResponse(RoomThicknessComposer(room))
-        habbo.getClient().sendResponse(RoomDataComposer(room, habbo.getClient().getHabbo(), false, true))
-         */
+        info.users++
+        info.flushChanges()
 
         RoomInfoOwnerPacket(this, habbo.info.id == info.ownerHabboInfo.id).send(habbo)
         RoomThicknessPacket(this).send(habbo)
@@ -81,6 +77,10 @@ class Room internal constructor(
         habbo.roomState = null
 
         habbos.remove(habbo)
+    }
+
+    fun getHabbos(): List<Habbo> {
+        return habbos
     }
 
     fun appendToPacket(packet: Packet) {

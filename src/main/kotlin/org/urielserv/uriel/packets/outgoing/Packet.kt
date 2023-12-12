@@ -2,7 +2,9 @@ package org.urielserv.uriel.packets.outgoing
 
 import io.netty.buffer.ByteBufOutputStream
 import io.netty.buffer.Unpooled
+import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.game.habbos.Habbo
+import org.urielserv.uriel.game.rooms.Room
 import org.urielserv.uriel.networking.UrielServerClient
 
 /**
@@ -23,6 +25,24 @@ abstract class Packet {
      * It is designed to be called from a coroutine context.
      */
     abstract suspend fun construct()
+
+    suspend fun broadcast() {
+        for (habbo in HabboManager.getHabbos()) {
+            send(habbo)
+        }
+    }
+
+    suspend fun broadcast(habbos: List<Habbo>) {
+        for (habbo in habbos) {
+            send(habbo)
+        }
+    }
+
+    suspend fun broadcast(room: Room) {
+        for (habbo in room.getHabbos()) {
+            send(habbo)
+        }
+    }
 
     /**
      * Sends a message to the specified Habbo.
