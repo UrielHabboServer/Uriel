@@ -19,7 +19,9 @@ object Outgoing {
 
     const val NoobnessLevel = 3738
 
+    // LandingView
     const val DesktopView = 122
+    const val PromoArticles = 286
 
     // Navigator
     const val NavigatorCategories = 1562

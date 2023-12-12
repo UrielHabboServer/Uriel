@@ -17,7 +17,9 @@ object Incoming {
     const val SaveWardrobeOutfit = 800
     const val UserFigure = 2730
 
+    // LandingView
     const val DesktopView = 105
+    const val GetPromoArticles = 1827
 
     // Navigator
     const val NavigatorInit = 2110

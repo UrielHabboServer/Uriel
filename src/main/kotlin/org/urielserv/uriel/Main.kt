@@ -22,6 +22,7 @@ import org.urielserv.uriel.game.navigator.UrielNavigatorManager
 import org.urielserv.uriel.game.permissions.UrielPermissionManager
 import org.urielserv.uriel.game.permissions.ranks.UrielRankManager
 import org.urielserv.uriel.game.rooms.UrielRoomManager
+import org.urielserv.uriel.game.landingview.UrielLandingViewManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
@@ -57,6 +58,8 @@ lateinit var HabboManager: UrielHabboManager
 
 lateinit var RoomManager: UrielRoomManager
 lateinit var NavigatorManager: UrielNavigatorManager
+
+lateinit var LandingViewManager: UrielLandingViewManager
 
 lateinit var Server: UrielServer
 lateinit var PacketHandlerManager: UrielPacketHandlerManager
@@ -129,6 +132,10 @@ suspend fun main() = runBlocking {
     measureInitialProcess("Room Manager & Navigator Manager") {
         RoomManager = UrielRoomManager()
         NavigatorManager = UrielNavigatorManager()
+    }
+
+    measureInitialProcess("LandingView Manager") {
+        LandingViewManager = UrielLandingViewManager()
     }
 
     measureInitialProcess("Server & Packet Handler Manager") {

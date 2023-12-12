@@ -18,6 +18,7 @@ import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
 import org.urielserv.uriel.packets.incoming.users.subscriptions.UserSubscriptionPacketHandler
+import org.urielserv.uriel.packets.incoming.landingview.GetPromoArticlesPacketHandler
 import java.io.ByteArrayInputStream
 
 /**
@@ -36,6 +37,7 @@ class UrielPacketHandlerManager {
     private fun registerAllPackets() {
         registerHandshakePackets()
         registerUserPackets()
+        registerLandingViewPackets()
         registerNavigatorPackets()
         registerRoomPackets()
     }
@@ -53,8 +55,11 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.GetWardrobe, GetWardrobePacketHandler())
         registerPacket(Incoming.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
         registerPacket(Incoming.UserFigure, UserFigurePacketHandler())
+    }
 
+    private fun registerLandingViewPackets() {
         registerPacket(Incoming.DesktopView, DesktopViewPacketHandler())
+        registerPacket(Incoming.GetPromoArticles, GetPromoArticlesPacketHandler())
     }
 
     private fun registerNavigatorPackets() {
