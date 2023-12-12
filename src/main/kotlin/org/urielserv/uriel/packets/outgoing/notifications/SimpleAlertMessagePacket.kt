@@ -4,8 +4,8 @@ import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class SimpleAlertMessagePacket(
-    private val title: String? = null,
-    private val message: String
+    private val message: String,
+    private val title: String?
 ) : Packet() {
 
     override val packetId = Outgoing.SimpleAlert
@@ -13,8 +13,7 @@ class SimpleAlertMessagePacket(
     override suspend fun construct() {
         appendString(message)
 
-        if (title != null)
-            appendString(title)
+        if (title != null) appendString(title)
     }
 
 }

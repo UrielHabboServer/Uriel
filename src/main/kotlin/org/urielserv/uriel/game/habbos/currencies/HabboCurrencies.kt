@@ -44,20 +44,22 @@ class HabboCurrencies(
                 habboCurrency = newCurrency
             }
 
+            println("Interval: ${currency.autoTimerTime.toDuration()}")
+
             if (currency.autoTimerTime.toDuration() > 0.seconds) {
                 currencyTimerTasks[habboCurrency] = scheduleRepeating(
                     interval = currency.autoTimerTime.toDuration(),
                     delay = currency.autoTimerTime.toDuration()
                 ) {
                     val oldAmount = habboCurrency.amount
-                    val amount = habboCurrency.amount + currency.toGive
+                    val givenAmount = currency.toGive
 
                     habboCurrency.amount += currency.toGive
 
                     if (currency.nitroId == -1)
                         UserCreditsPacket(habbo).send(habbo)
                     else
-                        ActivityPointNotificationMessagePacket(oldAmount, amount, currency.nitroId).send(habbo)
+                        ActivityPointNotificationMessagePacket(oldAmount, givenAmount, currency.nitroId).send(habbo)
                 }
             }
         }
