@@ -6,7 +6,6 @@ import io.klogging.config.loggingConfiguration
 import io.klogging.logger
 import io.klogging.rendering.RENDER_ANSI
 import io.klogging.sending.STDOUT
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
@@ -16,8 +15,7 @@ import org.urielserv.uriel.configuration.UrielConfiguration
 import org.urielserv.uriel.configuration.UrielHotelSettings
 import org.urielserv.uriel.database.UrielDatabase
 import org.urielserv.uriel.database.schemas.HotelSettingsOverridesSchema
-import org.urielserv.uriel.extensions.schedule
-import org.urielserv.uriel.extensions.scheduleRepeating
+import org.urielserv.uriel.events.CancellableUrielEvent
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
@@ -30,18 +28,15 @@ import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
 import org.urielserv.uriel.locale.UrielLocalizer
 import org.urielserv.uriel.events.UrielEventDispatcher
-import org.urielserv.uriel.events.Event
+import org.urielserv.uriel.events.Events
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.reflect.KMutableProperty
-import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlin.system.exitProcess
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
 
 private val logger = logger("org.urielserv.uriel.Main")
 
@@ -149,9 +144,8 @@ suspend fun main() = runBlocking {
         Server.start()
     }
 
-    EventDispatcher.dispatch(Event.OnLoad)
-
     Ready = true
+    EventDispatcher.dispatch(Events.Load, CancellableUrielEvent())
 
     measureInitialProcess("Tick Loop") {
         HotelTickLoop = TickLoop(

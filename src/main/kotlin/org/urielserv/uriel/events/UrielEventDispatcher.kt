@@ -1,9 +1,10 @@
 package org.urielserv.uriel.events
 
 class UrielEventDispatcher {
-    private val listeners: MutableMap<String, MutableList<(evt: UrielEvent?) -> Unit>> = mutableMapOf()
 
-    fun on(eventType: String, callback: (UrielEvent?) -> Unit) {
+    private val listeners: MutableMap<String, MutableList<(event: UrielEvent) -> Unit>> = mutableMapOf()
+
+    fun on(eventType: String, callback: (UrielEvent) -> Unit) {
         if (!listeners.containsKey(eventType)) {
             listeners[eventType] = mutableListOf()
         }
@@ -11,7 +12,7 @@ class UrielEventDispatcher {
         listeners[eventType]?.add(callback)
     }
 
-    fun off(eventType: String, callback: (UrielEvent?) -> Unit) {
+    fun off(eventType: String, callback: (UrielEvent) -> Unit) {
         val eventListeners = listeners[eventType]
 
         if (eventListeners != null) {
@@ -19,11 +20,12 @@ class UrielEventDispatcher {
         }
     }
 
-    fun dispatch(eventType: String, event: UrielEvent? = null) {
+    fun dispatch(eventType: String, event: UrielEvent) {
         val eventListeners = listeners[eventType]
 
         eventListeners?.forEach { listener ->
             listener.invoke(event)
         }
     }
+
 }

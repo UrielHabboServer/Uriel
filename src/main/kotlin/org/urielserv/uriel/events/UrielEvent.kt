@@ -1,5 +1,3 @@
 package org.urielserv.uriel.events
 
-abstract class UrielEvent() {
-    
-}
+interface UrielEvent
