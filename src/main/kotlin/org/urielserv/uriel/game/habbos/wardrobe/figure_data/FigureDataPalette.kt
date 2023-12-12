@@ -20,13 +20,19 @@ data class FigureDataPalette(
     data class Color(
         val id: Int,
         val index: Int,
-        @SerialName("club") val clubType: Int,
+        @SerialName("club") val clubType: Int?,
         @SerialName("selectable") val canBeSelected: Boolean,
         @SerialName("hexCode") val textContent: String,
     ) {
 
         val requiresHabboClubMembership: Boolean
-            get() = clubType > 0
+            get() {
+                return try {
+                    clubType != null && clubType > 0
+                } catch (ignored: Exception) {
+                    false
+                }
+            }
 
     }
 

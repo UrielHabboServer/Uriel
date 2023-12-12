@@ -45,6 +45,7 @@ object ClothingValidator {
 
         fun addPart(data: Array<String>) {
             val setType: FigureDataSetType? = FigureDataManager.setTypes[data[0]]
+
             if (setType != null) {
                 parts[data[0]] = data
             }

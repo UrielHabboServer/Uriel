@@ -45,7 +45,7 @@ data class FigureDataSetType(
     data class Set(
         val id: Int,
         val gender: String,
-        @SerialName("club") val clubType: Int,
+        @SerialName("club") val clubType: Int?,
         @SerialName("colorable") val canChangeColors: Boolean,
         @SerialName("selectable") val canBeSelected: Boolean,
         @SerialName("preselectable") val canBePreSelected: Boolean,
@@ -53,7 +53,13 @@ data class FigureDataSetType(
     ) {
 
         val requiresHabboClubMembership: Boolean
-            get() = clubType > 0
+            get() {
+                return try {
+                    clubType != null && clubType > 0
+                } catch (ignored: Exception) {
+                    false
+                }
+            }
 
     }
 
