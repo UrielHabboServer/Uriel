@@ -8,8 +8,9 @@ class NotificationDialogMessagePacket(
     vararg keys: Pair<String, String>
 ) : Packet() {
 
-    private val keys = keys.toMutableList()
     override val packetId = Outgoing.NotificationList
+
+    private val keys = keys.toMutableList()
 
     override suspend fun construct() {
         appendString(type)
