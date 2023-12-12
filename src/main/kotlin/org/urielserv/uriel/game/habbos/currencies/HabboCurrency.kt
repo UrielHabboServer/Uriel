@@ -26,10 +26,11 @@ interface HabboCurrency : Entity<HabboCurrency> {
 
         if (habbo == null || amount == 0) return
 
-        if (currency.nitroId == -1)
-            UserCreditsPacket(habbo!!).send(habbo!!)
-        else
+        if (currency.nitroId == -1) {
+            UserCreditsPacket(amount).send(habbo!!)
+        } else {
             ActivityPointNotificationMessagePacket(oldAmount, amount, currency.nitroId).send(habbo!!)
+        }
     }
 
 }

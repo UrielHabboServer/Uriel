@@ -11,7 +11,11 @@ class UserCurrencyPacketHandler : PacketHandler {
     override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
         if (client.habbo == null) return
 
-        UserCreditsPacket(client.habbo!!).send(client)
+        val habboCreditsCurrency = client.habbo!!.currencies.getByName("credits")
+        if (habboCreditsCurrency != null) {
+            UserCreditsPacket(habboCreditsCurrency.amount).send(client)
+        }
+
         UserCurrencyPacket(client.habbo!!).send(client)
     }
 
