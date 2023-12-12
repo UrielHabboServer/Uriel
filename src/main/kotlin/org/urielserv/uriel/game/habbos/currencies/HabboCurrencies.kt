@@ -4,11 +4,13 @@ import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
 import org.ktorm.entity.add
 import org.ktorm.entity.find
+import org.ktorm.entity.update
 import org.urielserv.uriel.CurrencyManager
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.database.schemas.users.UserCurrenciesSchema
 import org.urielserv.uriel.game.currencies.UrielCurrency
 import org.urielserv.uriel.game.habbos.Habbo
+
 
 class HabboCurrencies(
     val habbo: Habbo
@@ -21,9 +23,9 @@ class HabboCurrencies(
             val habboCurrency = Database.sequenceOf(UserCurrenciesSchema)
                 .find { (it.userId eq habbo.info.id) and (it.currencyId eq currency.id) }
 
-            if (habboCurrency != null) {
+            if (habboCurrency != null)
                 currencies[currency.id] = habboCurrency
-            } else {
+            else {
                 val newCurrency = HabboCurrency {
                     this.currency = currency
                     this.habboInfo = this@HabboCurrencies.habbo.info
@@ -40,8 +42,21 @@ class HabboCurrencies(
         return currencies[currency.id]
     }
 
+    fun getById(id: Int): HabboCurrency? {
+        return currencies[id]
+    }
+
     fun getByName(name: String): HabboCurrency? {
         return currencies.values.firstOrNull { it.currency.name == name || "${it.currency.name}s" == name }
     }
 
+    fun unload() {
+        for(currency in currencies) {
+            Database.sequenceOf(UserCurrenciesSchema).update(currency.value)
+        }
+    }
+
+    fun onTick(ticks: Int) {
+        CurrencyManager.checkGiveHabbo(habbo, ticks)
+    }
 }

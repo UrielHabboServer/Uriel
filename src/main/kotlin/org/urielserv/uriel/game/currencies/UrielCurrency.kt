@@ -10,5 +10,8 @@ interface UrielCurrency : Entity<UrielCurrency> {
     var name: String
     var isSeasonal: Boolean
     var default: Int
+    
+    var autoTimer: Int
+    var toGive: Int
 
 }

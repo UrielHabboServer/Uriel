@@ -6,7 +6,9 @@ CREATE TABLE currencies
     nitro_id       INT                            NOT NULL,
     is_seasonal    BOOLEAN DEFAULT false          NOT NULL,
     name           VARCHAR(255)                   NOT NULL,
-    default_amount INT     DEFAULT 0              NOT NULL
+    default_amount INT     DEFAULT 0              NOT NULL,
+    auto_timer     int     DEFAULT 0              NOT NUll,
+    to__give       int     DEFAULT 0              NOT NULL
 );
 INSERT INTO currencies (nitro_id, is_seasonal, name)
 VALUES (-1, false, 'credit');

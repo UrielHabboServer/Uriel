@@ -111,6 +111,8 @@ class UrielHabboManager {
         habbo.info.isOnline = false
         habbo.info.lastOnline = currentUnixSeconds
 
+        habbo.unload()
+
         connectedHabbos.remove(habbo.info.id)
     }
 
