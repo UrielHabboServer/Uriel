@@ -6,15 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FigureDataPalette(
     val id: Int,
-    @SerialName("colors") private val colorsInternal: List<Color>
+    @SerialName("colors") val colors: List<Color>
 ) {
 
-    val colors: Map<Int, Color>
-        get() = colorsInternal.associateBy { it.index }
-
     fun getFirstNonClubColor(): Color? =
-        colors.values.firstOrNull { !it.requiresHabboClubMembership && it.canBeSelected }
-            ?: colors.values.firstOrNull()
+        colors.firstOrNull { !it.requiresHabboClubMembership && it.canBeSelected }
 
     @Serializable
     data class Color(

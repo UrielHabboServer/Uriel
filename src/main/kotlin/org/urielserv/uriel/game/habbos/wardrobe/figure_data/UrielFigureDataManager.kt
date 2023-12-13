@@ -5,8 +5,8 @@ import java.net.URI
 
 class UrielFigureDataManager(url: String) {
 
-    val palettes: MutableMap<Int, FigureDataPalette>
-    val setTypes: MutableMap<String, FigureDataSetType>
+    val palettes: List<FigureDataPalette>
+    val setTypes: List<FigureDataSetType>
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -17,8 +17,8 @@ class UrielFigureDataManager(url: String) {
 
         val figureData = json.decodeFromString<FigureData>(jsonContents)
 
-        palettes = figureData.palettes.associateBy { it.id }.toMutableMap()
-        setTypes = figureData.setTypes.associateBy { it.type }.toMutableMap()
+        palettes = figureData.palettes
+        setTypes = figureData.setTypes
     }
 
 }

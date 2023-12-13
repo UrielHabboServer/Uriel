@@ -4,9 +4,6 @@ import io.klogging.noCoLogger
 import org.urielserv.uriel.FigureDataManager
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.inventory.looks.SavedLook
-import org.urielserv.uriel.game.habbos.wardrobe.figure_data.FigureDataPalette
-import org.urielserv.uriel.game.habbos.wardrobe.figure_data.FigureDataSetType
-import java.util.*
 
 object ClothingValidator {
 
@@ -34,112 +31,121 @@ object ClothingValidator {
         isHabboClubMember: Boolean,
         ownedClothing: List<Int>
     ): String {
-        if (FigureDataManager.palettes.isEmpty() || FigureDataManager.setTypes.isEmpty()) {
+        val lookParts = look.split(".")
+        val validatedLookParts = mutableListOf<String>()
+
+        if (lookParts.size < 2) {
+            logger.warn("Invalid look: $look")
             return look
         }
 
-        val newLookParts = look.split(".").toTypedArray()
-        val lookParts = mutableListOf<String>()
+        for (lookPart in lookParts) {
+            val parts = lookPart.split("-")
 
-        val parts: MutableMap<String, Array<String>> = TreeMap()
+            val setType = parts.getOrNull(0)
+            val setId = parts.getOrNull(1)
+            val firstColorId = parts.getOrNull(2)?.toIntOrNull()
+            val secondColorId = parts.getOrNull(3)?.toIntOrNull()
 
-        fun addPart(data: Array<String>) {
-            val setType: FigureDataSetType? = FigureDataManager.setTypes[data[0]]
-
-            if (setType != null) {
-                parts[data[0]] = data
+            if (setType == null) {
+                continue
             }
-        }
 
-        // Add mandatory setTypes
-        for (lookPart in newLookParts) {
-            if (lookPart.contains("-")) {
-                addPart(lookPart.split("-").toTypedArray())
+            val figureDataSetType = FigureDataManager.setTypes.firstOrNull { it.type == setType }
+
+            if (figureDataSetType == null) {
+                continue
             }
-        }
 
-        FigureDataManager.setTypes.filter { (key, _) -> !parts.containsKey(key) }
-            .forEach { (key, setType) ->
-                val isMale = gender.equals("M", ignoreCase = true)
-                val isFemale = gender.equals("F", ignoreCase = true)
+            val figureDataSet = figureDataSetType.sets.firstOrNull { it.id == setId?.toIntOrNull() }
 
-                when {
-                    (isMale && !isHabboClubMember && !setType.mandatoryMale0) ||
-                            (isFemale && !isHabboClubMember && !setType.mandatoryFemale0) ||
-                            (isMale && isHabboClubMember && !setType.mandatoryMale1) ||
-                            (isFemale && isHabboClubMember && !setType.mandatoryFemale1) -> return@forEach
+            if (figureDataSet == null) {
+                continue
+            }
 
-                    else -> parts[key] = arrayOf(key)
+            // Check if it's inventory clothing and if the habbo owns it
+            if (!figureDataSet.canBeSelected && !ownedClothing.contains(figureDataSet.id)) {
+                continue
+            }
+
+            // Check if it's a club set and if the habbo is a club member
+            if (figureDataSet.requiresHabboClubMembership && !isHabboClubMember) {
+                continue
+            }
+
+            // Check gender
+            if (!figureDataSet.gender.equals("U", ignoreCase = true)
+                && !figureDataSet.gender.equals(gender, ignoreCase = true)
+            ) {
+                if (gender.equals("M", ignoreCase = true)
+                    && !isHabboClubMember
+                    && !figureDataSetType.mandatoryMale0) continue
+
+                if (gender.equals("F", ignoreCase = true)
+                    && !isHabboClubMember
+                    && !figureDataSetType.mandatoryFemale0) continue
+
+                if (gender.equals("M", ignoreCase = true)
+                    && isHabboClubMember
+                    && !figureDataSetType.mandatoryMale1) continue
+
+                if (gender.equals("F", ignoreCase = true)
+                    && isHabboClubMember
+                    && !figureDataSetType.mandatoryFemale1) continue
+            }
+
+            var validatedLookPart = "$setType-$setId"
+
+            // COLORS
+            val palette = FigureDataManager.palettes.firstOrNull { it.id == figureDataSetType.paletteId }
+
+            if (palette == null) {
+                continue
+            }
+
+            var firstColor = if (firstColorId != null && firstColorId > 0) {
+                palette.colors.firstOrNull { it.id == firstColorId }
+            } else {
+                palette.getFirstNonClubColor()
+            }
+
+            if (firstColor == null) {
+                firstColor = palette.getFirstNonClubColor()
+            }
+
+            if (!firstColor!!.canBeSelected) {
+                firstColor = palette.getFirstNonClubColor()
+            }
+
+            if (firstColor!!.requiresHabboClubMembership && !isHabboClubMember) {
+                firstColor = palette.getFirstNonClubColor()
+            }
+
+            validatedLookPart += "-${firstColor!!.id}"
+
+            // second color is optional
+            if (secondColorId != null) {
+                var secondColor = palette.colors.firstOrNull { it.id == secondColorId }
+
+                if (secondColor == null) {
+                    secondColor = palette.getFirstNonClubColor()
                 }
-            }
 
-        parts.forEach { (_, data) ->
-            try {
-                if (data.isNotEmpty()) {
-                    val setType = FigureDataManager.setTypes[data[0]] ?: return@forEach
-                    val palette = FigureDataManager.palettes[setType.paletteId]
-
-                    if (palette == null) {
-                        logger.error("Palette ${setType.paletteId} does not exist")
-                        return@forEach
-                    }
-
-                    var setId = (if (data.size >= 2) data[1] else "-1").toInt()
-                    var set = setType.sets[setId]
-
-                    if (set == null || (set.requiresHabboClubMembership && !isHabboClubMember) ||
-                        !set.canBeSelected || (set.canBeSold && !ownedClothing.contains(set.id)) ||
-                        (!set.gender.equals("U", ignoreCase = true) && !set.gender.equals(gender, ignoreCase = true))
-                    ) {
-                        set = setType.getFirstNonClubSetForGender(gender)
-                        setId = set!!.id
-                    }
-
-                    val dataParts = mutableListOf<String>()
-
-                    var color1 = -1
-                    var color2 = -1
-
-                    if (set.canChangeColors) {
-                        color1 = if (data.size >= 3) data[2].toInt() else -1
-
-                        val color = palette.colors[color1]
-
-                        if (color == null || (color.requiresHabboClubMembership && !isHabboClubMember)) {
-                            color1 = palette.getFirstNonClubColor()!!.id
-                        }
-                    }
-
-                    if (data.size >= 4 && set.canChangeColors) {
-                        color2 = data[3].toInt()
-
-                        val color: FigureDataPalette.Color? = palette.colors[color2]
-
-                        if (color == null || (color.requiresHabboClubMembership && !isHabboClubMember)) {
-                            color2 = palette.getFirstNonClubColor()!!.id
-                        }
-                    }
-
-                    dataParts.add(setType.type)
-                    dataParts.add("$setId")
-
-                    if (color1 > -1) {
-                        dataParts.add("$color1")
-                    }
-
-                    if (color2 > -1) {
-                        dataParts.add("$color2")
-                    }
-
-                    lookParts.add(dataParts.joinToString("-"))
+                if (!secondColor!!.canBeSelected) {
+                    secondColor = palette.getFirstNonClubColor()
                 }
-            } catch (exc: Exception) {
-                logger.error("Error in clothing validation")
-                exc.printStackTrace()
+
+                if (secondColor!!.requiresHabboClubMembership && !isHabboClubMember) {
+                    secondColor = palette.getFirstNonClubColor()
+                }
+
+                validatedLookPart += "-${secondColor!!.id}"
             }
+
+            validatedLookParts.add(validatedLookPart)
         }
 
-        return lookParts.joinToString(".")
+        return validatedLookParts.joinToString(".")
     }
 
 }

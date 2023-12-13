@@ -2,8 +2,6 @@ package org.urielserv.uriel.game.habbos.wardrobe.figure_data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.util.TreeMap
-import kotlin.collections.Set
 
 @Serializable
 data class FigureDataSetType(
@@ -13,26 +11,13 @@ data class FigureDataSetType(
     @SerialName("mandatory_f_0") val mandatoryFemale0: Boolean,
     @SerialName("mandatory_m_1") val mandatoryMale1: Boolean,
     @SerialName("mandatory_f_1") val mandatoryFemale1: Boolean,
-    @SerialName("sets") private val setsInternal: List<Set>
+    @SerialName("sets") val sets: List<Set>
 ) {
 
-    val sets: TreeMap<Int, Set>
-        get() {
-            val treeMap = TreeMap<Int, Set>()
-
-            setsInternal.forEach { set ->
-                treeMap[set.id] = set
-            }
-
-            return treeMap
-        }
-
     private fun getFirstMatchingSetForGender(gender: String?, predicate: (Set) -> Boolean): Set? {
-        val matchingSet = sets.descendingMap().values.firstOrNull { set ->
+        return sets.firstOrNull { set ->
             (set.gender.equals(gender, true) || set.gender.equals("u", true)) && predicate(set)
         }
-
-        return matchingSet ?: (if (sets.isNotEmpty()) sets.descendingMap().entries.iterator().next().value else null)
     }
 
     fun getFirstSetForGender(gender: String?): Set? =
