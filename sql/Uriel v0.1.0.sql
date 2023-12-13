@@ -1241,5 +1241,5 @@ CREATE TABLE landingview_articles
     `body_text`     VARCHAR(255)                   NOT NULL,
     `button_text`   VARCHAR(255)                   NOT NULL,
     `button_action` VARCHAR(255)                   NOT NULL,
-    `image_url`     VARCHAR(255)                   NOT NULL,
+    `image_url`     VARCHAR(255)                   NOT NULL
 );
