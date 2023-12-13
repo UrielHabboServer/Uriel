@@ -1232,3 +1232,14 @@ CREATE TABLE uriel_hotel_settings_overrides
     `path` VARCHAR(255) NOT NULL,
     value  VARCHAR(255) DEFAULT NULL
 );
+
+DROP TABLE IF EXISTS landingview_articles;
+CREATE TABLE landingview_articles
+(
+    id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    `title`         VARCHAR(255)                   NOT NULL,
+    `body_text`     VARCHAR(255)                   NOT NULL,
+    `button_text`   VARCHAR(255)                   NOT NULL,
+    `button_action` VARCHAR(255)                   NOT NULL,
+    `image_url`     VARCHAR(255)                   NOT NULL,
+);
