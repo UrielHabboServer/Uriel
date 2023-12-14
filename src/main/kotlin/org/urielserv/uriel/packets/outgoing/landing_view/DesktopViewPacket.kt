@@ -1,4 +1,4 @@
-package org.urielserv.uriel.packets.outgoing.users
+package org.urielserv.uriel.packets.outgoing.landing_view
 
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet

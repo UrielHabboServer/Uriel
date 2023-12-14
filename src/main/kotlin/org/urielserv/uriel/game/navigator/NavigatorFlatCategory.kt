@@ -7,7 +7,6 @@ interface NavigatorFlatCategory : Entity<NavigatorFlatCategory> {
     val id: Int
     var caption: String
 
-    var minimumRankWeight: Int
     var maximumUsers: Int
 
     var isPublic: Boolean

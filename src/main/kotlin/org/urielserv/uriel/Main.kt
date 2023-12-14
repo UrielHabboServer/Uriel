@@ -14,7 +14,7 @@ import org.urielserv.uriel.Uriel.BuildConfig
 import org.urielserv.uriel.core.configuration.UrielConfiguration
 import org.urielserv.uriel.core.configuration.UrielHotelSettings
 import org.urielserv.uriel.core.database.UrielDatabase
-import org.urielserv.uriel.core.database.schemas.HotelSettingsOverridesSchema
+import org.urielserv.uriel.core.database.schemas.HotelSettingOverridesSchema
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
@@ -22,7 +22,7 @@ import org.urielserv.uriel.game.navigator.UrielNavigatorManager
 import org.urielserv.uriel.game.permissions.UrielPermissionManager
 import org.urielserv.uriel.game.permissions.ranks.UrielRankManager
 import org.urielserv.uriel.game.rooms.UrielRoomManager
-import org.urielserv.uriel.game.landingview.UrielLandingViewManager
+import org.urielserv.uriel.game.landing_view.UrielLandingViewManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
@@ -129,13 +129,10 @@ suspend fun main() = runBlocking {
         HabboManager = UrielHabboManager()
     }
 
-    measureInitialProcess("Room Manager & Navigator Manager") {
+    measureInitialProcess("Landing View, Room Manager & Navigator Manager") {
+        LandingViewManager = UrielLandingViewManager()
         RoomManager = UrielRoomManager()
         NavigatorManager = UrielNavigatorManager()
-    }
-
-    measureInitialProcess("LandingView Manager") {
-        LandingViewManager = UrielLandingViewManager()
     }
 
     measureInitialProcess("Server & Packet Handler Manager") {
@@ -192,7 +189,7 @@ private suspend inline fun <reified T> loadTomlFile(pathString: String): T {
 }
 
 private suspend fun loadDatabaseHotelSettingsOverrides() {
-    val hotelSettingsOverrides = Database.sequenceOf(HotelSettingsOverridesSchema).toList()
+    val hotelSettingsOverrides = Database.sequenceOf(HotelSettingOverridesSchema).toList()
 
     // use reflection to change the values in the HotelSettings object
     for (hotelSettingsOverride in hotelSettingsOverrides) {

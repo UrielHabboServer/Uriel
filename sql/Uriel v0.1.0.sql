@@ -126,7 +126,16 @@ CREATE TABLE rank_permissions
     FOREIGN KEY (rank_id) REFERENCES ranks (id)
 );
 INSERT INTO rank_permissions (rank_id, permission, allow)
-VALUES (1, 'uriel.rooms.can_create_rooms', true);
+VALUES (1, 'uriel.rooms.can_create_rooms', true),
+       (1, 'uriel.flat_categories.1', true),
+       (1, 'uriel.flat_categories.2', true),
+       (1, 'uriel.flat_categories.3', true),
+       (1, 'uriel.flat_categories.4', true),
+       (1, 'uriel.flat_categories.5', true),
+       (1, 'uriel.flat_categories.6', true),
+       (1, 'uriel.flat_categories.7', true),
+       (1, 'uriel.flat_categories.8', true),
+       (3, 'uriel_flat_categories.9', true);
 
 -- Navigator
 DROP TABLE IF EXISTS navigator_public_categories;
@@ -149,13 +158,12 @@ VALUES ('Staff Picks', false, true, 0),
 DROP TABLE IF EXISTS navigator_flat_categories;
 CREATE TABLE navigator_flat_categories
 (
-    id                  INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    caption             VARCHAR(255)                   NOT NULL,
-    minimum_rank_weight INT     DEFAULT 0              NOT NULL,
-    maximum_users       INT     DEFAULT 100            NOT NULL,
-    is_public           BOOLEAN DEFAULT false          NOT NULL,
-    allow_trading       BOOLEAN DEFAULT false          NOT NULL,
-    order_num           INT     DEFAULT 0              NOT NULL
+    id            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    caption       VARCHAR(255)                   NOT NULL,
+    maximum_users INT     DEFAULT 100            NOT NULL,
+    is_public     BOOLEAN DEFAULT false          NOT NULL,
+    allow_trading BOOLEAN DEFAULT false          NOT NULL,
+    order_num     INT     DEFAULT 0              NOT NULL
 );
 INSERT INTO navigator_flat_categories (caption)
 VALUES ('${navigator.flatcategory.global.BC}'),
@@ -166,8 +174,8 @@ VALUES ('${navigator.flatcategory.global.BC}'),
        ('${navigator.flatcategory.global.HELP}'),
        ('${navigator.flatcategory.global.LIFE}'),
        ('${navigator.flatcategory.global.PARTY}');
-INSERT INTO navigator_flat_categories (caption, minimum_rank_weight, is_public)
-VALUES ('${navigator.flatcategory.global.OFFICIAL}', 200, true);
+INSERT INTO navigator_flat_categories (caption, is_public)
+VALUES ('${navigator.flatcategory.global.OFFICIAL}', true);
 
 -- Rooms
 DROP TABLE IF EXISTS rooms;
@@ -259,9 +267,8 @@ xxxx00000000
 xxxx00000000
 xxxx00000000
 xxxxxxxxxxxx
-xxxxxxxxxxxx', 3, 5, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_b', 'xxxxxxxxxxxx
+xxxxxxxxxxxx', 3, 5, 2),
+       ('model_b', 'xxxxxxxxxxxx
 xxxxx0000000
 xxxxx0000000
 xxxxx0000000
@@ -276,9 +283,8 @@ xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
-xxxxxxxxxxxx', 0, 5, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_c', 'xxxxxxxxxxxx
+xxxxxxxxxxxx', 0, 5, 2),
+       ('model_c', 'xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
@@ -293,9 +299,8 @@ xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
-xxxxxxxxxxxx', 4, 7, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_d', 'xxxxxxxxxxxx
+xxxxxxxxxxxx', 4, 7, 2),
+       ('model_d', 'xxxxxxxxxxxx
 xxxxx000000x
 xxxxx000000x
 xxxxx000000x
@@ -310,9 +315,8 @@ xxxxx000000x
 xxxxx000000x
 xxxxx000000x
 xxxxx000000x
-xxxxxxxxxxxx', 4, 7, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_e', 'xxxxxxxxxxxx
+xxxxxxxxxxxx', 4, 7, 2),
+       ('model_e', 'xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
 xx0000000000
@@ -327,9 +331,8 @@ xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
-xxxxxxxxxxxx', 1, 5, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_f', 'xxxxxxxxxxxx
+xxxxxxxxxxxx', 1, 5, 2),
+       ('model_f', 'xxxxxxxxxxxx
 xxxxxxx0000x
 xxxxxxx0000x
 xxx00000000x
@@ -362,9 +365,8 @@ xxxxxxx00000
 xxxxxxxxxxxx
 xxxxxxxxxxxx
 xxxxxxxxxxxx
-xxxxxxxxxxxx', true, 1, 7, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_h', 'xxxxxxxxxxxx
+xxxxxxxxxxxx', true, 1, 7, 2),
+       ('model_h', 'xxxxxxxxxxxx
 xxxxxxxxxxxx\n
 xxxxx111111x
 xxxxx111111x
@@ -408,9 +410,8 @@ x0000000000000000
 x0000000000000000
 x0000000000000000
 x0000000000000000
-xxxxxxxxxxxxxxxxx', 0, 10, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_j', 'xxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxx', 0, 10, 2),
+       ('model_j', 'xxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxx0000000000
 xxxxxxxxxxx0000000000
 xxxxxxxxxxx0000000000
@@ -433,9 +434,8 @@ x0000000000xxxxxxxxxx
 x0000000000xxxxxxxxxx
 x0000000000xxxxxxxxxx
 x0000000000xxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxx', 0, 10, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_k', 'xxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxx', 0, 10, 2),
+       ('model_k', 'xxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxx00000000
 xxxxxxxxxxxxxxxxx00000000
 xxxxxxxxxxxxxxxxx00000000
@@ -462,9 +462,8 @@ xxxxxxxxx0000000000000000
 xxxxxxxxx0000000000000000
 xxxxxxxxx0000000000000000
 xxxxxxxxx0000000000000000
-xxxxxxxxxxxxxxxxxxxxxxxxx', 0, 13, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_l', 'xxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxx', 0, 13, 2),
+       ('model_l', 'xxxxxxxxxxxxxxxxxxxxx
 x00000000000000000000
 x00000000000000000000
 x00000000000000000000
@@ -485,9 +484,8 @@ x00000000xxxx00000000
 x00000000xxxx00000000
 x00000000xxxx00000000
 x00000000xxxx00000000
-xxxxxxxxxxxxxxxxxxxxx', 0, 16, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_m', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxx', 0, 16, 2),
+       ('model_m', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxx00000000xxxxxxxxxx
 xxxxxxxxxxx00000000xxxxxxxxxx
 xxxxxxxxxxx00000000xxxxxxxxxx
@@ -516,9 +514,8 @@ xxxxxxxxxxx00000000xxxxxxxxxx
 xxxxxxxxxxx00000000xxxxxxxxxx
 xxxxxxxxxxx00000000xxxxxxxxxx
 xxxxxxxxxxx00000000xxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 15, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_n', 'xxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 15, 2),
+       ('model_n', 'xxxxxxxxxxxxxxxxxxxxx
 x00000000000000000000
 x00000000000000000000
 x00000000000000000000
@@ -568,9 +565,8 @@ xxxxxxxxx0000000000000000
 xxxxxxxxx0000000000000000
 xxxxxxxxx0000000000000000
 xxxxxxxxx0000000000000000
-xxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 18, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_p', 'xxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 18, 2),
+       ('model_p', 'xxxxxxxxxxxxxxxxxxx
 xxxxxxx222222222222
 xxxxxxx222222222222
 xxxxxxx222222222222
@@ -595,9 +591,8 @@ x2222xx000000000000
 x2222xx000000000000
 22222xx000000000000
 x2222xx000000000000
-xxxxxxxxxxxxxxxxxxx', true, 0, 23, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_q', 'xxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxx', true, 0, 23, 2),
+       ('model_q', 'xxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxx22222222
 xxxxxxxxxxx22222222
 xxxxxxxxxxx22222222
@@ -622,9 +617,8 @@ x1111xx1111xx000000
 x1111xx111110000000
 x1111xx111110000000
 x1111xx1111xx000000
-xxxxxxxxxxxxxxxxxxx', true, 10, 4, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_r', 'xxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxx', true, 10, 4, 2),
+       ('model_r', 'xxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxx33333333333333
 xxxxxxxxxxx33333333333333
 xxxxxxxxxxx33333333333333
@@ -687,9 +681,8 @@ x222222222222222222222222222x
 x222222222222222222222222222x
 x222222222222222222222222222x
 x222222222222222222222222222x
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 3, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_u', 'xxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 3, 2),
+       ('model_u', 'xxxxxxxxxxxxxxxxxxxxxxxx
 x1111100000000000000000x
 x1111100000000000000000x
 x1111100000000000000000x
@@ -724,9 +717,8 @@ x1111100000000000000000x
 x1111100000000000000000x
 x1111100000000000000000x
 x1111100000000000000000x
-xxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 17, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_v', 'xxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 17, 2),
+       ('model_v', 'xxxxxxxxxxxxxxxxxxxx
 x222221111111111111x
 x222221111111111111x
 2222221111111111111x
@@ -755,9 +747,8 @@ x000000000000000000x
 x000000000000000000x
 x000000000000000000x
 x000000000000000000x
-xxxxxxxxxxxxxxxxxxxx', true, 0, 3, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_w', 'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxx', true, 0, 3, 2),
+       ('model_w', 'xxxxxxxxxxxxxxxxxxxxxxxxxxx
 x2222xx1111111111xx11111111
 x2222xx1111111111xx11111111
 222222111111111111111111111
@@ -783,9 +774,8 @@ x2222x0000000000xxxxxxxxxxx
 x2222x0000000000xxxxxxxxxxx
 x2222x0000000000xxxxxxxxxxx
 x2222x0000000000xxxxxxxxxxx
-x2222x0000000000xxxxxxxxxxx', true, 0, 3, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_x', 'xxxxxxxxxxxxxxxxxxxx
+x2222x0000000000xxxxxxxxxxx', true, 0, 3, 2),
+       ('model_x', 'xxxxxxxxxxxxxxxxxxxx
 x000000000000000000x
 x000000000000000000x
 x000000000000000000x
@@ -810,9 +800,8 @@ x000000000000000000x
 x000000000000000000x
 x000000000000000000x
 x000000000000000000x
-xxxxxxxxxxxxxxxxxxxx', true, 0, 12, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_y', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxx', true, 0, 12, 2),
+       ('model_y', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x00000000xx0000000000xx0000x
 x00000000xx0000000000xx0000x
 000000000xx0000000000xx0000x
@@ -835,9 +824,8 @@ x00000000000000000000000000x
 x00000000000000000000000000x
 x00000000000000000000000000x
 x00000000000000000000000000x
-xxxxxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 3, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_z', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 3, 2),
+       ('model_z', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxx00000000000000000000
 xxxxxxxxxxx00000000000000000000
 xxxxxxxxxxx00000000000000000000
@@ -856,9 +844,8 @@ x00000000xx00000000000000000000
 xxxxxxxxxxx00000000000000000000
 xxxxxxxxxxx00000000000000000000
 xxxxxxxxxxx00000000000000000000
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 9, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_0', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', true, 0, 9, 2),
+       ('model_0', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x00000000xx00000000xx00000000xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x00000000xx00000000xx00000000xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x00000000xx00000000xx00000000xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx0000
@@ -917,9 +904,8 @@ xfffffffffxxxxxx111111111111111111
 xfffffffffxxxxxx111111111111111111
 xfffffffffxxxxxx111111111111111111
 xxxxxxxxxxxxxxxx111111111111111111
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 10, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_2', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 10, 2),
+       ('model_2', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xjjjjjjjjjjjjjx0000xxxxxxxxxx
 xjjjjjjjjjjjjjx0000xxxxxxxxxx
 xjjjjjjjjjjjjjx0000xxxxxxxxxx
@@ -1002,9 +988,8 @@ X000000000000000X
 X000000000000000X
 X000000000000000X
 X000000000000000X
-XXXXXXXXXXXXXXXXX', true, 0, 10, 2);
-INSERT INTO room_models (name, heightmap, is_club_only, door_x, door_y, door_direction)
-VALUES ('model_4', 'xxxxxxxxxxxxxxxxxxxxxxx
+XXXXXXXXXXXXXXXXX', true, 0, 10, 2),
+       ('model_4', 'xxxxxxxxxxxxxxxxxxxxxxx
 xXXXXXXXX9999999999999x
 xXXXXXXXX9999999999999x
 xXXXXXXXX9999999999999x
@@ -1058,9 +1043,8 @@ x00000000000000000000000000000000x
 x00000000000000000000000000000000x
 x00000000000000000000000000000000x
 x00000000000000000000000000000000x
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 10, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_6', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 10, 2),
+       ('model_6', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x222222222x000000000000000000000000xxxx
 x222222222x000000000000000000000000xxxx
 x222222222x000000000000000000000000xxxx
@@ -1091,9 +1075,8 @@ x00x0000000000000000000000000000000xxxx
 x00x0000000000000000000000000000000xxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 15, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_7', 'xxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 15, 2),
+       ('model_7', 'xxxxxxxxxxxxxxxxxxxxxxxxx
 x222222xx00000000xxxxxxxx
 x222222xx00000000xxxxxxxx
 x2222221000000000xxxxxxxx
@@ -1122,9 +1105,8 @@ xxxxxxxxiiiiiixxxxxxxxxxx
 xxxxxxxxiiiiiixxxxxxxxxxx
 xxxxxxxxiiiiiixxxxxxxxxxx
 xxxxxxxxiiiiiixxxxxxxxxxx
-xxxxxxxxiiiiiixxxxxxxxxxx', 0, 17, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_8', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxiiiiiixxxxxxxxxxx', 0, 17, 2),
+       ('model_8', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x5555555555555555555555555xxxxxxxxx
 x5555555555555555555555555xxxxxxxxx
 x5555555555555555555555555xxxxxxxxx
@@ -1157,9 +1139,8 @@ xxxxxxxx0000000000000000000000000xx
 xxxxxxxx0000000000000000000000000xx
 xxxxxxxx0000000000000000000000000xx
 xxxxxxxx0000000000000000000000000xx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 15, 2);
-INSERT INTO room_models (name, heightmap, door_x, door_y, door_direction)
-VALUES ('model_9', 'xxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 0, 15, 2),
+       ('model_9', 'xxxxxxxxxxxxxxxxxxxxxxxx
 x0000000000000000000000x
 x0000000000000000000000x
 x0000000000000000000000x
@@ -1226,20 +1207,20 @@ INSERT INTO uriel_texts (`key`, value)
 VALUES ('uriel.error.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
        ('uriel.error.connection', 'Connection Error');
 
-DROP TABLE IF EXISTS uriel_hotel_settings_overrides;
-CREATE TABLE uriel_hotel_settings_overrides
+DROP TABLE IF EXISTS uriel_hotel_setting_overrides;
+CREATE TABLE uriel_hotel_setting_overrides
 (
     `path` VARCHAR(255) NOT NULL,
     value  VARCHAR(255) DEFAULT NULL
 );
 
-DROP TABLE IF EXISTS landingview_articles;
-CREATE TABLE landingview_articles
+DROP TABLE IF EXISTS landing_view_articles;
+CREATE TABLE landing_view_articles
 (
-    id              INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    `title`         VARCHAR(255)                   NOT NULL,
-    `body_text`     VARCHAR(255)                   NOT NULL,
-    `button_text`   VARCHAR(255)                   NOT NULL,
-    `button_action` VARCHAR(255)                   NOT NULL,
-    `image_url`     VARCHAR(255)                   NOT NULL
+    id            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    title         VARCHAR(255)                   NOT NULL,
+    body_text     VARCHAR(255)                   NOT NULL,
+    button_text   VARCHAR(255)                   NOT NULL,
+    button_action VARCHAR(255)                   NOT NULL,
+    image_url     VARCHAR(255)                   NOT NULL
 );

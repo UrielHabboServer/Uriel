@@ -1,11 +1,11 @@
-package org.urielserv.uriel.core.database.schemas.landingview
+package org.urielserv.uriel.core.database.schemas.landing_view
 
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
-import org.urielserv.uriel.game.landingview.LandingViewPromoArticle
+import org.urielserv.uriel.game.landing_view.LandingViewPromoArticle
 
-object LandingViewPromoArticleSchema : Table<LandingViewPromoArticle>("landingview_articles") {
+object LandingViewPromoArticlesSchema : Table<LandingViewPromoArticle>("landing_view_articles") {
 
     val id = int("id").primaryKey().bindTo { it.id }
     var title = varchar("title").primaryKey().bindTo { it.title }

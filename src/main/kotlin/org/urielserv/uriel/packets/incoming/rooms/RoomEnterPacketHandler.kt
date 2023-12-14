@@ -4,7 +4,7 @@ import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.extensions.readInt
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.users.DesktopViewPacket
+import org.urielserv.uriel.packets.outgoing.landing_view.DesktopViewPacket
 import java.io.ByteArrayInputStream
 
 class RoomEnterPacketHandler : PacketHandler {

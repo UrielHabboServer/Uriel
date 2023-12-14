@@ -1,6 +1,7 @@
 package org.urielserv.uriel.packets.outgoing.navigator
 
 import org.urielserv.uriel.NavigatorManager
+import org.urielserv.uriel.extensions.hasPermission
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
@@ -13,7 +14,7 @@ class NavigatorCategoriesPacket(
 
     override suspend fun construct() {
         val flatCategories = NavigatorManager.getFlatCategories().filter {
-            it.minimumRankWeight <= habbo.info.rank.weight
+            habbo.hasPermission("uriel.flat_categories.${it.id}")
         }
 
         appendInt(flatCategories.size)

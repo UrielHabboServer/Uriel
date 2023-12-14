@@ -1,4 +1,4 @@
-package org.urielserv.uriel.game.landingview
+package org.urielserv.uriel.game.landing_view
 
 import org.ktorm.entity.Entity
 
@@ -10,4 +10,5 @@ interface LandingViewPromoArticle : Entity<LandingViewPromoArticle> {
     var buttonText: String
     var buttonAction: String
     var imageUrl: String
+
 }
