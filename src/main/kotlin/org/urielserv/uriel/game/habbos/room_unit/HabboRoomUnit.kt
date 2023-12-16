@@ -75,8 +75,7 @@ class HabboRoomUnit(
             RoomChatMessage.ChatType.WHISPER -> {
                 if (message.whisperTarget == null) return
 
-                RoomUnitChatWhisperPacket(message, isSender = true).send(habbo)
-                RoomUnitChatWhisperPacket(message, isSender = false).send(message.whisperTarget!!)
+                RoomUnitChatWhisperPacket(message).broadcast(habbo, message.whisperTarget!!)
             }
         }
     }
@@ -129,12 +128,12 @@ class HabboRoomUnit(
         }
 
         goalTile = tile
-        goalPath = room.tileMap!!.getPathTo(currentTile, goalTile!!).drop(1)
-
         isWalking = true
 
         if (goalJob == null) {
             goalJob = scheduleRepeating(room, interval = 500.milliseconds) {
+                goalPath = room.tileMap!!.getPathTo(currentTile, goalTile!!).drop(1)
+
                 if (goalTile == null) {
                     stopWalking()
                     return@scheduleRepeating

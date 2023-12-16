@@ -17,6 +17,8 @@ class RoomUnitLookPacketHandler : PacketHandler {
 
         val tile = client.habbo!!.room!!.tileMap!!.getTile(x, y) ?: return
 
+        if (client.habbo!!.roomUnit!! in tile.roomUnitsOnTile) return
+
         client.habbo!!.roomUnit!!.lookAt(tile)
     }
 

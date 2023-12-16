@@ -1299,9 +1299,7 @@ CREATE TABLE uriel_texts
 );
 INSERT INTO uriel_texts (`key`, value)
 VALUES ('uriel.error.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
-       ('uriel.error.connection', 'Connection Error'),
-       ('uriel.chat.whisper_layout.sender', 'Whisper to %target%: %message%'),
-       ('uriel.chat.whisper_layout.receiver', 'Whisper from %sender%: %message%');
+       ('uriel.error.connection', 'Connection Error');
 
 DROP TABLE IF EXISTS uriel_hotel_setting_overrides;
 CREATE TABLE uriel_hotel_setting_overrides
