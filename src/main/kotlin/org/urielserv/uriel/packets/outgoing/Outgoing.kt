@@ -44,6 +44,7 @@ object Outgoing {
     const val RoomUnit = 374
     const val RoomUnitStatus = 1640
     const val RoomUnitInfo = 3920
+    const val RoomUnitRemove = 2661
 
     const val RoomUnitTyping = 1717
     const val RoomUnitChat = 1446

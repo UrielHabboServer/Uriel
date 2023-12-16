@@ -8,6 +8,7 @@ import org.urielserv.uriel.packets.outgoing.Packet
 import org.urielserv.uriel.packets.outgoing.landing_view.DesktopViewPacket
 import org.urielserv.uriel.packets.outgoing.rooms.*
 import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitPacket
+import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitRemovePacket
 import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitStatusPacket
 import org.urielserv.uriel.tick_loop.TickLoop
 
@@ -109,6 +110,8 @@ class Room internal constructor(
 
         if (goToDesktopView)
             DesktopViewPacket().send(habbo)
+
+        RoomUnitRemovePacket(habbo).broadcast(this)
 
         if (habbos.isEmpty()) {
             unload()
