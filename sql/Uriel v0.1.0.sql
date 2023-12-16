@@ -1291,18 +1291,6 @@ x0000000000000000000000x
 x0000000000000000000000x
 xxxxxxxxxxxxxxxxxxxxxxxx', 0, 17, 2);
 
-DROP TABLE IF EXISTS navigator_flat_categories;
-CREATE TABLE navigator_flat_categories
-(
-    id                  INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    caption             VARCHAR(255)                   NOT NULL,
-    minimum_rank_weight INT     DEFAULT 0              NOT NULL,
-    maximum_users       INT     DEFAULT 100            NOT NULL,
-    is_public           BOOLEAN DEFAULT false          NOT NULL,
-    allow_trading       BOOLEAN DEFAULT false          NOT NULL,
-    order_num           INT     DEFAULT 0              NOT NULL
-);
-
 DROP TABLE IF EXISTS uriel_texts;
 CREATE TABLE uriel_texts
 (
