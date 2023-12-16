@@ -42,7 +42,7 @@ class Room internal constructor(
 
     suspend fun enter(habbo: Habbo, force: Boolean = false) {
         if (habbo.room != null) {
-            habbo.room!!.leave(habbo)
+            habbo.room!!.leave(habbo, false)
         }
 
         if (!isLoaded) {
@@ -94,15 +94,11 @@ class Room internal constructor(
         RoomUnitStatusPacket(habbos).broadcast(this)
     }
 
-    suspend fun leave(habbo: Habbo) {
+    suspend fun leave(habbo: Habbo, goToDesktopView: Boolean = true) {
         habbo.room = null
         habbo.roomUnit = null
 
         habbos.remove(habbo)
-
-        if (habbos.isEmpty()) {
-            unload()
-        }
 
         info.users = habbos.size
         info.flushChanges()
@@ -111,7 +107,12 @@ class Room internal constructor(
             tile.roomUnitsOnTile.removeIf { it.habbo == habbo }
         }
 
-        DesktopViewPacket().send(habbo)
+        if (goToDesktopView)
+            DesktopViewPacket().send(habbo)
+
+        if (habbos.isEmpty()) {
+            unload()
+        }
     }
 
     fun getHabbos(): List<Habbo> {

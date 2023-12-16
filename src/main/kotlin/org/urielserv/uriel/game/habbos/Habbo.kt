@@ -57,16 +57,16 @@ class Habbo internal constructor(
         info.lastOnline = currentUnixSeconds
         info.flushChanges()
 
-        room?.leave(this)
-
         unload()
     }
 
     private suspend fun unload() {
-        client?.dispose()
+        currencies.unload()
+
         HabboManager.unloadHabbo(this)
 
-        currencies.unload()
+        client?.dispose()
+        room?.leave(this)
     }
 
 }

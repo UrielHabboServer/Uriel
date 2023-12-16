@@ -162,10 +162,21 @@ suspend fun main() = runBlocking {
 }
 
 private suspend fun shutdown() {
-    logger.info("Shutting down Uriel...")
+    measureProcessShutdown("Habbo Manager") {
+        HabboManager.shutdown()
+    }
 
-    HabboManager.shutdown()
-    RoomManager.shutdown()
+    measureProcessShutdown("Room Manager") {
+        RoomManager.shutdown()
+    }
+
+    measureProcessShutdown("Tick Loop") {
+        HotelTickLoop.end()
+    }
+
+    measureProcessShutdown("Server") {
+        Server.shutdown()
+    }
 }
 
 private suspend inline fun <reified T> loadTomlFile(pathString: String): T {
@@ -247,5 +258,20 @@ private suspend fun measureInitialProcess(name: String, block: suspend () -> Uni
         logger.error("Failed to initialise $name:")
         exc.printStackTrace()
         exitProcess(1)
+    }
+}
+
+private suspend fun measureProcessShutdown(name: String, block: suspend () -> Unit) {
+    logger.info("Shutting down $name...")
+
+    try {
+        val start = System.currentTimeMillis()
+        block()
+        val timeTaken = System.currentTimeMillis() - start
+
+        logger.info("Gracefully shut down $name in ${timeTaken}ms")
+    } catch (exc: Exception) {
+        logger.error("Failed to shut down $name:")
+        exc.printStackTrace()
     }
 }

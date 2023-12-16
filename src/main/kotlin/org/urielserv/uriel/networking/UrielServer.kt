@@ -54,8 +54,7 @@ class UrielServer(
      * The server will be stopped with a graceful shutdown timeout of 1000 milliseconds
      * for both the endpoint handlers and the HTTP server.
      */
-    suspend fun shutdown() {
-        logger.info("Shutting down the WebSocket Server")
+    fun shutdown() {
         server.stop(1000, 1000)
     }
 

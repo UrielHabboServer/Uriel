@@ -101,6 +101,7 @@ class HabboRoomUnit(
         isSittingOnFloor = true
 
         bodyRotation = bodyRotation.toNonDiagonal()
+        headRotation = bodyRotation
 
         statuses[HabboRoomUnitStatus.SIT] = "0.5"
 
