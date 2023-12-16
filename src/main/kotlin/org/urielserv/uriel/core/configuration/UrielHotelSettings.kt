@@ -12,7 +12,8 @@ import kotlinx.serialization.Serializable
 data class UrielHotelSettings(
     var hotel: Hotel,
     var habboClub: HabboClub,
-    var habbos: Habbos
+    var habbos: Habbos,
+    var rooms: Rooms
 ) {
 
     @Serializable
@@ -61,5 +62,10 @@ data class UrielHotelSettings(
         )
 
     }
+
+    @Serializable
+    data class Rooms(
+        var noDelayOnWalk: Boolean,
+    )
 
 }

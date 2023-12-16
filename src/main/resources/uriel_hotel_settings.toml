@@ -28,3 +28,6 @@ storeFurniDataOnPickUp = false
 
 [habbos.subscription]
 deleteExpiredSubscriptions = true
+
+[rooms]
+noDelayOnWalk = true

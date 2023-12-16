@@ -87,7 +87,7 @@ class UrielServer(
     private fun Application.routes() {
         routing {
             webSocket(routePath) {
-                val ip = call.request.local.remoteHost
+                val ip = call.request.local.remoteAddress
                 val port = call.request.local.remotePort
 
                 if (connectedClients.size >= Configuration.connections.maxConnectedClients) {
