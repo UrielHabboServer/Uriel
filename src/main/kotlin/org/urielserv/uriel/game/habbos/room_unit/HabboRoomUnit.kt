@@ -1,6 +1,7 @@
 package org.urielserv.uriel.game.habbos.room_unit
 
 import kotlinx.coroutines.runBlocking
+import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.rooms.Room
@@ -131,7 +132,9 @@ class HabboRoomUnit(
         isWalking = true
 
         if (goalJob == null) {
-            goalJob = scheduleRepeating(room, interval = 500.milliseconds, delay = 250.milliseconds) {
+            val delay = if (HotelSettings.rooms.noDelayOnWalk) 0.milliseconds else 250.milliseconds
+
+            goalJob = scheduleRepeating(room, interval = 500.milliseconds, delay) {
                 goalPath = room.tileMap!!.getPathTo(currentTile, goalTile!!).drop(1)
 
                 if (goalTile == null) {
