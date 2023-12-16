@@ -131,7 +131,7 @@ class HabboRoomUnit(
         isWalking = true
 
         if (goalJob == null) {
-            goalJob = scheduleRepeating(room, interval = 500.milliseconds, delay = 500.milliseconds) {
+            goalJob = scheduleRepeating(room, interval = 500.milliseconds, delay = 250.milliseconds) {
                 goalPath = room.tileMap!!.getPathTo(currentTile, goalTile!!).drop(1)
 
                 if (goalTile == null) {
