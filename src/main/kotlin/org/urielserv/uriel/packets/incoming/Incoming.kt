@@ -31,6 +31,14 @@ object Incoming {
     const val RoomEnter = 2312
     const val RoomModel = 2300
 
+    const val RoomUnitWalk = 3320
+    const val RoomUnitLook = 3301
+    const val RoomUnitTyping = 1597
+    const val RoomUnitStopTyping = 1474
+    const val RoomUnitChat = 1314
+    const val RoomUnitChatShout = 2085
+    const val RoomUnitChatWhisper = 1543
+
     const val FurnitureAliases = 3898
 
 }

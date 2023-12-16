@@ -25,7 +25,7 @@ class HabboSubscriptions(
         subscriptions.forEach { it.checkIfExpired() }
     }
 
-    fun hasActiveHabboClubMembership(): Boolean = hasActiveSubscription("HABBO_CLUB")
+    fun hasActiveHabboClubMembership(): Boolean = hasActiveSubscription("habbo_club")
 
     fun hasActiveSubscription(subscriptionType: String): Boolean =
         subscriptions.any { it.type == subscriptionType && it.isActive }
@@ -40,13 +40,7 @@ class HabboSubscriptions(
         subscriptions.add(subscription)
 
         Database.sequenceOf(UserSubscriptionsSchema)
-            .add(Subscription {
-                habboInfo = this@HabboSubscriptions.habbo.info
-                type = subscription.type
-                start = subscription.start
-                end = subscription.end
-                isActive = subscription.isActive
-            })
+            .add(subscription)
     }
 
 }

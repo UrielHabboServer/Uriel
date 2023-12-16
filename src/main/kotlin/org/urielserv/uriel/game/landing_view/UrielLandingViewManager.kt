@@ -7,7 +7,7 @@ import org.urielserv.uriel.core.database.schemas.landing_view.LandingViewPromoAr
 class UrielLandingViewManager {
 
     private val articles = mutableListOf<LandingViewPromoArticle>()
-    
+
     init {
         loadPromos()
     }

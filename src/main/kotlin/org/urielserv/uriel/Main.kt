@@ -15,21 +15,22 @@ import org.urielserv.uriel.core.configuration.UrielConfiguration
 import org.urielserv.uriel.core.configuration.UrielHotelSettings
 import org.urielserv.uriel.core.database.UrielDatabase
 import org.urielserv.uriel.core.database.schemas.HotelSettingOverridesSchema
+import org.urielserv.uriel.core.event_dispatcher.Events
+import org.urielserv.uriel.core.event_dispatcher.UrielEvent
+import org.urielserv.uriel.core.event_dispatcher.UrielEventDispatcher
+import org.urielserv.uriel.core.locale.UrielLocalizer
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
-import org.urielserv.uriel.game.habbos.wardrobe.figure_data.UrielFigureDataManager
+import org.urielserv.uriel.game.landing_view.UrielLandingViewManager
 import org.urielserv.uriel.game.navigator.UrielNavigatorManager
 import org.urielserv.uriel.game.permissions.UrielPermissionManager
 import org.urielserv.uriel.game.permissions.ranks.UrielRankManager
 import org.urielserv.uriel.game.rooms.UrielRoomManager
-import org.urielserv.uriel.game.landing_view.UrielLandingViewManager
+import org.urielserv.uriel.game.rooms.chat.UrielChatBubblesManager
+import org.urielserv.uriel.game.wardrobe.figure_data.UrielFigureDataManager
 import org.urielserv.uriel.networking.UrielServer
 import org.urielserv.uriel.packets.incoming.UrielPacketHandlerManager
 import org.urielserv.uriel.tick_loop.TickLoop
-import org.urielserv.uriel.core.locale.UrielLocalizer
-import org.urielserv.uriel.core.event_dispatcher.UrielEventDispatcher
-import org.urielserv.uriel.core.event_dispatcher.Events
-import org.urielserv.uriel.core.event_dispatcher.UrielEvent
 import kotlin.io.path.Path
 import kotlin.io.path.copyTo
 import kotlin.io.path.exists
@@ -56,10 +57,10 @@ lateinit var CurrencyManager: UrielCurrencyManager
 lateinit var FigureDataManager: UrielFigureDataManager
 lateinit var HabboManager: UrielHabboManager
 
+lateinit var LandingViewManager: UrielLandingViewManager
 lateinit var RoomManager: UrielRoomManager
 lateinit var NavigatorManager: UrielNavigatorManager
-
-lateinit var LandingViewManager: UrielLandingViewManager
+lateinit var ChatBubblesManager: UrielChatBubblesManager
 
 lateinit var Server: UrielServer
 lateinit var PacketHandlerManager: UrielPacketHandlerManager
@@ -129,10 +130,11 @@ suspend fun main() = runBlocking {
         HabboManager = UrielHabboManager()
     }
 
-    measureInitialProcess("Landing View, Room Manager & Navigator Manager") {
+    measureInitialProcess("Landing View, Room Manager, Navigator Manager & Chat Bubble Manager") {
         LandingViewManager = UrielLandingViewManager()
         RoomManager = UrielRoomManager()
         NavigatorManager = UrielNavigatorManager()
+        ChatBubblesManager = UrielChatBubblesManager()
     }
 
     measureInitialProcess("Server & Packet Handler Manager") {
@@ -153,6 +155,7 @@ suspend fun main() = runBlocking {
 
     measureInitialProcess("Tick Loop") {
         HotelTickLoop = TickLoop(
+            name = "Hotel Tick Loop",
             ticksPerSecond = Configuration.tickLoops.hotelTicksPerSecond
         )
     }
@@ -162,6 +165,7 @@ private suspend fun shutdown() {
     logger.info("Shutting down Uriel...")
 
     HabboManager.shutdown()
+    RoomManager.shutdown()
 }
 
 private suspend inline fun <reified T> loadTomlFile(pathString: String): T {

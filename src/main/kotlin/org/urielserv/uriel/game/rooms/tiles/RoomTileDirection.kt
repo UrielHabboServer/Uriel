@@ -3,28 +3,59 @@ package org.urielserv.uriel.game.rooms.tiles
 enum class RoomTileDirection {
 
     NORTH,
-    EAST,
-    SOUTH,
-    WEST,
     NORTH_EAST,
+    EAST,
     SOUTH_EAST,
+    SOUTH,
     SOUTH_WEST,
+    WEST,
     NORTH_WEST;
+
+    val isDiagonal: Boolean
+        get() = this == NORTH_EAST || this == SOUTH_EAST || this == SOUTH_WEST || this == NORTH_WEST
+
+    fun toNonDiagonal(): RoomTileDirection {
+        return when (this) {
+            NORTH_EAST -> NORTH
+            SOUTH_EAST -> EAST
+            SOUTH_WEST -> SOUTH
+            NORTH_WEST -> WEST
+            else -> this
+        }
+    }
 
     companion object {
 
-        fun fromInt(value: Int): RoomTileDirection {
-            return when (value) {
-                0 -> NORTH
-                1 -> NORTH_EAST
-                2 -> EAST
-                3 -> SOUTH_EAST
-                4 -> SOUTH
-                5 -> SOUTH_WEST
-                6 -> WEST
-                7 -> NORTH_WEST
-                else -> throw IllegalArgumentException("Invalid direction value: $value")
+        fun fromInt(int: Int): RoomTileDirection {
+            for (direction in entries) {
+                if (direction.ordinal == int) {
+                    return direction
+                }
             }
+
+            return NORTH
+        }
+
+        fun getDirectionFromTileToTile(from: RoomTile, to: RoomTile): RoomTileDirection {
+            if (from.x == to.x && from.y > to.y) {
+                return NORTH
+            } else if (from.x < to.x && from.y > to.y) {
+                return NORTH_EAST
+            } else if (from.x < to.x && from.y == to.y) {
+                return EAST
+            } else if (from.x < to.x) {
+                return SOUTH_EAST
+            } else if (from.x == to.x && from.y < to.y) {
+                return SOUTH
+            } else if (from.x > to.x && from.y < to.y) {
+                return SOUTH_WEST
+            } else if (from.x > to.x && from.y == to.y) {
+                return WEST
+            } else if (from.x > to.x) {
+                return NORTH_WEST
+            }
+
+            return NORTH
         }
 
     }

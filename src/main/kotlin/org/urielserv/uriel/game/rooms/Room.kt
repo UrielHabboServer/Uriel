@@ -1,10 +1,15 @@
 package org.urielserv.uriel.game.rooms
 
+import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.game.habbos.Habbo
-import org.urielserv.uriel.game.habbos.HabboRoomState
+import org.urielserv.uriel.game.habbos.room_unit.HabboRoomUnit
 import org.urielserv.uriel.game.rooms.tiles.RoomTileMap
 import org.urielserv.uriel.packets.outgoing.Packet
+import org.urielserv.uriel.packets.outgoing.landing_view.DesktopViewPacket
 import org.urielserv.uriel.packets.outgoing.rooms.*
+import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitPacket
+import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitStatusPacket
+import org.urielserv.uriel.tick_loop.TickLoop
 
 class Room internal constructor(
     val info: RoomInfo,
@@ -12,13 +17,25 @@ class Room internal constructor(
 
     private val habbos = mutableListOf<Habbo>()
 
+    var tickLoop: TickLoop? = null
+        private set
+    private var roomUnitCounter = 0
+
     var tileMap: RoomTileMap? = null
         private set
 
     private var isLoaded = false
 
     private fun load() {
-        tileMap = RoomTileMap(info.model)
+        tickLoop = TickLoop(
+            name = "Room ${info.id}",
+            ticksPerSecond = Configuration.tickLoops.roomTicksPerSecond
+        )
+
+        tileMap = RoomTileMap(this, info.model)
+
+        info.users = habbos.size
+        info.flushChanges()
 
         isLoaded = true
     }
@@ -58,29 +75,68 @@ class Room internal constructor(
     }
 
     internal suspend fun finishEnter(habbo: Habbo) {
-        habbo.roomState = HabboRoomState(
-            habbo,
-            tileMap!!.doorTile,
-            tileMap!!.doorDirection
+        habbo.roomUnit = HabboRoomUnit(
+            id = roomUnitCounter++,
+            habbo = habbo,
+            room = this,
+            currentTile = tileMap!!.doorTile,
+            bodyRotation = tileMap!!.doorDirection
         )
 
-        info.users++
+        info.users = habbos.size
         info.flushChanges()
 
         RoomInfoOwnerPacket(this, habbo.info.id == info.ownerHabboInfo.id).send(habbo)
         RoomThicknessPacket(this).send(habbo)
         RoomInfoPacket(this, habbo, roomForward = false, roomEnter = true).send(habbo)
+
+        RoomUnitPacket(habbos).broadcast(this)
+        RoomUnitStatusPacket(habbos).broadcast(this)
     }
 
-    fun leave(habbo: Habbo) {
+    suspend fun leave(habbo: Habbo) {
         habbo.room = null
-        habbo.roomState = null
+        habbo.roomUnit = null
 
         habbos.remove(habbo)
+
+        info.users = habbos.size
+        info.flushChanges()
+
+        for (tile in tileMap!!.tiles.flatten()) {
+            tile.roomUnitsOnTile.removeIf { it.habbo == habbo }
+        }
+
+        DesktopViewPacket().send(habbo)
+
+        if (habbos.isEmpty()) {
+            unload()
+        }
     }
 
     fun getHabbos(): List<Habbo> {
         return habbos
+    }
+
+    fun getHabboByUsername(username: String): Habbo? {
+        return habbos.find { it.info.username == username }
+    }
+
+    suspend fun unload() {
+        if (!isLoaded) return
+
+        for (habbo in habbos) {
+            leave(habbo)
+        }
+
+        tickLoop?.end()
+        tickLoop = null
+
+        roomUnitCounter = 0
+
+        tileMap = null
+
+        isLoaded = false
     }
 
     fun appendToPacket(packet: Packet) {

@@ -130,7 +130,18 @@ class UrielRoomManager {
                 it.id eq roomId
             } ?: return null
 
-        return Room(roomInfo)
+        roomInfo.users = 0
+        roomInfo.flushChanges()
+
+        rooms[roomId] = Room(roomInfo)
+
+        return rooms[roomId]
+    }
+
+    internal suspend fun shutdown() {
+        for (room in rooms.values) {
+            room.unload()
+        }
     }
 
 }

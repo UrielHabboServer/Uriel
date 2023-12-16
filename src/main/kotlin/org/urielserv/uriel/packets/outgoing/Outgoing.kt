@@ -41,6 +41,15 @@ object Outgoing {
     const val RoomHeightmap = 2753
     const val RoomModel = 1301
 
+    const val RoomUnit = 374
+    const val RoomUnitStatus = 1640
+    const val RoomUnitInfo = 3920
+
+    const val RoomUnitTyping = 1717
+    const val RoomUnitChat = 1446
+    const val RoomUnitChatShout = 1036
+    const val RoomUnitChatWhisper = 2704
+
     // Notifications
     const val GenericAlert = 3801
     const val SimpleAlert = 5100

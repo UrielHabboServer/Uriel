@@ -1,4 +1,4 @@
-package org.urielserv.uriel.game.habbos.wardrobe
+package org.urielserv.uriel.game.wardrobe
 
 import io.klogging.noCoLogger
 import org.urielserv.uriel.FigureDataManager
@@ -79,19 +79,23 @@ object ClothingValidator {
             ) {
                 if (gender.equals("M", ignoreCase = true)
                     && !isHabboClubMember
-                    && !figureDataSetType.mandatoryMale0) continue
+                    && !figureDataSetType.mandatoryMale0
+                ) continue
 
                 if (gender.equals("F", ignoreCase = true)
                     && !isHabboClubMember
-                    && !figureDataSetType.mandatoryFemale0) continue
+                    && !figureDataSetType.mandatoryFemale0
+                ) continue
 
                 if (gender.equals("M", ignoreCase = true)
                     && isHabboClubMember
-                    && !figureDataSetType.mandatoryMale1) continue
+                    && !figureDataSetType.mandatoryMale1
+                ) continue
 
                 if (gender.equals("F", ignoreCase = true)
                     && isHabboClubMember
-                    && !figureDataSetType.mandatoryFemale1) continue
+                    && !figureDataSetType.mandatoryFemale1
+                ) continue
             }
 
             var validatedLookPart = "$setType-$setId"

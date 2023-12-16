@@ -17,7 +17,7 @@ class UserSubscriptionPacket(
     override val packetId = Outgoing.UserSubscription
 
     override suspend fun construct() {
-        appendString(subscriptionType.lowercase()) // productName
+        appendString(subscriptionType) // productName
 
         if (!habbo.subscriptions.hasActiveSubscription(subscriptionType)) {
             appendNoSubscriptionInfo()

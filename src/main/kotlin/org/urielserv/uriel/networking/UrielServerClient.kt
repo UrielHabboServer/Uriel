@@ -2,7 +2,6 @@ package org.urielserv.uriel.networking
 
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
-import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.Server
 import org.urielserv.uriel.game.habbos.Habbo
 

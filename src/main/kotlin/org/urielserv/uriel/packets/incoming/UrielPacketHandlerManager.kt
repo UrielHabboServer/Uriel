@@ -1,16 +1,23 @@
 package org.urielserv.uriel.packets.incoming
 
 import io.klogging.logger
+import org.urielserv.uriel.game.rooms.chat.RoomChatMessage
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.handshake.ClientPongPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.ReleaseVersionPacketHandler
 import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandler
+import org.urielserv.uriel.packets.incoming.landingview.GetPromoArticlesPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorSearchPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.GetUserFlatCatsPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.RoomCreatePacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.RoomEnterPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.RoomModelPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.user_unit.RoomUnitLookPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.user_unit.RoomUnitWalkPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitChatPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitStopTypingPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitTypingPacketHandler
 import org.urielserv.uriel.packets.incoming.users.DesktopViewPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
@@ -18,7 +25,6 @@ import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
 import org.urielserv.uriel.packets.incoming.users.subscriptions.UserSubscriptionPacketHandler
-import org.urielserv.uriel.packets.incoming.landingview.GetPromoArticlesPacketHandler
 import java.io.ByteArrayInputStream
 
 /**
@@ -73,6 +79,14 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.RoomEnter, RoomEnterPacketHandler())
         registerPacket(Incoming.RoomModel, RoomModelPacketHandler()) // -> finishes loading the room
         registerPacket(Incoming.FurnitureAliases, RoomModelPacketHandler()) // -> finishes loading the room
+
+        registerPacket(Incoming.RoomUnitWalk, RoomUnitWalkPacketHandler())
+        registerPacket(Incoming.RoomUnitLook, RoomUnitLookPacketHandler())
+        registerPacket(Incoming.RoomUnitTyping, RoomUnitTypingPacketHandler())
+        registerPacket(Incoming.RoomUnitStopTyping, RoomUnitStopTypingPacketHandler())
+        registerPacket(Incoming.RoomUnitChat, RoomUnitChatPacketHandler(RoomChatMessage.ChatType.TALK))
+        registerPacket(Incoming.RoomUnitChatShout, RoomUnitChatPacketHandler(RoomChatMessage.ChatType.SHOUT))
+        registerPacket(Incoming.RoomUnitChatWhisper, RoomUnitChatPacketHandler(RoomChatMessage.ChatType.WHISPER))
     }
 
     /**

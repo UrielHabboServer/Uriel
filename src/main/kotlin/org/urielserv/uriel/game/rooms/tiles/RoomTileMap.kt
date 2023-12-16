@@ -1,9 +1,11 @@
 package org.urielserv.uriel.game.rooms.tiles
 
+import org.urielserv.uriel.game.rooms.Room
 import org.urielserv.uriel.game.rooms.RoomModel
 import kotlin.math.abs
 
 class RoomTileMap(
+    private val room: Room,
     private val model: RoomModel
 ) {
 
@@ -34,8 +36,8 @@ class RoomTileMap(
                 val heightmapChar = heightmap[y][x]
                 val tileHeight = convertHeightCharToInt(heightmapChar)
 
-                val state = when (length) {
-                    x -> RoomTileState.VOID
+                val state = when (heightmapChar) {
+                    'x' -> RoomTileState.VOID
                     else -> RoomTileState.OPEN
                 }
 
@@ -75,6 +77,10 @@ class RoomTileMap(
     }
 
     fun getPathTo(start: RoomTile, goal: RoomTile): List<RoomTile> {
+        if (!canLandOnTile(goal) || start == goal) {
+            return emptyList()
+        }
+
         val openSet = mutableListOf(start)
         val cameFrom = mutableMapOf<RoomTile, RoomTile>()
         val gScore = mutableMapOf(start to 0)
@@ -127,12 +133,36 @@ class RoomTileMap(
         for (direction in RoomTileDirection.entries) {
             val adjacentTile = getAdjacentTile(tile, direction) ?: continue
 
-            if (adjacentTile.state != RoomTileState.BLOCKED && adjacentTile.state != RoomTileState.VOID) {
+            if (!room.info.allowDiagonalMovement && direction.isDiagonal) {
+                continue
+            }
+
+            if (!canWalkOnTile(adjacentTile)) {
+                continue
+            }
+
+            if (adjacentTile.state == RoomTileState.OPEN && adjacentTile.height - tile.height <= 1) {
                 neighbors.add(adjacentTile)
             }
         }
 
         return neighbors
+    }
+
+    private fun canWalkOnTile(tile: RoomTile): Boolean {
+        if (tile.state == RoomTileState.VOID) {
+            return false
+        }
+
+        if (!room.info.allowWalkthrough && tile.roomUnitsOnTile.isNotEmpty()) {
+            return false
+        }
+
+        return true
+    }
+
+    private fun canLandOnTile(tile: RoomTile): Boolean {
+        return tile.state == RoomTileState.OPEN && tile.roomUnitsOnTile.isEmpty()
     }
 
     private fun reconstructPath(cameFrom: Map<RoomTile, RoomTile>, current: RoomTile): List<RoomTile> {

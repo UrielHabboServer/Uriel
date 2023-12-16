@@ -40,6 +40,17 @@ CREATE TABLE users
     INDEX (sso_ticket, username)
 );
 
+DROP TABLE IF EXISTS user_data;
+CREATE TABLE user_data
+(
+    id             INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    user_id        INT                            NOT NULL,
+    chat_bubble_id INT     DEFAULT 1              NOT NULL,
+    is_ambassador  BOOLEAN DEFAULT false          NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (chat_bubble_id) REFERENCES chat_bubbles (id)
+);
+
 DROP TABLE IF EXISTS user_currencies;
 CREATE TABLE user_currencies
 (
@@ -135,7 +146,46 @@ VALUES (1, 'uriel.rooms.can_create_rooms', true),
        (1, 'uriel.flat_categories.6', true),
        (1, 'uriel.flat_categories.7', true),
        (1, 'uriel.flat_categories.8', true),
-       (3, 'uriel_flat_categories.9', true);
+       (3, 'uriel.flat_categories.9', true),
+       (0, 'uriel.chat_bubbles.0', true),
+       (3, 'uriel.chat_bubbles.1', true),
+       (3, 'uriel.chat_bubbles.2', true),
+       (1, 'uriel.chat_bubbles.3', true),
+       (1, 'uriel.chat_bubbles.4', true),
+       (1, 'uriel.chat_bubbles.5', true),
+       (1, 'uriel.chat_bubbles.6', true),
+       (1, 'uriel.chat_bubbles.7', true),
+       (3, 'uriel.chat_bubbles.8', true),
+       (1, 'uriel.chat_bubbles.9', true),
+       (1, 'uriel.chat_bubbles.10', true),
+       (1, 'uriel.chat_bubbles.11', true),
+       (1, 'uriel.chat_bubbles.12', true),
+       (1, 'uriel.chat_bubbles.13', true),
+       (1, 'uriel.chat_bubbles.14', true),
+       (1, 'uriel.chat_bubbles.15', true),
+       (1, 'uriel.chat_bubbles.16', true),
+       (1, 'uriel.chat_bubbles.17', true),
+       (1, 'uriel.chat_bubbles.18', true),
+       (1, 'uriel.chat_bubbles.19', true),
+       (1, 'uriel.chat_bubbles.20', true),
+       (1, 'uriel.chat_bubbles.21', true),
+       (1, 'uriel.chat_bubbles.22', true),
+       (2, 'uriel.chat_bubbles.23', true),
+       (1, 'uriel.chat_bubbles.24', true),
+       (1, 'uriel.chat_bubbles.25', true),
+       (1, 'uriel.chat_bubbles.26', true),
+       (1, 'uriel.chat_bubbles.27', true),
+       (1, 'uriel.chat_bubbles.28', true),
+       (1, 'uriel.chat_bubbles.29', true),
+       (3, 'uriel.chat_bubbles.30', true),
+       (3, 'uriel.chat_bubbles.31', true),
+       (1, 'uriel.chat_bubbles.32', true),
+       (3, 'uriel.chat_bubbles.33', true),
+       (3, 'uriel.chat_bubbles.34', true),
+       (1, 'uriel.chat_bubbles.35', true),
+       (1, 'uriel.chat_bubbles.36', true),
+       (1, 'uriel.chat_bubbles.37', true),
+       (1, 'uriel.chat_bubbles.38', true);
 
 -- Navigator
 DROP TABLE IF EXISTS navigator_public_categories;
@@ -177,6 +227,62 @@ VALUES ('${navigator.flatcategory.global.BC}'),
 INSERT INTO navigator_flat_categories (caption, is_public)
 VALUES ('${navigator.flatcategory.global.OFFICIAL}', true);
 
+-- Chat Bubbles
+DROP TABLE IF EXISTS chat_bubbles;
+CREATE TABLE chat_bubbles
+(
+    id                            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    nitro_style_id                INT                            NOT NULL,
+    name                          VARCHAR(255)                   NOT NULL,
+    is_system_bubble              BOOLEAN DEFAULT false          NOT NULL,
+    is_club_only                  BOOLEAN DEFAULT false          NOT NULL,
+    is_ambassador_only            BOOLEAN DEFAULT false          NOT NULL,
+    can_be_overridden             BOOLEAN DEFAULT false          NOT NULL,
+    can_trigger_talking_furniture BOOLEAN DEFAULT false          NOT NULL,
+    INDEX (nitro_style_id)
+);
+INSERT INTO chat_bubbles (nitro_style_id, name, is_system_bubble, is_club_only, is_ambassador_only, can_be_overridden,
+                          can_trigger_talking_furniture)
+VALUES (0, 'normal', false, false, false, true, true),
+       (1, 'alert', true, false, true, true, true),
+       (2, 'bot', true, false, false, true, true),
+       (3, 'red', false, false, false, true, true),
+       (4, 'blue', false, false, false, true, true),
+       (5, 'yellow', false, false, false, true, true),
+       (6, 'green', false, false, false, true, true),
+       (7, 'black', false, false, false, true, true),
+       (8, 'fortune_teller', true, false, false, false, false),
+       (9, 'zombie_arm', false, true, false, true, false),
+       (10, 'skeleton', false, true, false, true, false),
+       (11, 'light_blue', false, true, false, true, true),
+       (12, 'pink', false, true, false, true, true),
+       (13, 'purple', false, true, false, true, true),
+       (14, 'dark_yellow', false, true, false, true, true),
+       (15, 'dark_blue', false, true, false, true, true),
+       (16, 'hearts', false, true, false, true, true),
+       (17, 'roses', false, true, false, true, true),
+       (18, 'unused', false, true, false, true, true),
+       (19, 'pig', false, true, false, true, true),
+       (20, 'dog', false, true, false, true, true),
+       (21, 'blaze_it', false, true, false, true, true),
+       (22, 'dragon', false, true, false, true, true),
+       (23, 'staff', false, false, false, false, true),
+       (24, 'bats', false, true, false, true, false),
+       (25, 'messenger', false, true, false, true, false),
+       (26, 'steampunk', false, true, false, true, false),
+       (27, 'thunder', false, true, false, true, true),
+       (28, 'parrot', false, true, false, false, false),
+       (29, 'pirate', false, true, false, false, false),
+       (30, 'bot_guide', true, false, false, true, true),
+       (31, 'bot_rentable', true, false, false, true, true),
+       (32, 'scary_thing', false, true, false, true, false),
+       (33, 'frank', true, false, false, true, false),
+       (34, 'wired', true, false, false, false, true),
+       (35, 'goat', false, true, false, true, false),
+       (36, 'santa', false, true, false, true, false),
+       (37, 'ambassador', false, false, true, false, true),
+       (38, 'radio', false, true, false, true, false);
+
 -- Rooms
 DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms
@@ -208,7 +314,7 @@ CREATE TABLE rooms
     allow_other_pets             BOOLEAN      DEFAULT false     NOT NULL,
     allow_other_pets_to_eat      BOOLEAN      DEFAULT false     NOT NULL,
     allow_walkthrough            BOOLEAN      DEFAULT false     NOT NULL,
-    allow_diagonal_movement      BOOLEAN      DEFAULT false     NOT NULL,
+    allow_diagonal_movement      BOOLEAN      DEFAULT true      NOT NULL,
     chat_mode                    INT          DEFAULT 0         NOT NULL,
     chat_weight                  INT          DEFAULT 1         NOT NULL,
     chat_scrolling_speed         INT          DEFAULT 1         NOT NULL,
@@ -1205,7 +1311,9 @@ CREATE TABLE uriel_texts
 );
 INSERT INTO uriel_texts (`key`, value)
 VALUES ('uriel.error.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
-       ('uriel.error.connection', 'Connection Error');
+       ('uriel.error.connection', 'Connection Error'),
+       ('uriel.chat.whisper_layout.sender', 'Whisper to %target%: %message%'),
+       ('uriel.chat.whisper_layout.receiver', 'Whisper from %sender%: %message%');
 
 DROP TABLE IF EXISTS uriel_hotel_setting_overrides;
 CREATE TABLE uriel_hotel_setting_overrides

@@ -1,19 +1,19 @@
 package org.urielserv.uriel.core.locale
 
-import org.ktorm.entity.forEach
 import io.klogging.noCoLogger
+import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.core.database.schemas.LocalTextsSchema
 
-/** 
- * The Localizer is used to translate text from the database. 
+/**
+ * The Localizer is used to translate text from the database.
  */
 @Suppress("unused")
 class UrielLocalizer {
 
     private val logger = noCoLogger(UrielLocalizer::class)
 
-    private val texts = mutableMapOf<String,String>()
+    private val texts = mutableMapOf<String, String>()
 
     init {
         Database.sequenceOf(LocalTextsSchema)

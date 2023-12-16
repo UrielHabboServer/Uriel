@@ -7,15 +7,13 @@ import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.core.database.schemas.users.UsersSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
+import org.urielserv.uriel.extensions.text
 import org.urielserv.uriel.networking.UrielServerClient
 import java.security.SecureRandom
 import java.util.*
-import org.urielserv.uriel.packets.outgoing.notifications.SimpleAlertMessagePacket
-import org.urielserv.uriel.Localizer
-import org.urielserv.uriel.extensions.text
 
-/** 
- * The UrielHabboManager class is responsible for managing the Habbo users. 
+/**
+ * The UrielHabboManager class is responsible for managing the Habbo users.
  */
 @Suppress("unused")
 class UrielHabboManager {
@@ -50,7 +48,7 @@ class UrielHabboManager {
         habbo.info.isOnline = true
         habbo.info.lastLogin = currentUnixSeconds
 
-        habbo.info.registrationIp = client.ip
+        habbo.info.currentIp = client.ip
 
         habbo.info.flushChanges()
 

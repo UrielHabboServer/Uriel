@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 
 class TickLoop(
+    private val name: String,
     private val ticksPerSecond: Int
 ) {
 
@@ -50,7 +51,7 @@ class TickLoop(
                 try {
                     it.run()
                 } catch (exc: Exception) {
-                    logger.error("Error running Job #${it.id}:")
+                    logger.error("$name: Error running Job #${it.id}:")
                     exc.printStackTrace()
                 }
             }
@@ -64,7 +65,7 @@ class TickLoop(
                     try {
                         it.run()
                     } catch (exc: Exception) {
-                        logger.error("Error running Repeating Job #${it.id}:")
+                        logger.error("$name: Error running Repeating Job #${it.id}:")
                         exc.printStackTrace()
                     }
                 } else {
@@ -75,7 +76,7 @@ class TickLoop(
         val timeTaken = System.currentTimeMillis() - start
 
         if (timeTaken > expectedMaxTimePerTick) {
-            logger.warn("Tick took ${timeTaken}ms, expected ${expectedMaxTimePerTick}ms")
+            logger.warn("$name: Tick took ${timeTaken}ms, expected ${expectedMaxTimePerTick}ms")
         }
 
         tickDurations[ticks] = timeTaken

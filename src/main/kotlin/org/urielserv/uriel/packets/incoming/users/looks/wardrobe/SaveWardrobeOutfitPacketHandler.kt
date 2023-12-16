@@ -5,7 +5,7 @@ import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.extensions.readInt
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.HabboGender
-import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
+import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import java.io.ByteArrayInputStream

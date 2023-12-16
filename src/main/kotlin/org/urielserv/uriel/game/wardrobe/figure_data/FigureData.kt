@@ -1,4 +1,4 @@
-package org.urielserv.uriel.game.habbos.wardrobe.figure_data
+package org.urielserv.uriel.game.wardrobe.figure_data
 
 import kotlinx.serialization.Serializable
 

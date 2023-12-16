@@ -4,9 +4,10 @@ import io.klogging.logger
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.HabboGender
-import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
+import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
+import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitInfoPacket
 import org.urielserv.uriel.packets.outgoing.users.looks.UserFigurePacket
 import java.io.ByteArrayInputStream
 
@@ -43,6 +44,10 @@ class UserFigurePacketHandler : PacketHandler {
         client.habbo!!.info.flushChanges()
 
         UserFigurePacket(client.habbo!!).send(client)
+
+        if (client.habbo!!.room != null) {
+            RoomUnitInfoPacket(client.habbo!!).broadcast(client.habbo!!.room!!)
+        }
     }
 
 }

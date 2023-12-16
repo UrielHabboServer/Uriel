@@ -8,7 +8,7 @@ import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.events.users.UserLoginEvent
 import org.urielserv.uriel.extensions.readInt
 import org.urielserv.uriel.extensions.readString
-import org.urielserv.uriel.game.habbos.wardrobe.ClothingValidator
+import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.handshake.AuthenticatedPacket
@@ -93,10 +93,8 @@ class SecurityTicketPacketHandler : PacketHandler {
         ).send(client)
         UserEffectListPacket(habbo.inventory.effects.toList()).send(client)
         NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)
-        UserSubscriptionPacket(habbo, "HABBO_CLUB", UserSubscriptionPacket.RESPONSE_TYPE_LOGIN).send(client)
+        UserSubscriptionPacket(habbo, "habbo_club", UserSubscriptionPacket.RESPONSE_TYPE_LOGIN).send(client)
         ClientPingPacket().send(client)
-
-        // Add default navigator saved searches
 
     }
 

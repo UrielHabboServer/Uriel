@@ -1,7 +1,7 @@
 package org.urielserv.uriel.game.habbos
 
-import org.urielserv.uriel.packets.outgoing.notifications.SimpleAlertMessagePacket
 import org.urielserv.uriel.packets.outgoing.notifications.NotificationDialogMessagePacket
+import org.urielserv.uriel.packets.outgoing.notifications.SimpleAlertMessagePacket
 
 class HabboNotifications(
     private val habbo: Habbo
@@ -23,7 +23,7 @@ class HabboNotifications(
      * @param type Key of notification
      * @param args display, title, message, linkTitle, linkUrl, image ... etc
      */
-    suspend fun sendNotification(type: String, vararg args: Pair<String,String>) {
+    suspend fun sendNotification(type: String, vararg args: Pair<String, String>) {
         NotificationDialogMessagePacket(type, *args).send(habbo)
     }
 

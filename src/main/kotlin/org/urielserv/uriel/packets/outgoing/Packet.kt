@@ -38,6 +38,12 @@ abstract class Packet {
         }
     }
 
+    suspend fun broadcast(vararg habbos: Habbo) {
+        for (habbo in habbos) {
+            send(habbo)
+        }
+    }
+
     suspend fun broadcast(room: Room) {
         for (habbo in room.getHabbos()) {
             send(habbo)

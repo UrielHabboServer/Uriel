@@ -1,13 +1,13 @@
 package org.urielserv.uriel.packets.outgoing.landing_view
 
+import org.urielserv.uriel.game.landing_view.LandingViewPromoArticle
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
-import org.urielserv.uriel.game.landing_view.LandingViewPromoArticle
 
 class PromoArticlesPacket(
     private val articles: List<LandingViewPromoArticle>
 ) : Packet() {
-    
+
     override val packetId = Outgoing.PromoArticles
 
     override suspend fun construct() {
