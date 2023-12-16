@@ -41,12 +41,12 @@ class Room internal constructor(
     }
 
     suspend fun enter(habbo: Habbo, force: Boolean = false) {
-        if (!isLoaded) {
-            load()
-        }
-
         if (habbo.room != null) {
             habbo.room!!.leave(habbo)
+        }
+
+        if (!isLoaded) {
+            load()
         }
 
         // TODO: Add support for doorbell, password and room bans
@@ -100,6 +100,10 @@ class Room internal constructor(
 
         habbos.remove(habbo)
 
+        if (habbos.isEmpty()) {
+            unload()
+        }
+
         info.users = habbos.size
         info.flushChanges()
 
@@ -108,10 +112,6 @@ class Room internal constructor(
         }
 
         DesktopViewPacket().send(habbo)
-
-        if (habbos.isEmpty()) {
-            unload()
-        }
     }
 
     fun getHabbos(): List<Habbo> {
