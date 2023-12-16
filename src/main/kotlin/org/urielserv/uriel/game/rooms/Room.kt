@@ -45,7 +45,7 @@ class Room internal constructor(
             load()
         }
 
-        if (habbo.room != null && habbo.room != this) {
+        if (habbo.room != null) {
             habbo.room!!.leave(habbo)
         }
 
