@@ -1,7 +1,10 @@
 package org.urielserv.uriel.packets.incoming.users.looks
 
 import io.klogging.logger
+import org.urielserv.uriel.EventDispatcher
 import org.urielserv.uriel.HotelSettings
+import org.urielserv.uriel.core.event_dispatcher.Events
+import org.urielserv.uriel.core.event_dispatcher.events.users.UserUpdateLookEvent
 import org.urielserv.uriel.extensions.readString
 import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.wardrobe.ClothingValidator
@@ -23,10 +26,12 @@ class UserFigurePacketHandler : PacketHandler {
         val shortGender = packet.readString()
         var look = packet.readString()
 
+        val habbo = client.habbo!!
+
         val gender = try {
             HabboGender.tryFromShort(shortGender)
         } catch (ignored: Exception) {
-            logger.warn("${client.habbo!!.info.username} attempted to set an invalid gender")
+            logger.warn("${habbo.info.username} attempted to set an invalid gender")
             return
         }
 
@@ -34,19 +39,24 @@ class UserFigurePacketHandler : PacketHandler {
             look = ClothingValidator.validateLook(
                 look,
                 gender.short(),
-                client.habbo!!.subscriptions.hasActiveHabboClubMembership(),
+                habbo.subscriptions.hasActiveHabboClubMembership(),
                 listOf()
             )
         }
 
-        client.habbo!!.info.look = look
-        client.habbo!!.info.gender = gender
-        client.habbo!!.info.flushChanges()
+        val event = UserUpdateLookEvent(habbo, look, gender, habbo.info.look, habbo.info.gender)
+        EventDispatcher.dispatch(Events.UserUpdateLook, event)
 
-        UserFigurePacket(client.habbo!!).send(client)
+        if (event.isCancelled) return
 
-        if (client.habbo!!.room != null) {
-            RoomUnitInfoPacket(client.habbo!!).broadcast(client.habbo!!.room!!)
+        habbo.info.look = event.newLook
+        habbo.info.gender = event.newGender
+        habbo.info.flushChanges()
+
+        UserFigurePacket(habbo).send(client)
+
+        if (habbo.room != null) {
+            RoomUnitInfoPacket(habbo).broadcast(habbo.room!!)
         }
     }
 

@@ -1,6 +1,9 @@
 package org.urielserv.uriel.packets.incoming.rooms
 
+import org.urielserv.uriel.EventDispatcher
 import org.urielserv.uriel.RoomManager
+import org.urielserv.uriel.core.event_dispatcher.Events
+import org.urielserv.uriel.core.event_dispatcher.events.rooms.RoomEnterEvent
 import org.urielserv.uriel.extensions.readInt
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
@@ -17,6 +20,14 @@ class RoomEnterPacketHandler : PacketHandler {
         val room = RoomManager.getRoomById(roomId)
 
         if (room == null) {
+            DesktopViewPacket().send(client)
+            return
+        }
+
+        val event = RoomEnterEvent(client.habbo!!, room)
+        EventDispatcher.dispatch(Events.RoomEnter, event)
+
+        if (event.isCancelled) {
             DesktopViewPacket().send(client)
             return
         }

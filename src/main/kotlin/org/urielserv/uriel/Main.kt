@@ -162,6 +162,8 @@ suspend fun main() = runBlocking {
 }
 
 private suspend fun shutdown() {
+    if (!Ready) return
+
     measureProcessShutdown("Habbo Manager") {
         HabboManager.shutdown()
     }
