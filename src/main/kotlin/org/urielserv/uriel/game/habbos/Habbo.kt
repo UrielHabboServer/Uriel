@@ -33,8 +33,10 @@ class Habbo internal constructor(
 
     val notifications = HabboNotifications(this)
 
-    internal var room: Room? = null
-    internal var roomUnit: HabboRoomUnit? = null
+    var room: Room? = null
+        internal set
+    var roomUnit: HabboRoomUnit? = null
+        internal set
 
     private fun loadData(): HabboData {
         val data = Database.sequenceOf(UserDataSchema)

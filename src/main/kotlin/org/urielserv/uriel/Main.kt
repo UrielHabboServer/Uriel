@@ -1,3 +1,5 @@
+@file:JvmName("Uriel")
+
 package org.urielserv.uriel
 
 import com.akuleshov7.ktoml.Toml
@@ -92,8 +94,6 @@ suspend fun main() = runBlocking {
         }
     })
 
-    EventDispatcher = UrielEventDispatcher()
-
     logger.info("Starting Uriel, please wait...")
 
     measureInitialProcess("Configuration & Hotel Settings") {
@@ -112,6 +112,10 @@ suspend fun main() = runBlocking {
     }
 
     loadDatabaseHotelSettingsOverrides()
+
+    measureInitialProcess("Event Dispatcher") {
+        EventDispatcher = UrielEventDispatcher()
+    }
 
     measureInitialProcess("Localizer") {
         Localizer = UrielLocalizer()

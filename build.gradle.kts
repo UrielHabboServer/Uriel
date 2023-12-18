@@ -39,7 +39,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("org.urielserv.uriel.MainKt")
+    mainClass.set("org.urielserv.uriel.Uriel")
 }
 
 buildConfig {

@@ -45,6 +45,5 @@ bin/
 ### Uriel ###
 uriel.toml
 uriel_hotel_settings.toml
-cache/
 
 **.log
