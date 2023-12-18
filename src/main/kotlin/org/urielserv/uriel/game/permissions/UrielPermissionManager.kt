@@ -29,6 +29,16 @@ class UrielPermissionManager {
             return userPermission.allow
         }
 
+        // Check for wildcard
+        val permissionGroups = permission.split(".")
+        val wildcardPermission = List(permissionGroups.size) { index ->
+            permissionGroups.subList(0, index).joinToString(".") + ".*"
+        }.firstOrNull { hasPermission(habbo, it) }
+
+        if (wildcardPermission != null) {
+            return true
+        }
+
         // Fallback to rank permissions
         return hasPermission(habbo.info.rank, permission)
     }
@@ -39,6 +49,16 @@ class UrielPermissionManager {
 
         if (rankPermission != null) {
             return rankPermission.allow
+        }
+
+        // Check for wildcard
+        val permissionGroups = permission.split(".")
+        val wildcardPermission = List(permissionGroups.size) { index ->
+            permissionGroups.subList(0, index).joinToString(".") + ".*"
+        }.firstOrNull { hasPermission(rank, it) }
+
+        if (wildcardPermission != null) {
+            return true
         }
 
         // Fallback to parent rank permissions
