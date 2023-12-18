@@ -21,6 +21,7 @@ import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.UrielEvent
 import org.urielserv.uriel.core.event_dispatcher.UrielEventDispatcher
 import org.urielserv.uriel.core.locale.UrielLocalizer
+import org.urielserv.uriel.core.plugin_loader.UrielPluginLoader
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.landing_view.UrielLandingViewManager
@@ -48,6 +49,7 @@ lateinit var Configuration: UrielConfiguration
 lateinit var HotelSettings: UrielHotelSettings
 
 lateinit var EventDispatcher: UrielEventDispatcher
+lateinit var PluginLoader: UrielPluginLoader
 
 lateinit var Database: UrielDatabase
 lateinit var Localizer: UrielLocalizer
@@ -113,8 +115,9 @@ suspend fun main() = runBlocking {
 
     loadDatabaseHotelSettingsOverrides()
 
-    measureInitialProcess("Event Dispatcher") {
+    measureInitialProcess("Event Dispatcher & Plugin Loader") {
         EventDispatcher = UrielEventDispatcher()
+        PluginLoader = UrielPluginLoader()
     }
 
     measureInitialProcess("Localizer") {
@@ -155,6 +158,7 @@ suspend fun main() = runBlocking {
     }
 
     Ready = true
+    PluginLoader.startPlugins()
     EventDispatcher.dispatch(Events.Load, UrielEvent())
 
     measureInitialProcess("Tick Loop") {
@@ -167,6 +171,10 @@ suspend fun main() = runBlocking {
 
 private suspend fun shutdown() {
     if (!Ready) return
+
+    measureProcessShutdown("Plugin Loader") {
+        PluginLoader.shutdown()
+    }
 
     measureProcessShutdown("Habbo Manager") {
         HabboManager.shutdown()
