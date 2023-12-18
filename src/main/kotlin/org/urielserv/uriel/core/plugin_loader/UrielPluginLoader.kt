@@ -1,7 +1,11 @@
 package org.urielserv.uriel.core.plugin_loader
 
 import com.akuleshov7.ktoml.Toml
+import io.klogging.config.loggingConfiguration
 import io.klogging.noCoLogger
+import io.klogging.rendering.RENDER_ANSI
+import io.klogging.sending.STDOUT
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import java.io.File
 import java.net.URLClassLoader
@@ -39,7 +43,9 @@ class UrielPluginLoader {
 
         // Load plugins
         for (plugin in pluginData) {
-            loadPlugin(plugin)
+            runBlocking {
+                loadPlugin(plugin)
+            }
         }
     }
 
@@ -70,7 +76,7 @@ class UrielPluginLoader {
         return null
     }
 
-    private fun loadPlugin(pluginData: UrielPluginData) {
+    private suspend fun loadPlugin(pluginData: UrielPluginData) {
         logger.info("Loading plugin ${pluginData.information.name} v${pluginData.information.version} by ${pluginData.information.author}...")
 
         try {
@@ -79,8 +85,17 @@ class UrielPluginLoader {
 
             val pluginInstance = pluginClass.getDeclaredConstructor().newInstance() as UrielPlugin
 
-            plugins[pluginData] = pluginInstance
+            loggingConfiguration(append = true) {
+                sink("stdout", RENDER_ANSI, STDOUT)
 
+                logging {
+                    fromLoggerBase(pluginData.entry.mainClass.substringBeforeLast("."))
+
+                    toSink("stdout")
+                }
+            }
+
+            plugins[pluginData] = pluginInstance
             logger.info("Successfully loaded plugin ${pluginData.information.name}")
 
             pluginInstance.onLoad()
@@ -90,7 +105,7 @@ class UrielPluginLoader {
         }
     }
 
-    internal fun startPlugins() {
+    internal suspend fun startPlugins() {
         for ((_, plugin) in plugins) {
             plugin.onStart()
         }
@@ -104,7 +119,11 @@ class UrielPluginLoader {
         return plugins.keys.firstOrNull { it.information.name == pluginName }
     }
 
-    fun unloadPlugin(pluginName: String) {
+    fun getPluginDatas(): List<UrielPluginData> {
+        return plugins.keys.toList()
+    }
+
+    suspend fun unloadPlugin(pluginName: String) {
         val plugin = getPlugin(pluginName) ?: return
         val pluginData = getPluginData(pluginName) ?: return
 
@@ -113,8 +132,9 @@ class UrielPluginLoader {
         plugins.remove(pluginData)
     }
 
-    fun shutdown() {
-        for ((pluginData, _) in plugins) {
+    suspend fun shutdown() {
+        for ((pluginData, plugin) in plugins) {
+            plugin.onShutdown()
             unloadPlugin(pluginData.information.name)
         }
     }

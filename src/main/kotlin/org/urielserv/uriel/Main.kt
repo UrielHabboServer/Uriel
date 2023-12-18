@@ -21,6 +21,7 @@ import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.UrielEvent
 import org.urielserv.uriel.core.event_dispatcher.UrielEventDispatcher
 import org.urielserv.uriel.core.locale.UrielLocalizer
+import org.urielserv.uriel.core.plugin_loader.UrielPluginData
 import org.urielserv.uriel.core.plugin_loader.UrielPluginLoader
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
@@ -84,6 +85,7 @@ suspend fun main() = runBlocking {
 
         logging {
             fromLoggerBase("org.urielserv", stopOnMatch = true)
+
             fromMinLevel(Level.DEBUG) {
                 toSink("stdout")
             }

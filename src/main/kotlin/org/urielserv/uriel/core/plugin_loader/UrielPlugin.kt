@@ -1,11 +1,15 @@
 package org.urielserv.uriel.core.plugin_loader
 
-interface UrielPlugin {
+import io.klogging.noCoLogger
 
-    fun onLoad() = Unit
-    fun onStart() = Unit
+abstract class UrielPlugin {
 
-    fun onShutdown() = Unit
-    fun onUnload() = Unit
+    val logger = noCoLogger(this::class)
+
+    open suspend fun onLoad() = Unit
+    open suspend fun onStart() = Unit
+
+    open suspend fun onShutdown() = Unit
+    open suspend fun onUnload() = Unit
 
 }
