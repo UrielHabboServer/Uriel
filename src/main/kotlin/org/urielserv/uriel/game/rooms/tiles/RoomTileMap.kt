@@ -53,10 +53,10 @@ class RoomTileMap(
     }
 
     fun getTile(x: Int, y: Int): RoomTile? {
-        try {
-            return tiles[x][y]
+        return try {
+            tiles[x][y]
         } catch (exc: ArrayIndexOutOfBoundsException) {
-            return null
+            null
         }
     }
 

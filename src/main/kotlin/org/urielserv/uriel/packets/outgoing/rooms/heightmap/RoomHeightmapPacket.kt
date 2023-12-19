@@ -15,8 +15,8 @@ class RoomHeightmapPacket(
 
         appendInt(room.tileMap!!.tileCount / room.tileMap!!.length)
         appendInt(room.tileMap!!.tileCount)
-        for (y in 0 until room.tileMap!!.length) {
-            for (x in 0 until room.tileMap!!.width) {
+        for (y in 0..<room.tileMap!!.length) {
+            for (x in 0..<room.tileMap!!.width) {
                 val tile = room.tileMap!!.getTile(x, y)
 
                 if (tile == null) appendShort(Short.MAX_VALUE)
