@@ -12,6 +12,7 @@ object UserSubscriptionsSchema : Table<Subscription>("user_subscriptions") {
     val userId = int("user_id").references(UsersSchema) { it.habboInfo }
 
     val subscriptionType = varchar("subscription_type").bindTo { it.type }
+    val subscriptionLevel = int("subscription_level").bindTo { it.level }
 
     val subscriptionStart = int("start_timestamp").bindTo { it.start }
     val subscriptionEnd = int("end_timestamp").bindTo { it.end }

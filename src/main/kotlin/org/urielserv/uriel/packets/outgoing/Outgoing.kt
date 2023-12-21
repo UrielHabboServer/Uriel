@@ -12,6 +12,7 @@ object Outgoing {
     const val UserEffectList = 340
     const val UserInfo = 2725
     const val UserSubscription = 954
+    const val UserPermissions = 411
     const val UserCredits = 3475
     const val UserCurrency = 2018
     const val UserWardrobePage = 3315

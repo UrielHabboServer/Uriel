@@ -30,6 +30,8 @@ class HabboSubscriptions(
     fun hasActiveSubscription(subscriptionType: String): Boolean =
         subscriptions.any { it.type == subscriptionType && it.isActive }
 
+    fun getHabboClubSubscription(): Subscription? = getSubscription("habbo_club")
+
     fun getSubscription(subscriptionType: String): Subscription? =
         subscriptions.firstOrNull { it.type == subscriptionType }
 

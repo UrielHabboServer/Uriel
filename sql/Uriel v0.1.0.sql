@@ -65,12 +65,13 @@ CREATE TABLE user_currencies
 DROP TABLE IF EXISTS user_subscriptions;
 CREATE TABLE user_subscriptions
 (
-    id                INT AUTO_INCREMENT PRIMARY KEY    NOT NULL UNIQUE,
-    user_id           INT                               NOT NULL,
-    subscription_type VARCHAR(255) DEFAULT 'HABBO_CLUB' NOT NULL,
-    start_timestamp   LONG                              NOT NULL,
-    end_timestamp     LONG                              NOT NULL,
-    is_active         BOOLEAN      DEFAULT false        NOT NULL,
+    id                 INT AUTO_INCREMENT PRIMARY KEY    NOT NULL UNIQUE,
+    user_id            INT                               NOT NULL,
+    subscription_type  VARCHAR(255) DEFAULT 'habbo_club' NOT NULL,
+    subscription_level INT          DEFAULT 1            NOT NULL,
+    start_timestamp    LONG                              NOT NULL,
+    end_timestamp      LONG                              NOT NULL,
+    is_active          BOOLEAN      DEFAULT false        NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
@@ -283,6 +284,35 @@ VALUES (0, 'normal', false, false, false, true, true),
        (36, 'santa', false, true, false, true, false),
        (37, 'ambassador', false, false, true, false, true),
        (38, 'radio', false, true, false, true, false);
+
+-- Furniture
+DROP TABLE IF EXISTS furniture;
+CREATE TABLE furniture
+(
+    id                      INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    nitro_sprite_id         INT                            NOT NULL,
+    public_name             VARCHAR(255)                   NOT NULL,
+    item_name               VARCHAR(255)                   NOT NULL,
+    item_type               ENUM ('FLOOR', 'WALL')         NOT NULL,
+    floor_width             INT                            NOT NULL,
+    floor_length            INT                            NOT NULL,
+    floor_height            DOUBLE                         NOT NULL,
+    floor_default_direction INT                            NOT NULL,
+    allow_stack             BOOLEAN DEFAULT true           NOT NULL,
+    allow_sit               BOOLEAN DEFAULT false          NOT NULL,
+    allow_lay               BOOLEAN DEFAULT false          NOT NULL,
+    allow_walk              BOOLEAN DEFAULT false          NOT NULL,
+    allow_gift              BOOLEAN DEFAULT true           NOT NULL,
+    allow_trade             BOOLEAN DEFAULT true           NOT NULL,
+    allow_recycle           BOOLEAN DEFAULT true           NOT NULL,
+    allow_marketplace_sell  BOOLEAN DEFAULT true           NOT NULL,
+    allow_inventory_stack   BOOLEAN DEFAULT true           NOT NULL,
+    interaction_id          VARCHAR(255),
+    effect_id_male          INT,
+    effect_id_female        INT,
+    clothing_on_walk        TEXT,
+    INDEX (nitro_sprite_id)
+);
 
 -- Rooms
 DROP TABLE IF EXISTS rooms;

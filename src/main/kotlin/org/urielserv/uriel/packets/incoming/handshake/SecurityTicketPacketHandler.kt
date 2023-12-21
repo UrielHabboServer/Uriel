@@ -15,6 +15,7 @@ import org.urielserv.uriel.packets.outgoing.handshake.AuthenticatedPacket
 import org.urielserv.uriel.packets.outgoing.handshake.ClientPingPacket
 import org.urielserv.uriel.packets.outgoing.users.NoobnessLevelPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
+import org.urielserv.uriel.packets.outgoing.users.UserPermissionsPacket
 import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
 import org.urielserv.uriel.packets.outgoing.users.subscriptions.UserSubscriptionPacket
 import java.io.ByteArrayInputStream
@@ -94,6 +95,7 @@ class SecurityTicketPacketHandler : PacketHandler {
         UserEffectListPacket(habbo.inventory.effects.toList()).send(client)
         NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)
         UserSubscriptionPacket(habbo, "habbo_club", UserSubscriptionPacket.RESPONSE_TYPE_LOGIN).send(client)
+        UserPermissionsPacket(habbo).send(client)
         ClientPingPacket().send(client)
 
     }

@@ -16,6 +16,7 @@ interface Subscription : Entity<Subscription> {
         get() = habboInfo.habbo
 
     var type: String
+    var level: Int
 
     var start: Int
     var end: Int
