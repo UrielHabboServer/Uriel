@@ -243,7 +243,9 @@ CREATE TABLE commands
 );
 INSERT INTO commands (name, description, invokers)
 VALUES ('about', 'Shows information about the Uriel Habbo Server', 'about,uriel,info'),
-       ('commands', 'Shows all available commands for the user', 'commands,cmds,cmd,cmdlist');
+       ('commands', 'Shows all available commands for the user', 'commands,cmds,cmd,cmdlist'),
+       ('lay', 'Lays your character on the ground', 'lay'),
+       ('sit', 'Sits your character on the ground', 'sit');
 
 -- Chat Bubbles
 DROP TABLE IF EXISTS chat_bubbles;

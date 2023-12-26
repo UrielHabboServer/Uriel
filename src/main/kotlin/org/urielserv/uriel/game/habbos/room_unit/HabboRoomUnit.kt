@@ -57,9 +57,14 @@ class HabboRoomUnit(
     var isStanding = true
         private set
 
-    var isSittingOnChair = false
+    var isSittingOnFurniture = false
         private set
     var isSittingOnFloor = false
+        private set
+
+    var isLayingOnFurniture = false
+        private set
+    var isLayingOnFloor = false
         private set
 
     suspend fun talk(message: RoomChatMessage) {
@@ -115,20 +120,30 @@ class HabboRoomUnit(
         if (isWalking) return
 
         isStanding = true
-        isSittingOnChair = false
+
+        isSittingOnFurniture = false
         isSittingOnFloor = false
 
+        isLayingOnFurniture = false
+        isLayingOnFloor = false
+
         statuses.remove(HabboRoomUnitStatus.SIT)
+        statuses.remove(HabboRoomUnitStatus.LAY)
 
         RoomUnitStatusPacket(habbo).broadcast(room)
     }
 
     suspend fun sitOnFloor() {
-        if (isWalking) return
+        if (isWalking || isSittingOnFurniture || isLayingOnFurniture) return
 
         isStanding = false
-        isSittingOnChair = false
+
+        isSittingOnFurniture = false
         isSittingOnFloor = true
+
+        isLayingOnFurniture = false
+        isLayingOnFloor = false
+        statuses.remove(HabboRoomUnitStatus.LAY)
 
         bodyRotation = bodyRotation.toNonDiagonal()
         headRotation = bodyRotation
@@ -138,8 +153,29 @@ class HabboRoomUnit(
         RoomUnitStatusPacket(habbo).broadcast(room)
     }
 
+    suspend fun layOnFloor() {
+        if (isWalking || isSittingOnFurniture) return
+
+        isStanding = false
+
+        isSittingOnFurniture = false
+        isSittingOnFloor = false
+
+        isLayingOnFurniture = false
+        isLayingOnFloor = true
+
+        statuses.remove(HabboRoomUnitStatus.SIT)
+
+        bodyRotation = bodyRotation.toNonDiagonal()
+        headRotation = bodyRotation
+
+        statuses[HabboRoomUnitStatus.LAY] = "0.5"
+
+        RoomUnitStatusPacket(habbo).broadcast(room)
+    }
+
     suspend fun lookAt(tile: RoomTile) {
-        if (isWalking && !isSittingOnChair) return
+        if (isWalking || isSittingOnFurniture || isLayingOnFurniture || isLayingOnFloor) return
 
         var direction = RoomTileDirection.getDirectionFromTileToTile(currentTile, tile)
 
@@ -154,7 +190,7 @@ class HabboRoomUnit(
     }
 
     suspend fun walkTo(tile: RoomTile) {
-        if (isSittingOnFloor || isSittingOnChair) {
+        if (isSittingOnFloor || isSittingOnFurniture || isLayingOnFloor || isLayingOnFurniture) {
             stand()
         }
 

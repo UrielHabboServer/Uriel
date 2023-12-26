@@ -8,6 +8,8 @@ import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.core.database.schemas.CommandsSchema
 import org.urielserv.uriel.game.command_system.commands.users.AboutCommand
 import org.urielserv.uriel.game.command_system.commands.users.CommandsCommand
+import org.urielserv.uriel.game.command_system.commands.users.LayCommand
+import org.urielserv.uriel.game.command_system.commands.users.SitCommand
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.game.rooms.Room
@@ -34,6 +36,13 @@ class UrielCommandManager {
     private fun registerAllCommands() {
         registerCommand(AboutCommand)
         registerCommand(CommandsCommand)
+
+        registerFunCommands()
+    }
+
+    private fun registerFunCommands() {
+        registerCommand(SitCommand)
+        registerCommand(LayCommand)
     }
 
     private fun registerAllParameterBuilders() {
