@@ -1,4 +1,4 @@
-package org.urielserv.uriel.packets.outgoing.notifications
+package org.urielserv.uriel.packets.outgoing.users.notifications
 
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet

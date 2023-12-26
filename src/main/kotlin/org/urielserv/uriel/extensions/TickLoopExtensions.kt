@@ -1,8 +1,9 @@
 package org.urielserv.uriel.extensions
 
 import org.urielserv.uriel.HotelTickLoop
+import org.urielserv.uriel.tick_loop.TickLoop
 
-val averageTps: Double
+val TickLoop.averageTps: Double
     get() {
         if (HotelTickLoop.tickStartTimes.isEmpty()) {
             return 0.0
@@ -17,7 +18,7 @@ val averageTps: Double
         return totalTicks / elapsedTimeInSeconds
     }
 
-val averageMspt: Double
+val TickLoop.averageMspt: Double
     get() {
         if (HotelTickLoop.tickDurations.isEmpty()) {
             return 0.0

@@ -20,7 +20,14 @@ object Outgoing {
 
     const val NoobnessLevel = 3738
 
-    // LandingView
+    // Notifications
+    const val GenericAlert = 3801 // TODO: Figure out the difference between this and SimpleAlert
+    const val SimpleAlert = 5100
+    const val ActivityPointNotification = 2275
+    const val NotificationList = 1992
+    const val MotdMessages = 2035
+
+    // Landing View
     const val DesktopView = 122
     const val PromoArticles = 286
 
@@ -52,9 +59,4 @@ object Outgoing {
     const val RoomUnitChatShout = 1036
     const val RoomUnitChatWhisper = 2704
 
-    // Notifications
-    const val GenericAlert = 3801
-    const val SimpleAlert = 5100
-    const val ActivityPointNotification = 2275
-    const val NotificationList = 1992
 }

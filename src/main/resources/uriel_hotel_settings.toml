@@ -11,6 +11,7 @@ discountEnabled = false
 discountDaysBeforeEnd = 7
 
 [habbos]
+alertChatBubbleId = 2
 
 [habbos.rooms]
 maxRoomsWithHabboClub = 35
@@ -31,3 +32,6 @@ deleteExpiredSubscriptions = true
 
 [rooms]
 noDelayOnWalk = true
+
+[commands]
+prefix = ":"

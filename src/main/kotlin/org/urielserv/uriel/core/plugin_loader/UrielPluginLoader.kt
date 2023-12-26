@@ -80,7 +80,8 @@ class UrielPluginLoader {
         logger.info("Loading plugin ${pluginData.information.name} v${pluginData.information.version} by ${pluginData.information.author}...")
 
         try {
-            val classLoader = URLClassLoader(arrayOf(pluginData.pluginFile.toURI().toURL()), this::class.java.classLoader)
+            val classLoader =
+                URLClassLoader(arrayOf(pluginData.pluginFile.toURI().toURL()), this::class.java.classLoader)
             val pluginClass = classLoader.loadClass(pluginData.entry.mainClass)
 
             val pluginInstance = pluginClass.getDeclaredConstructor().newInstance() as UrielPlugin

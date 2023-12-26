@@ -11,8 +11,10 @@ data class UrielPluginData(
     val entry: Entry
 ) {
 
-    @Transient internal lateinit var pluginFile: File
-    @Transient internal lateinit var jarFile: JarFile
+    @Transient
+    internal lateinit var pluginFile: File
+    @Transient
+    internal lateinit var jarFile: JarFile
 
     @Serializable
     data class Information(

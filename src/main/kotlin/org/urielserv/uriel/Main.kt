@@ -21,8 +21,9 @@ import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.UrielEvent
 import org.urielserv.uriel.core.event_dispatcher.UrielEventDispatcher
 import org.urielserv.uriel.core.locale.UrielLocalizer
-import org.urielserv.uriel.core.plugin_loader.UrielPluginData
 import org.urielserv.uriel.core.plugin_loader.UrielPluginLoader
+import org.urielserv.uriel.extensions.currentUnixSeconds
+import org.urielserv.uriel.game.command_system.UrielCommandManager
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
 import org.urielserv.uriel.game.landing_view.UrielLandingViewManager
@@ -49,11 +50,14 @@ private val logger = logger("org.urielserv.uriel.Main")
 lateinit var Configuration: UrielConfiguration
 lateinit var HotelSettings: UrielHotelSettings
 
+lateinit var Database: UrielDatabase
+
 lateinit var EventDispatcher: UrielEventDispatcher
 lateinit var PluginLoader: UrielPluginLoader
 
-lateinit var Database: UrielDatabase
 lateinit var Localizer: UrielLocalizer
+
+lateinit var CommandManager: UrielCommandManager
 
 lateinit var RankManager: UrielRankManager
 lateinit var PermissionManager: UrielPermissionManager
@@ -73,6 +77,7 @@ lateinit var PacketHandlerManager: UrielPacketHandlerManager
 lateinit var HotelTickLoop: TickLoop
 
 var Ready = false
+var StartTime = 0
 
 suspend fun main() = runBlocking {
     println()
@@ -126,6 +131,10 @@ suspend fun main() = runBlocking {
         Localizer = UrielLocalizer()
     }
 
+    measureInitialProcess("Command Manager") {
+        CommandManager = UrielCommandManager()
+    }
+
     measureInitialProcess("Rank Manager & Permission Manager") {
         RankManager = UrielRankManager()
         PermissionManager = UrielPermissionManager()
@@ -160,6 +169,8 @@ suspend fun main() = runBlocking {
     }
 
     Ready = true
+    StartTime = currentUnixSeconds
+
     PluginLoader.startPlugins()
     EventDispatcher.dispatch(Events.Load, UrielEvent())
 

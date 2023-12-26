@@ -9,6 +9,7 @@ import org.urielserv.uriel.core.database.schemas.users.UserDataSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.currencies.HabboCurrencies
 import org.urielserv.uriel.game.habbos.inventory.HabboInventory
+import org.urielserv.uriel.game.habbos.notifications.HabboNotifications
 import org.urielserv.uriel.game.habbos.room_unit.HabboRoomUnit
 import org.urielserv.uriel.game.habbos.subscriptions.HabboSubscriptions
 import org.urielserv.uriel.game.rooms.Room

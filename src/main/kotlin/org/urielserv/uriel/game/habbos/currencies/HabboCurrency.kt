@@ -4,8 +4,8 @@ import org.ktorm.entity.Entity
 import org.urielserv.uriel.game.currencies.UrielCurrency
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo
-import org.urielserv.uriel.packets.outgoing.notifications.ActivityPointNotificationMessagePacket
 import org.urielserv.uriel.packets.outgoing.users.currencies.UserCreditsPacket
+import org.urielserv.uriel.packets.outgoing.users.notifications.ActivityPointNotificationMessagePacket
 
 interface HabboCurrency : Entity<HabboCurrency> {
 

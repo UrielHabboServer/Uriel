@@ -8,7 +8,8 @@ class RoomChatMessage(
     val habbo: Habbo,
     var message: String,
     var bubble: ChatBubble,
-    val type: ChatType
+    val type: ChatType,
+    val ignoreBubbleChecks: Boolean = false
 ) {
 
     companion object {
@@ -40,13 +41,11 @@ class RoomChatMessage(
             message = message.substringAfter(" ")
         }
 
-        if (!checkIfBubbleCanBeUsed()) {
+        if (!ignoreBubbleChecks && !checkIfBubbleCanBeUsed()) {
             bubble = ChatBubblesManager.getChatBubbleById(1)!!
         }
 
         emotionId = findEmotionId()
-
-        println("MESSAGE: [$type] (E;$emotionId | B;${bubble.nitroStyleId} | T;$whisperTarget) ${habbo.info.username}: $message")
     }
 
     private fun findEmotionId(): Int {

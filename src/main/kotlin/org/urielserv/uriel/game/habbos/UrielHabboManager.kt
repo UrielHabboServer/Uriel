@@ -106,6 +106,20 @@ class UrielHabboManager {
         return connectedHabbos.values.firstOrNull { it.info.username == username }
     }
 
+    fun getHabboInfoById(id: Int): HabboInfo? {
+        return Database.sequenceOf(UsersSchema)
+            .find {
+                it.id eq id
+            }
+    }
+
+    fun getHabboInfoByUsername(username: String): HabboInfo? {
+        return Database.sequenceOf(UsersSchema)
+            .find {
+                it.username eq username
+            }
+    }
+
     /**
      * Removes the specified Habbo from the list of loaded Habbo objects.
      * This method does not disconnect the Habbo (if they are connected).

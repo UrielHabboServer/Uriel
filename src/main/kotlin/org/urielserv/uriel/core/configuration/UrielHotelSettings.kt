@@ -13,7 +13,8 @@ data class UrielHotelSettings(
     var hotel: Hotel,
     var habboClub: HabboClub,
     var habbos: Habbos,
-    var rooms: Rooms
+    var rooms: Rooms,
+    var commands: Commands
 ) {
 
     @Serializable
@@ -29,6 +30,8 @@ data class UrielHotelSettings(
 
     @Serializable
     data class Habbos(
+        var alertChatBubbleId: Int,
+
         var wardrobe: Wardrobe,
         var inventory: Inventory,
         var subscription: Subscription,
@@ -66,6 +69,11 @@ data class UrielHotelSettings(
     @Serializable
     data class Rooms(
         var noDelayOnWalk: Boolean,
+    )
+
+    @Serializable
+    data class Commands(
+        var prefix: String
     )
 
 }

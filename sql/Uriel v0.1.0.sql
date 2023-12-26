@@ -229,6 +229,22 @@ VALUES ('${navigator.flatcategory.global.BC}'),
 INSERT INTO navigator_flat_categories (caption, is_public)
 VALUES ('${navigator.flatcategory.global.OFFICIAL}', true);
 
+-- Commands
+DROP TABLE IF EXISTS commands;
+CREATE TABLE commands
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    name        VARCHAR(255)                   NOT NULL,
+    description TEXT    DEFAULT ''             NOT NULL,
+    `usage`     TEXT    DEFAULT ''             NOT NULL,
+    permission  TEXT    DEFAULT ''             NOT NULL,
+    enabled     BOOLEAN DEFAULT true           NOT NULL,
+    invokers    TEXT                           NOT NULL
+);
+INSERT INTO commands (name, description, invokers)
+VALUES ('about', 'Shows information about the Uriel Habbo Server', 'about,uriel,info'),
+       ('commands', 'Shows all available commands for the user', 'commands,cmds,cmd,cmdlist');
+
 -- Chat Bubbles
 DROP TABLE IF EXISTS chat_bubbles;
 CREATE TABLE chat_bubbles
@@ -263,7 +279,7 @@ VALUES (0, 'normal', false, false, false, true, true),
        (15, 'dark_blue', false, true, false, true, true),
        (16, 'hearts', false, true, false, true, true),
        (17, 'roses', false, true, false, true, true),
-       (18, 'unused', false, true, false, true, true),
+       (18, 'band_aid', false, true, false, true, true),
        (19, 'pig', false, true, false, true, true),
        (20, 'dog', false, true, false, true, true),
        (21, 'blaze_it', false, true, false, true, true),

@@ -1,10 +1,14 @@
 package org.urielserv.uriel.game.habbos.room_unit
 
 import kotlinx.coroutines.runBlocking
+import org.urielserv.uriel.ChatBubblesManager
+import org.urielserv.uriel.CommandManager
 import org.urielserv.uriel.HotelSettings
+import org.urielserv.uriel.extensions.hasPermission
 import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.rooms.Room
+import org.urielserv.uriel.game.rooms.chat.ChatBubble
 import org.urielserv.uriel.game.rooms.chat.RoomChatMessage
 import org.urielserv.uriel.game.rooms.tiles.RoomTile
 import org.urielserv.uriel.game.rooms.tiles.RoomTileDirection
@@ -59,9 +63,20 @@ class HabboRoomUnit(
         private set
 
     suspend fun talk(message: RoomChatMessage) {
-        if (message.message.startsWith(":sit", ignoreCase = true)) {
-            sitOnFloor()
-            return
+        if (message.message.startsWith(HotelSettings.commands.prefix)) {
+            val split = message.message.substring(1).split(" ")
+            val invoker = split[0]
+
+            val command = CommandManager.getCommandByInvoker(invoker)
+
+            if (command != null) {
+                val permission = command.first.permission
+
+                if (permission.isBlank() || habbo.hasPermission(permission)) {
+                    command.second.execute(habbo, split.drop(1))
+                    return
+                }
+            }
         }
 
         when (message.type) {
@@ -79,6 +94,21 @@ class HabboRoomUnit(
                 RoomUnitChatWhisperPacket(message).broadcast(habbo, message.whisperTarget!!)
             }
         }
+    }
+
+    suspend fun sendAlert(
+        message: String,
+        chatBubble: ChatBubble = ChatBubblesManager.getChatBubbleById(HotelSettings.habbos.alertChatBubbleId)!!
+    ) {
+        RoomUnitChatPacket(
+            RoomChatMessage(
+                habbo,
+                message,
+                chatBubble,
+                RoomChatMessage.ChatType.TALK,
+                ignoreBubbleChecks = true
+            )
+        ).send(habbo)
     }
 
     suspend fun stand() {
