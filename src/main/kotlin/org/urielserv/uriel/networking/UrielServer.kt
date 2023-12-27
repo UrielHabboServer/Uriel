@@ -77,8 +77,8 @@ class UrielServer(
 
     private fun Application.webSocket() {
         install(WebSockets) {
-            pingPeriod = Duration.ofSeconds(15)
-            timeout = Duration.ofSeconds(15)
+            pingPeriod = Duration.ofSeconds(5)
+            timeout = Duration.ofSeconds(5)
             maxFrameSize = 500000L
             masking = false
         }
@@ -125,24 +125,27 @@ class UrielServer(
                     // read packet id (short)
                     val packetId = byteStream.readShort()
 
-                    logIncomingPacket(packetId, client, packet)
+                    // log incoming packet
+                    //logIncomingPacket(packetId, client, packet)
 
                     PacketHandlerManager.handlePacket(packetId, client, byteStream)
                 }
 
-                if (client.habbo != null) {
-                    client.habbo!!.disconnect()
-                } else {
-                    client.dispose()
+                try {
+                    if (client.habbo != null) {
+                        client.habbo!!.disconnect()
+                    } else {
+                        client.dispose()
+                    }
+                } catch (ignored: Exception) {
                 }
 
                 logger.debug("Client disconnected from ${client.ip}:${client.port}")
-
-                disposeClient(client)
             }
         }
     }
 
+    @Suppress("UNUSED")
     private suspend fun logIncomingPacket(packetId: Short, client: UrielServerClient, packet: ByteArray) {
         logger.debug("Packet: $packetId | Client: ${client.ip}:${client.port} | Packet: ${packet.contentToString()}")
     }

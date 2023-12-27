@@ -41,17 +41,16 @@ object AboutCommand : CommandBase() {
             append("$minutes minute${if (minutes != 1) "s" else ""}")
         }
 
+        val runtime = Runtime.getRuntime()
+
         val notification = PopUpNotification(
-            type = currentUnixSeconds.toString(),
             title = "Uriel Habbo Server",
             message = """
                 <b>Server Information:</b>
                 - Server Version: Uriel ${BuildConfig.VERSION}
                 - Server Uptime: $uptimeString
-                - Server Cores: ${Runtime.getRuntime().availableProcessors()}
-                - Server Memory: ${Runtime.getRuntime().totalMemory() / 1024 / 1024} / ${
-                Runtime.getRuntime().maxMemory() / 1024 / 1024
-            } MB
+                - Server Cores: ${runtime.availableProcessors()}
+                - Server Memory: ${runtime.totalMemory() / 1024 / 1024} / ${runtime.maxMemory() / 1024 / 1024} MB
                 
                 <b>Tick Loops:</b>
                 - Hotel TPS: ${HotelTickLoop.averageTps.toInt()} TPS

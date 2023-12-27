@@ -21,18 +21,16 @@ object CommandsCommand : CommandBase() {
             .sortedByDescending { it.permission.length }
 
         val commandString = buildString {
-            appendLine("${commands.size} commands available")
             for (command in commands) {
-                appendLine("<b>${command.formattedUsage}</b> - ${command.description}")
+                appendLine("${command.usage} - ${command.description}")
             }
         }
 
         sender.notifications.sendComplexNotification(
             PopUpNotification(
-                type = "commands",
-                title = "Commands",
+                title = "${commands.size} commands available",
                 message = commandString
-            )
+            ).searchable()
         )
     }
 

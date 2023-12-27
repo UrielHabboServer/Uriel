@@ -236,7 +236,6 @@ CREATE TABLE commands
     id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
     name        VARCHAR(255)                   NOT NULL,
     description TEXT    DEFAULT ''             NOT NULL,
-    `usage`     TEXT    DEFAULT ''             NOT NULL,
     permission  TEXT    DEFAULT ''             NOT NULL,
     enabled     BOOLEAN DEFAULT true           NOT NULL,
     invokers    TEXT                           NOT NULL

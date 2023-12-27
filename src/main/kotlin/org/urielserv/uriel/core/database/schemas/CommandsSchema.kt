@@ -12,7 +12,6 @@ object CommandsSchema : Table<CommandInfo>("commands") {
 
     val name = text("name").bindTo { it.name }
     val description = text("description").bindTo { it.description }
-    val usage = text("usage").bindTo { it.usage }
 
     val permission = text("permission").bindTo { it.permission }
     val enabled = boolean("enabled").bindTo { it.enabled }

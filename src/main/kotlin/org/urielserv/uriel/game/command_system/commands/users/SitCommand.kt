@@ -12,6 +12,8 @@ object SitCommand : CommandBase() {
     suspend fun main(sender: Habbo) {
         if (sender.roomUnit == null) return
 
+        if (sender.roomUnit!!.currentTile == sender.room!!.tileMap!!.doorTile) return
+
         sender.roomUnit!!.sitOnFloor()
     }
 

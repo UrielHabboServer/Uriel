@@ -1,10 +1,15 @@
 package org.urielserv.uriel.game.habbos.notifications.complex
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
 class PopUpNotification(
-    override val type: String,
     val title: String,
     val message: String,
 ) : ComplexNotification {
+
+    override var type = "pop_up"
+        private set
 
     private var buttonLinkTitle = ""
     private var buttonLinkUrl = ""
@@ -22,15 +27,27 @@ class PopUpNotification(
         return this
     }
 
+    fun searchable(): PopUpNotification {
+        type = "search"
+        return this
+    }
+
     override fun build(): List<Pair<String, String>> {
-        return listOf(
-            "display" to "POP_UP",
+        val pairs =  listOf(
             "title" to title,
-            "message" to message,
             "linkTitle" to buttonLinkTitle,
             "linkUrl" to buttonLinkUrl,
             "image" to imageUrl
         )
+
+        if (type == "search") {
+            val entries = message.split("\n")
+            val entriesJson = Json.encodeToString(entries)
+
+            return pairs + ("message" to entriesJson)
+        } else {
+            return pairs + ("message" to message)
+        }
     }
 
 }

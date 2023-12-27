@@ -85,12 +85,16 @@ abstract class CommandBase {
         return
     }
 
+    internal fun getMainCommandFunction(): KFunction<*>? {
+        return this::class.functions
+            .firstOrNull { function -> function.annotations.any { it is MainCommand } }
+    }
+
     private fun getExecutorFunction(args: MutableList<String>): Pair<KFunction<*>?, Any?>? {
         val subCommand = args.getOrNull(0)
 
         return if (subCommand == null) {
-            this::class.functions
-                .firstOrNull { function -> function.annotations.any { it is MainCommand } } to this
+            getMainCommandFunction() to this
         } else {
             val subCommandFunction = this::class.functions
                 .firstOrNull { function ->
@@ -104,8 +108,7 @@ abstract class CommandBase {
             } else {
                 val subCommandClass = findSubCommandClass(subCommand.lowercase())
                     ?: // use main command, since there's no sub-command with that name, we can assume they're parameters
-                    return this::class.functions
-                        .firstOrNull { function -> function.annotations.any { it is MainCommand } } to this
+                    return (getMainCommandFunction() to this)
 
                 args.removeAt(0)
 
