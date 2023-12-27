@@ -52,6 +52,11 @@ abstract class CommandBase {
                 continue
             }
 
+            if (parameter.isOptional && mutableArgs.isEmpty()) {
+                parameters.add(null)
+                continue
+            }
+
             if (parameterBuilder == null) {
                 logger.error("No parameter builder found for type: $type")
                 return
@@ -65,10 +70,6 @@ abstract class CommandBase {
             }
 
             parameters.add(parameterValue)
-
-            if (mutableArgs.isEmpty()) {
-                break
-            }
         }
 
         try {
