@@ -9,10 +9,10 @@ import java.nio.ByteBuffer
 interface PacketHandler {
 
     /**
-     * Handles a client request packet.
+     * Handles an incoming packet.
      *
-     * @param client The UrielServerClient object representing the client making the request.
-     * @param packet The ByteArrayInputStream containing the client request packet.
+     * @param client The UrielServerClient object representing the packet sender.
+     * @param packet The ByteBuffer containing the incoming packet.
      */
     suspend fun handle(client: UrielServerClient, packet: ByteBuffer)
 
