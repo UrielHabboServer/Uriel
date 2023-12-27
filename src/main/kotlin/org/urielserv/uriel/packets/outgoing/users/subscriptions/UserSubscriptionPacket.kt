@@ -11,18 +11,26 @@ import kotlin.math.floor
 class UserSubscriptionPacket(
     private val habbo: Habbo,
     private val subscriptionType: String,
+    private val isSubscriptionActive: Boolean,
     private val responseType: Int
 ) : Packet() {
 
     override val packetId = Outgoing.UserSubscription
 
+    private var subscription: Subscription? = null
+
+    constructor(habbo: Habbo, subscription: Subscription, responseType: Int) :
+            this(habbo, subscription.type, subscription.isActive, responseType) {
+        this.subscription = subscription
+    }
+
     override suspend fun construct() {
         appendString(subscriptionType) // productName
 
-        if (!habbo.subscriptions.hasActiveSubscription(subscriptionType)) {
+        if (!isSubscriptionActive) {
             appendNoSubscriptionInfo()
         } else {
-            appendSubscriptionInfo(habbo.subscriptions.getSubscription(subscriptionType))
+            appendSubscriptionInfo(subscription ?: habbo.subscriptions.getSubscription(subscriptionType))
         }
     }
 

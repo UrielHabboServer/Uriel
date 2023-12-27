@@ -2,6 +2,7 @@ package org.urielserv.uriel.packets.outgoing
 
 import io.netty.buffer.ByteBufOutputStream
 import io.netty.buffer.Unpooled
+import kotlinx.coroutines.runBlocking
 import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.rooms.Room
@@ -57,7 +58,19 @@ abstract class Packet {
      * @param habbo The Habbo to send the message to.
      */
     suspend fun send(habbo: Habbo) {
-        send(habbo.client!!)
+        send(habbo.client)
+    }
+
+    /**
+     * Sends a message to the specified Habbo.
+     * Acts as a wrapper for the send method that accepts an Uriel server client.
+     *
+     * @param habbo The Habbo to send the message to.
+     */
+    fun sendSync(habbo: Habbo) {
+        runBlocking {
+            send(habbo)
+        }
     }
 
     /**
@@ -73,6 +86,17 @@ abstract class Packet {
         channelByteBuffer.setInt(0, channelByteBuffer.writerIndex() - 4)
 
         client.send(channelByteBuffer.copy().array())
+    }
+
+    /**
+     * Sends a packet to the given Uriel server client.
+     *
+     * @param client The Uriel server client to send the packet to.
+     */
+    fun sendSync(client: UrielServerClient) {
+        runBlocking {
+            send(client)
+        }
     }
 
     /**

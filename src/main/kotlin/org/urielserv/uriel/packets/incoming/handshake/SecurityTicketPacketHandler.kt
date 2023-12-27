@@ -7,10 +7,8 @@ import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.events.users.UserLoginEvent
 import org.urielserv.uriel.extensions.getString
-import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.handshake.AuthenticatedPacket
 import org.urielserv.uriel.packets.outgoing.handshake.ClientPingPacket
 import org.urielserv.uriel.packets.outgoing.users.NoobnessLevelPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
@@ -24,7 +22,7 @@ class SecurityTicketPacketHandler : PacketHandler {
     private val logger = logger(SecurityTicketPacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        val ticket = packet.getString().replace(" ", "")
+        val ticket = packet.getString()
         val time = packet.getInt()
 
         if (client.nitroInformation != null) {
@@ -43,60 +41,7 @@ class SecurityTicketPacketHandler : PacketHandler {
             return
         }
 
-        val habbo = HabboManager.loginHabbo(ticket, client)
-
-        if (habbo == null) {
-            client.dispose()
-            logger.warn("Client ${client.ip}:${client.port} sent an invalid SSO ticket")
-            return
-        }
-
-        client.habbo = habbo
-
-        val event = UserLoginEvent(habbo, ticket)
-        EventDispatcher.dispatch(Events.UserLogin, event)
-
-        if (event.isCancelled) {
-            habbo.disconnect()
-            return
-        }
-
-        if (HotelSettings.habbos.wardrobe.validateLooksOnLogin) {
-            // Make sure the player's look is valid
-            val validatedLook = ClothingValidator.validateLook(habbo)
-            habbo.info.look = validatedLook
-        }
-
-        /*
-        Packets to add:
-        - UserClothesComposer
-        - UserPermissionsComposer
-        - AvailabilityStatusMessageComposer
-        - EnableNotificationsComposer
-        - UserAchievementScoreComposer
-        - IsFirstLoginOfDayComposer
-        - MysteryBoxKeysComposer
-        - BuildersClubExpiredComposer
-        - CfhTopicsMessageComposer
-        - FavoriteRoomsCountComposer
-        - GameCenterGameListComposer
-        - GameCenterAccountInfoComposer
-        - UserClubComposer
-        - ModToolComposer
-        - InventoryAchievementsComposer
-         */
-
-        AuthenticatedPacket().send(client)
-        UserHomeRoomPacket(
-            homeRoomId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId,
-            roomIdToEnter = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId
-        ).send(client)
-        UserEffectListPacket(habbo.inventory.effects.toList()).send(client)
-        NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)
-        UserSubscriptionPacket(habbo, "habbo_club", UserSubscriptionPacket.RESPONSE_TYPE_LOGIN).send(client)
-        UserPermissionsPacket(habbo).send(client)
-        ClientPingPacket().send(client)
-
+        HabboManager.tryLoginHabbo(ticket, client)
     }
 
 }

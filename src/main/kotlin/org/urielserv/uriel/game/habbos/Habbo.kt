@@ -17,14 +17,11 @@ import org.urielserv.uriel.networking.UrielServerClient
 
 /**
  * Represents a Habbo user.
- *
- * @param info The information of the Habbo user.
  */
 class Habbo internal constructor(
     val info: HabboInfo,
+    val client: UrielServerClient
 ) {
-
-    var client: UrielServerClient? = null
 
     val data = loadData()
 
@@ -60,16 +57,11 @@ class Habbo internal constructor(
         info.lastOnline = currentUnixSeconds
         info.flushChanges()
 
-        unload()
-    }
-
-    private suspend fun unload() {
         currencies.unload()
+        room?.leave(this)
 
         HabboManager.unloadHabbo(this)
-
-        client?.dispose()
-        room?.leave(this)
+        client.dispose()
     }
 
 }

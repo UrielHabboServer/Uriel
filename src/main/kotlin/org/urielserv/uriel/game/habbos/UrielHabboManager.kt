@@ -5,10 +5,22 @@ import org.ktorm.dsl.eq
 import org.ktorm.entity.find
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.Database
+import org.urielserv.uriel.EventDispatcher
+import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.core.database.schemas.users.UsersSchema
+import org.urielserv.uriel.core.event_dispatcher.Events
+import org.urielserv.uriel.core.event_dispatcher.events.users.UserLoginEvent
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.extensions.text
+import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
+import org.urielserv.uriel.packets.outgoing.handshake.AuthenticatedPacket
+import org.urielserv.uriel.packets.outgoing.handshake.ClientPingPacket
+import org.urielserv.uriel.packets.outgoing.users.NoobnessLevelPacket
+import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
+import org.urielserv.uriel.packets.outgoing.users.UserPermissionsPacket
+import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
+import org.urielserv.uriel.packets.outgoing.users.subscriptions.UserSubscriptionPacket
 import java.security.SecureRandom
 import java.util.*
 
@@ -29,8 +41,9 @@ class UrielHabboManager {
      * @param client The UrielServerClient object to be associated with the logged-in Habbo.
      * @return The logged-in Habbo object if successful, null otherwise.
      */
-    suspend fun loginHabbo(ssoTicket: String, client: UrielServerClient): Habbo? {
-        val habbo = buildHabbo(ssoTicket) ?: return null
+    suspend fun tryLoginHabbo(ssoTicket: String, client: UrielServerClient) {
+        val habbo = buildHabbo(ssoTicket, client) ?: return
+
         val oldHabbo = connectedHabbos[habbo.info.id]
 
         if (oldHabbo != null) {
@@ -42,7 +55,7 @@ class UrielHabboManager {
             oldHabbo.disconnect()
         }
 
-        habbo.client = client
+        client.habbo = habbo
         connectedHabbos[habbo.info.id] = habbo
 
         habbo.info.isOnline = true
@@ -50,34 +63,53 @@ class UrielHabboManager {
 
         habbo.info.currentIp = client.ip
 
-        habbo.info.flushChanges()
-
-        if (Configuration.security.refreshSSOTicketOnLogin) {
-            Database.update(UsersSchema) {
-                set(it.ssoTicket, generateSafeSSOToken())
-                where {
-                    it.id eq habbo.info.id
-                }
-            }
+        if (HotelSettings.habbos.wardrobe.validateLooksOnLogin) {
+            // Make sure the player's look is valid
+            val validatedLook = ClothingValidator.validateLook(habbo)
+            habbo.info.look = validatedLook
         }
 
-        return habbo
+        if (Configuration.security.refreshSSOTicketOnLogin) {
+            habbo.info.ssoTicket = generateSafeSSOToken()
+        }
+
+        habbo.info.flushChanges()
+
+        val event = UserLoginEvent(habbo, ssoTicket)
+        EventDispatcher.dispatch(Events.UserLogin, event)
+
+        if (event.isCancelled) {
+            habbo.disconnect()
+            return
+        }
+
+        AuthenticatedPacket().send(client)
+        UserHomeRoomPacket(
+            homeRoomId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId,
+            roomIdToEnter = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId
+        ).send(client)
+
+        NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)
+        UserPermissionsPacket(habbo).send(client)
+
+        ClientPingPacket().send(client)
     }
 
     /**
      * Builds a Habbo object based on the provided SSO ticket.
      *
      * @param ssoTicket The SSO ticket used to identify the user.
+     * @param client The UrielServerClient object to be associated with the logged-in Habbo.
      * @return A Habbo object if a user with the provided SSO ticket is found in the database, otherwise null.
      */
-    private fun buildHabbo(ssoTicket: String): Habbo? {
+    private fun buildHabbo(ssoTicket: String, client: UrielServerClient): Habbo? {
         try {
             val habboInfo = Database.sequenceOf(UsersSchema)
                 .find {
                     it.ssoTicket eq ssoTicket
                 } ?: return null
 
-            return Habbo(habboInfo)
+            return Habbo(habboInfo, client)
         } catch (exc: Exception) {
             logger.error("Failed to build Habbo object for SSO ticket $ssoTicket:")
             exc.printStackTrace()

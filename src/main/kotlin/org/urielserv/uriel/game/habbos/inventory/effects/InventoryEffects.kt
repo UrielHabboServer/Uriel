@@ -7,6 +7,7 @@ import org.ktorm.entity.forEach
 import org.urielserv.uriel.Database
 import org.urielserv.uriel.core.database.schemas.users.UserEffectsSchema
 import org.urielserv.uriel.game.habbos.Habbo
+import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
 
 class InventoryEffects(
     val habbo: Habbo
@@ -18,6 +19,8 @@ class InventoryEffects(
         Database.sequenceOf(UserEffectsSchema)
             .filter { it.userId eq habbo.info.id }
             .forEach { effects.add(it) }
+
+        UserEffectListPacket(effects.toList()).sendSync(habbo)
     }
 
     fun checkIfExpired() {
