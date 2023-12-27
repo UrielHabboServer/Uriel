@@ -2,22 +2,21 @@ package org.urielserv.uriel.packets.incoming.handshake
 
 import io.klogging.logger
 import org.urielserv.uriel.Configuration
-import org.urielserv.uriel.extensions.readInt
-import org.urielserv.uriel.extensions.readString
+import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 class ReleaseVersionPacketHandler : PacketHandler {
 
     private val logger = logger(ReleaseVersionPacketHandler::class)
 
-    override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
+    override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         try {
-            val releaseVersion = packet.readString()
-            val type = packet.readString()
-            val platformId = packet.readInt()
-            val deviceCategoryId = packet.readInt()
+            val releaseVersion = packet.getString()
+            val type = packet.getString()
+            val platformId = packet.getInt()
+            val deviceCategoryId = packet.getInt()
 
             val platform = UrielServerClient.NitroInformation.Platform.getFromNumber(platformId)
             val deviceCategory = UrielServerClient.NitroInformation.DeviceCategory.getFromNumber(deviceCategoryId)

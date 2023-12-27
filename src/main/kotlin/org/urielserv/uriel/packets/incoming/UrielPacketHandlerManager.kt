@@ -25,7 +25,7 @@ import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
 import org.urielserv.uriel.packets.incoming.users.subscriptions.UserSubscriptionPacketHandler
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 /**
  * A manager class for handling Habbo/Nitro packets received from clients.
@@ -116,7 +116,7 @@ class UrielPacketHandlerManager {
      * @param packet The packet data as a ByteArrayInputStream.
      * @throws NoSuchElementException if the packetId does not exist in the packets map.
      */
-    suspend fun handlePacket(packetId: Short, client: UrielServerClient, packet: ByteArrayInputStream) {
+    suspend fun handlePacket(packetId: Short, client: UrielServerClient, packet: ByteBuffer) {
         if (packetId in packets) {
             try {
                 packets[packetId]?.handle(client, packet)

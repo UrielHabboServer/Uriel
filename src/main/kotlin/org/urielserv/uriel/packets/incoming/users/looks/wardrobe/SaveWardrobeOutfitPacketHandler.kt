@@ -5,22 +5,21 @@ import org.urielserv.uriel.EventDispatcher
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.events.users.UserSaveLookEvent
-import org.urielserv.uriel.extensions.readInt
-import org.urielserv.uriel.extensions.readString
+import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 class SaveWardrobeOutfitPacketHandler : PacketHandler {
 
     private val logger = logger(SaveWardrobeOutfitPacketHandler::class)
 
-    override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
+    override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         if (client.habbo == null) return
 
-        val slotId = packet.readInt()
+        val slotId = packet.getInt()
 
         val habbo = client.habbo!!
 
@@ -29,8 +28,8 @@ class SaveWardrobeOutfitPacketHandler : PacketHandler {
             return
         }
 
-        var look = packet.readString()
-        val shortGender = packet.readString()
+        var look = packet.getString()
+        val shortGender = packet.getString()
 
         val gender = try {
             HabboGender.tryFromShort(shortGender)

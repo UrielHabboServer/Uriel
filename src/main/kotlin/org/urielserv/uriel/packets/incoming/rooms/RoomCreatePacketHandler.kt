@@ -7,19 +7,18 @@ import org.urielserv.uriel.NavigatorManager
 import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.events.rooms.RoomCreateEvent
-import org.urielserv.uriel.extensions.readInt
-import org.urielserv.uriel.extensions.readString
+import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.rooms.CanCreateRoomPacket
 import org.urielserv.uriel.packets.outgoing.rooms.RoomCreatedPacket
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 class RoomCreatePacketHandler : PacketHandler {
 
     val logger = logger(RoomCreatePacketHandler::class)
 
-    override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
+    override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         if (client.habbo == null) return
 
         val roomLimit = if (client.habbo!!.subscriptions.hasActiveHabboClubMembership()) {
@@ -33,12 +32,12 @@ class RoomCreatePacketHandler : PacketHandler {
             return
         }
 
-        val roomName = packet.readString()
-        val roomDescription = packet.readString()
-        val modelName = packet.readString()
-        val categoryId = packet.readInt()
-        val maxVisitors = packet.readInt()
-        val tradeType = packet.readInt()
+        val roomName = packet.getString()
+        val roomDescription = packet.getString()
+        val modelName = packet.getString()
+        val categoryId = packet.getInt()
+        val maxVisitors = packet.getInt()
+        val tradeType = packet.getInt()
 
         val model = RoomManager.getRoomModelByName(modelName)
 

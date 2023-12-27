@@ -1,19 +1,19 @@
 package org.urielserv.uriel.packets.incoming.navigator
 
 import org.urielserv.uriel.NavigatorManager
-import org.urielserv.uriel.extensions.readString
+import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.navigator.NavigatorSearchPacket
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 class NavigatorSearchPacketHandler : PacketHandler {
 
-    override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
+    override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         if (client.habbo == null) return
 
-        var searchCode = packet.readString()
-        val data = packet.readString()
+        var searchCode = packet.getString()
+        val data = packet.getString()
 
         if (searchCode == "query" || searchCode == "groups") {
             searchCode = "hotel_view"

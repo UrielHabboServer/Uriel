@@ -9,7 +9,6 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import org.urielserv.uriel.Configuration
 import org.urielserv.uriel.PacketHandlerManager
-import org.urielserv.uriel.extensions.readShort
 import java.time.Duration
 
 /**
@@ -114,21 +113,18 @@ class UrielServer(
                 for (frame in incoming) {
                     frame as? Frame.Binary ?: continue
 
-                    val packet = frame.readBytes()
-
-                    // create byte stream
-                    val byteStream = packet.inputStream()
+                    val packet = frame.buffer
 
                     // ignore first 4 bytes
-                    byteStream.skip(4)
+                    packet.position(4)
 
                     // read packet id (short)
-                    val packetId = byteStream.readShort()
+                    val packetId = packet.getShort()
 
                     // log incoming packet
                     //logIncomingPacket(packetId, client, packet)
 
-                    PacketHandlerManager.handlePacket(packetId, client, byteStream)
+                    PacketHandlerManager.handlePacket(packetId, client, packet)
                 }
 
                 try {

@@ -5,26 +5,26 @@ import org.urielserv.uriel.EventDispatcher
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.events.users.UserUpdateLookEvent
-import org.urielserv.uriel.extensions.readString
+import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.game.habbos.HabboGender
 import org.urielserv.uriel.game.wardrobe.ClothingValidator
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.rooms.user_unit.RoomUnitInfoPacket
 import org.urielserv.uriel.packets.outgoing.users.looks.UserFigurePacket
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 class UserFigurePacketHandler : PacketHandler {
 
     private val logger = logger(UserFigurePacketHandler::class)
 
-    override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
+    override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         if (client.habbo == null) {
             return
         }
 
-        val shortGender = packet.readString()
-        var look = packet.readString()
+        val shortGender = packet.getString()
+        var look = packet.getString()
 
         val habbo = client.habbo!!
 

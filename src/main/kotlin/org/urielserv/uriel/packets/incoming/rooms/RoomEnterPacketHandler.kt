@@ -4,18 +4,17 @@ import org.urielserv.uriel.EventDispatcher
 import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.core.event_dispatcher.Events
 import org.urielserv.uriel.core.event_dispatcher.events.rooms.RoomEnterEvent
-import org.urielserv.uriel.extensions.readInt
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
 import org.urielserv.uriel.packets.outgoing.landing_view.DesktopViewPacket
-import java.io.ByteArrayInputStream
+import java.nio.ByteBuffer
 
 class RoomEnterPacketHandler : PacketHandler {
 
-    override suspend fun handle(client: UrielServerClient, packet: ByteArrayInputStream) {
+    override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         if (client.habbo == null) return
 
-        val roomId = packet.readInt()
+        val roomId = packet.getInt()
 
         val room = RoomManager.getRoomById(roomId)
 
