@@ -26,7 +26,7 @@ object CommandsCommand : CommandBase() {
             }
         }
 
-        sender.notifications.sendComplexNotification(
+        sender.notifications.sendNotification(
             PopUpNotification(
                 title = "${commands.size} commands available",
                 message = commandString

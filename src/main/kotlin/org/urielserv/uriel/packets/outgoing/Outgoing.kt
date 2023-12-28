@@ -26,6 +26,7 @@ object Outgoing {
     const val ActivityPointNotification = 2275
     const val NotificationList = 1992
     const val MotdMessages = 2035
+    const val InClientLink = 2023
 
     // Landing View
     const val DesktopView = 122
