@@ -19,8 +19,6 @@ import org.urielserv.uriel.packets.outgoing.handshake.ClientPingPacket
 import org.urielserv.uriel.packets.outgoing.users.NoobnessLevelPacket
 import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
 import org.urielserv.uriel.packets.outgoing.users.UserPermissionsPacket
-import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
-import org.urielserv.uriel.packets.outgoing.users.subscriptions.UserSubscriptionPacket
 import java.security.SecureRandom
 import java.util.*
 
@@ -47,7 +45,7 @@ class UrielHabboManager {
         val oldHabbo = connectedHabbos[habbo.info.id]
 
         if (oldHabbo != null) {
-            oldHabbo.notifications.sendAlert(
+            oldHabbo.notifications.alert(
                 text("uriel.error.login_elsewhere"),
                 text("uriel.error.connection")
             )

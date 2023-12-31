@@ -64,7 +64,7 @@ object AboutCommand : CommandBase() {
             .withImage("https://i.imgur.com/TnpamZv.png")
             .withButtonLink("Project GitHub", "https://github.com/UrielHabboServer/Uriel")
 
-        sender.notifications.sendNotification(notification)
+        sender.notifications.notifyComplex(notification)
     }
 
 }
