@@ -6,6 +6,7 @@ object Outgoing {
     // Handshake
     const val Authenticated = 2491
     const val ClientPing = 3928
+    const val DisconnectReason = 4000
 
     // Users
     const val UserHomeRoom = 2875
@@ -27,6 +28,7 @@ object Outgoing {
     const val NotificationList = 1992
     const val MotdMessages = 2035
     const val InClientLink = 2023
+    const val ConnectionError = 1004
 
     // Landing View
     const val DesktopView = 122
