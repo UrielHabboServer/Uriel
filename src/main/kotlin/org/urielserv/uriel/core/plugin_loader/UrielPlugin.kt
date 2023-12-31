@@ -9,7 +9,6 @@ abstract class UrielPlugin {
     open suspend fun onLoad() = Unit
     open suspend fun onStart() = Unit
 
-    open suspend fun onShutdown() = Unit
     open suspend fun onUnload() = Unit
 
 }
