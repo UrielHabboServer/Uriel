@@ -1,6 +1,7 @@
 package org.urielserv.uriel.packets.incoming.rooms.user_unit.chat
 
 import org.urielserv.uriel.ChatBubblesManager
+import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.game.rooms.chat.RoomChatMessage
 import org.urielserv.uriel.networking.UrielServerClient
@@ -20,7 +21,8 @@ class RoomUnitChatPacketHandler(
         val bubbleId = packet.getInt()
 
         val bubble =
-            ChatBubblesManager.getChatBubbleByNitroStyleId(bubbleId) ?: ChatBubblesManager.getChatBubbleById(1)!!
+            ChatBubblesManager.getChatBubbleByNitroStyleId(bubbleId)
+                ?: ChatBubblesManager.getChatBubbleById(HotelSettings.habbos.defaultChatBubbleId)!!
 
         client.habbo!!.roomUnit!!.talk(RoomChatMessage(client.habbo!!, message, bubble, type))
     }

@@ -30,6 +30,7 @@ data class UrielHotelSettings(
 
     @Serializable
     data class Habbos(
+        var defaultChatBubbleId: Int,
         var alertChatBubbleId: Int,
 
         var wardrobe: Wardrobe,
