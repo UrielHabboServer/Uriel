@@ -26,6 +26,7 @@ import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.command_system.UrielCommandManager
 import org.urielserv.uriel.game.currencies.UrielCurrencyManager
 import org.urielserv.uriel.game.habbos.UrielHabboManager
+import org.urielserv.uriel.game.habbos.messenger.UrielMessengerManager
 import org.urielserv.uriel.game.landing_view.UrielLandingViewManager
 import org.urielserv.uriel.game.navigator.UrielNavigatorManager
 import org.urielserv.uriel.game.permissions.UrielPermissionManager
@@ -62,6 +63,7 @@ lateinit var CommandManager: UrielCommandManager
 lateinit var RankManager: UrielRankManager
 lateinit var PermissionManager: UrielPermissionManager
 
+lateinit var MessengerManager: UrielMessengerManager
 lateinit var CurrencyManager: UrielCurrencyManager
 lateinit var FigureDataManager: UrielFigureDataManager
 lateinit var HabboManager: UrielHabboManager
@@ -140,7 +142,8 @@ suspend fun main() = runBlocking {
         PermissionManager = UrielPermissionManager()
     }
 
-    measureInitialProcess("Currency Manager, Figure Data Manager & Habbo Manager") {
+    measureInitialProcess("Messenger Manager, Currency Manager, Figure Data Manager & Habbo Manager") {
+        MessengerManager = UrielMessengerManager()
         CurrencyManager = UrielCurrencyManager()
         FigureDataManager = UrielFigureDataManager(
             url = HotelSettings.habbos.wardrobe.figureDataUrl

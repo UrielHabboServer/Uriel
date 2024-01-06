@@ -48,7 +48,7 @@ CREATE TABLE user_data
     chat_bubble_id INT     DEFAULT 1              NOT NULL,
     is_ambassador  BOOLEAN DEFAULT false          NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (chat_bubble_id) REFERENCES chat_bubbles (id)
+    FOREIGN KEY (chat_bubble_id) REFERENCES room_chat_bubbles (id)
 );
 
 DROP TABLE IF EXISTS user_currencies;
@@ -109,6 +109,53 @@ CREATE TABLE user_permissions
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
+-- Messenger
+DROP TABLE IF EXISTS messenger_friendships;
+CREATE TABLE messenger_friendships
+(
+    id                            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    user_one_id                   INT                            NOT NULL,
+    user_two_id                   INT                            NOT NULL,
+    relationship_id               INT,
+    friendship_creation_timestamp LONG                           NOT NULL,
+    FOREIGN KEY (user_one_id) REFERENCES users (id),
+    FOREIGN KEY (user_two_id) REFERENCES users (id),
+    FOREIGN KEY (relationship_id) REFERENCES messenger_relationships (id)
+);
+
+DROP TABLE IF EXISTS messenger_relationships;
+CREATE TABLE messenger_relationships
+(
+    id       INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    nitro_id INT                            NOT NULL
+);
+INSERT INTO messenger_relationships (nitro_id)
+VALUES (1),
+       (2),
+       (3);
+
+DROP TABLE IF EXISTS messenger_friendship_requests;
+CREATE TABLE messenger_friendship_requests
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    sender_id   INT                            NOT NULL,
+    receiver_id INT                            NOT NULL,
+    FOREIGN KEY (sender_id) REFERENCES users (id),
+    FOREIGN KEY (receiver_id) REFERENCES users (id)
+);
+
+DROP TABLE IF EXISTS messenger_offline_messages;
+CREATE TABLE messenger_offline_messages
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    sender_id   INT                            NOT NULL,
+    receiver_id INT                            NOT NULL,
+    timestamp   LONG                           NOT NULL,
+    message     TEXT                           NOT NULL,
+    FOREIGN KEY (sender_id) REFERENCES users (id),
+    FOREIGN KEY (receiver_id) REFERENCES users (id)
+);
+
 -- Ranks
 DROP TABLE IF EXISTS ranks;
 CREATE TABLE ranks
@@ -139,6 +186,9 @@ CREATE TABLE rank_permissions
 );
 INSERT INTO rank_permissions (rank_id, permission, allow)
 VALUES (3, 'uriel.*', true),
+       (1, 'uriel.messenger.relationships.1', true),
+       (1, 'uriel.messenger.relationships.2', true),
+       (1, 'uriel.messenger.relationships.3', true),
        (1, 'uriel.rooms.can_create_rooms', true),
        (1, 'uriel.flat_categories.1', true),
        (1, 'uriel.flat_categories.2', true),
@@ -246,62 +296,6 @@ VALUES ('about', 'Shows information about the Uriel Habbo Server', 'about,uriel,
        ('lay', 'Lays your character on the ground', 'lay'),
        ('sit', 'Sits your character on the ground', 'sit');
 
--- Chat Bubbles
-DROP TABLE IF EXISTS chat_bubbles;
-CREATE TABLE chat_bubbles
-(
-    id                            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
-    nitro_style_id                INT                            NOT NULL,
-    name                          VARCHAR(255)                   NOT NULL,
-    is_system_bubble              BOOLEAN DEFAULT false          NOT NULL,
-    is_club_only                  BOOLEAN DEFAULT false          NOT NULL,
-    is_ambassador_only            BOOLEAN DEFAULT false          NOT NULL,
-    can_be_overridden             BOOLEAN DEFAULT false          NOT NULL,
-    can_trigger_talking_furniture BOOLEAN DEFAULT false          NOT NULL,
-    INDEX (nitro_style_id)
-);
-INSERT INTO chat_bubbles (nitro_style_id, name, is_system_bubble, is_club_only, is_ambassador_only, can_be_overridden,
-                          can_trigger_talking_furniture)
-VALUES (0, 'normal', false, false, false, true, true),
-       (1, 'alert', true, false, true, true, true),
-       (2, 'bot', true, false, false, true, true),
-       (3, 'red', false, false, false, true, true),
-       (4, 'blue', false, false, false, true, true),
-       (5, 'yellow', false, false, false, true, true),
-       (6, 'green', false, false, false, true, true),
-       (7, 'black', false, false, false, true, true),
-       (8, 'fortune_teller', true, false, false, false, false),
-       (9, 'zombie_arm', false, true, false, true, false),
-       (10, 'skeleton', false, true, false, true, false),
-       (11, 'light_blue', false, true, false, true, true),
-       (12, 'pink', false, true, false, true, true),
-       (13, 'purple', false, true, false, true, true),
-       (14, 'dark_yellow', false, true, false, true, true),
-       (15, 'dark_blue', false, true, false, true, true),
-       (16, 'hearts', false, true, false, true, true),
-       (17, 'roses', false, true, false, true, true),
-       (18, 'band_aid', false, true, false, true, true),
-       (19, 'pig', false, true, false, true, true),
-       (20, 'dog', false, true, false, true, true),
-       (21, 'blaze_it', false, true, false, true, true),
-       (22, 'dragon', false, true, false, true, true),
-       (23, 'staff', false, false, false, false, true),
-       (24, 'bats', false, true, false, true, false),
-       (25, 'messenger', false, true, false, true, false),
-       (26, 'steampunk', false, true, false, true, false),
-       (27, 'thunder', false, true, false, true, true),
-       (28, 'parrot', false, true, false, false, false),
-       (29, 'pirate', false, true, false, false, false),
-       (30, 'bot_guide', true, false, false, true, true),
-       (31, 'bot_rentable', true, false, false, true, true),
-       (32, 'scary_thing', false, true, false, true, false),
-       (33, 'frank', true, false, false, true, false),
-       (34, 'wired', true, false, false, false, true),
-       (35, 'goat', false, true, false, true, false),
-       (36, 'santa', false, true, false, true, false),
-       (37, 'ambassador', false, false, true, false, true),
-       (38, 'radio', false, true, false, true, false);
-
 -- Furniture
 DROP TABLE IF EXISTS furniture;
 CREATE TABLE furniture
@@ -379,6 +373,62 @@ CREATE TABLE rooms
     FOREIGN KEY (navigator_flat_category_id) REFERENCES navigator_flat_categories (id),
     FOREIGN KEY (model_id) REFERENCES room_models (id)
 );
+
+DROP TABLE IF EXISTS room_chat_bubbles;
+CREATE TABLE room_chat_bubbles
+(
+    id                            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    nitro_style_id                INT                            NOT NULL,
+    name                          VARCHAR(255)                   NOT NULL,
+    is_system_bubble              BOOLEAN DEFAULT false          NOT NULL,
+    is_club_only                  BOOLEAN DEFAULT false          NOT NULL,
+    is_ambassador_only            BOOLEAN DEFAULT false          NOT NULL,
+    can_be_overridden             BOOLEAN DEFAULT false          NOT NULL,
+    can_trigger_talking_furniture BOOLEAN DEFAULT false          NOT NULL,
+    INDEX (nitro_style_id)
+);
+INSERT INTO room_chat_bubbles (nitro_style_id, name, is_system_bubble, is_club_only, is_ambassador_only,
+                               can_be_overridden,
+                               can_trigger_talking_furniture)
+VALUES (0, 'normal', false, false, false, true, true),
+       (1, 'alert', true, false, true, true, true),
+       (2, 'bot', true, false, false, true, true),
+       (3, 'red', false, false, false, true, true),
+       (4, 'blue', false, false, false, true, true),
+       (5, 'yellow', false, false, false, true, true),
+       (6, 'green', false, false, false, true, true),
+       (7, 'black', false, false, false, true, true),
+       (8, 'fortune_teller', true, false, false, false, false),
+       (9, 'zombie_arm', false, true, false, true, false),
+       (10, 'skeleton', false, true, false, true, false),
+       (11, 'light_blue', false, true, false, true, true),
+       (12, 'pink', false, true, false, true, true),
+       (13, 'purple', false, true, false, true, true),
+       (14, 'dark_yellow', false, true, false, true, true),
+       (15, 'dark_blue', false, true, false, true, true),
+       (16, 'hearts', false, true, false, true, true),
+       (17, 'roses', false, true, false, true, true),
+       (18, 'band_aid', false, true, false, true, true),
+       (19, 'pig', false, true, false, true, true),
+       (20, 'dog', false, true, false, true, true),
+       (21, 'blaze_it', false, true, false, true, true),
+       (22, 'dragon', false, true, false, true, true),
+       (23, 'staff', false, false, false, false, true),
+       (24, 'bats', false, true, false, true, false),
+       (25, 'messenger', false, true, false, true, false),
+       (26, 'steampunk', false, true, false, true, false),
+       (27, 'thunder', false, true, false, true, true),
+       (28, 'parrot', false, true, false, false, false),
+       (29, 'pirate', false, true, false, false, false),
+       (30, 'bot_guide', true, false, false, true, true),
+       (31, 'bot_rentable', true, false, false, true, true),
+       (32, 'scary_thing', false, true, false, true, false),
+       (33, 'frank', true, false, false, true, false),
+       (34, 'wired', true, false, false, false, true),
+       (35, 'goat', false, true, false, true, false),
+       (36, 'santa', false, true, false, true, false),
+       (37, 'ambassador', false, false, true, false, true),
+       (38, 'radio', false, true, false, true, false);
 
 DROP TABLE IF EXISTS room_moodlights;
 CREATE TABLE room_moodlights

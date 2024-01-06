@@ -20,8 +20,9 @@ class UrielServerClient(
 ) {
 
     var habbo: Habbo? = null
-
     var nitroInformation: NitroInformation? = null
+
+    private var isDisposed = false
 
     /**
      * Suspends the execution and disposes the resources used by the client.
@@ -29,6 +30,10 @@ class UrielServerClient(
      * This method closes the socket server session and removes the client from the server.
      */
     suspend fun dispose() {
+        if (isDisposed) return
+
+        isDisposed = true
+
         try {
             socketServerSession.close()
         } catch (ignored: Exception) {
@@ -38,6 +43,8 @@ class UrielServerClient(
     }
 
     suspend fun send(bytes: ByteArray) {
+        if (isDisposed) return
+
         socketServerSession.send(bytes)
     }
 

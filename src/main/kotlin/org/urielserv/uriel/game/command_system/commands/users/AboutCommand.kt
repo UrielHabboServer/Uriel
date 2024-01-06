@@ -43,7 +43,7 @@ object AboutCommand : CommandBase() {
 
         val runtime = Runtime.getRuntime()
 
-        val notification = PopUpNotification(
+        PopUpNotification(
             title = "Uriel Habbo Server",
             message = """
                 <b>Server Information:</b>
@@ -63,8 +63,7 @@ object AboutCommand : CommandBase() {
         )
             .withImage("https://i.imgur.com/TnpamZv.png")
             .withButtonLink("Project GitHub", "https://github.com/UrielHabboServer/Uriel")
-
-        sender.notifications.notifyComplex(notification)
+            .send(sender)
     }
 
 }

@@ -9,10 +9,7 @@ import org.urielserv.uriel.packets.incoming.handshake.SecurityTicketPacketHandle
 import org.urielserv.uriel.packets.incoming.landingview.GetPromoArticlesPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorInitPacketHandler
 import org.urielserv.uriel.packets.incoming.navigator.NavigatorSearchPacketHandler
-import org.urielserv.uriel.packets.incoming.rooms.GetUserFlatCatsPacketHandler
-import org.urielserv.uriel.packets.incoming.rooms.RoomCreatePacketHandler
-import org.urielserv.uriel.packets.incoming.rooms.RoomEnterPacketHandler
-import org.urielserv.uriel.packets.incoming.rooms.RoomModelPacketHandler
+import org.urielserv.uriel.packets.incoming.rooms.*
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.RoomUnitLookPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.RoomUnitWalkPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitChatPacketHandler
@@ -20,11 +17,16 @@ import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitStopTyp
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitTypingPacketHandler
 import org.urielserv.uriel.packets.incoming.users.DesktopViewPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
+import org.urielserv.uriel.packets.incoming.users.UserProfilePacketHandler
+import org.urielserv.uriel.packets.incoming.users.messenger.MessengerRelationshipsPacketHandler
 import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
+import org.urielserv.uriel.packets.incoming.users.messenger.*
 import org.urielserv.uriel.packets.incoming.users.subscriptions.UserSubscriptionPacketHandler
+import java.nio.BufferOverflowException
+import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 
 /**
@@ -43,6 +45,7 @@ class UrielPacketHandlerManager {
     private fun registerAllPackets() {
         registerHandshakePackets()
         registerUserPackets()
+        registerMessengerPackets()
         registerLandingViewPackets()
         registerNavigatorPackets()
         registerRoomPackets()
@@ -61,6 +64,23 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.GetWardrobe, GetWardrobePacketHandler())
         registerPacket(Incoming.SaveWardrobeOutfit, SaveWardrobeOutfitPacketHandler())
         registerPacket(Incoming.UserFigure, UserFigurePacketHandler())
+        registerPacket(Incoming.UserProfile, UserProfilePacketHandler())
+    }
+
+    private fun registerMessengerPackets() {
+        registerPacket(Incoming.MessengerInit, MessengerInitPacketHandler())
+        registerPacket(Incoming.MessengerChat, MessengerChatPacketHandler())
+        registerPacket(Incoming.RequestFriend, RequestFriendPacketHandler())
+        registerPacket(Incoming.AcceptFriend, AcceptFriendPacketHandler())
+        registerPacket(Incoming.DeclineFriend, DeclineFriendPacketHandler())
+        registerPacket(Incoming.RemoveFriend, RemoveFriendPacketHandler())
+        registerPacket(Incoming.FriendListUpdate, FriendListUpdatePacketHandler())
+        registerPacket(Incoming.GetFriendRequests, GetFriendRequestsPacketHandler())
+        registerPacket(Incoming.FollowFriend, FollowFriendPacketHandler())
+        registerPacket(Incoming.SetRelationshipStatus, SetRelationshipStatusPacketHandler())
+        registerPacket(Incoming.MessengerRelationships, MessengerRelationshipsPacketHandler())
+        registerPacket(Incoming.MessengerFindFriends, MessengerFindFriendsPacketHandler())
+        registerPacket(Incoming.SendRoomInvite, SendRoomInvitePacketHandler())
     }
 
     private fun registerLandingViewPackets() {
@@ -79,6 +99,7 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.RoomEnter, RoomEnterPacketHandler())
         registerPacket(Incoming.RoomModel, RoomModelPacketHandler()) // -> finishes loading the room
         registerPacket(Incoming.FurnitureAliases, RoomModelPacketHandler()) // -> finishes loading the room
+        registerPacket(Incoming.GetGuestRoom, GetGuestRoomPacketHandler()) // -> finishes loading the room
 
         registerPacket(Incoming.RoomUnitWalk, RoomUnitWalkPacketHandler())
         registerPacket(Incoming.RoomUnitLook, RoomUnitLookPacketHandler())
@@ -121,8 +142,21 @@ class UrielPacketHandlerManager {
             try {
                 packets[packetId]?.handle(client, packet)
             } catch (exc: Exception) {
-                logger.error("Error handling packet $packetId:")
-                exc.printStackTrace()
+                when (exc) {
+                    is BufferUnderflowException, is BufferOverflowException -> {
+                        logger.warn("Client ${client.ip}:${client.port} sent a malformed packet $packetId")
+
+                        if (client.habbo != null) {
+                            client.habbo!!.disconnect()
+                        } else {
+                            client.dispose()
+                        }
+                    }
+                    else -> {
+                        logger.error("Error handling packet $packetId:")
+                        exc.printStackTrace()
+                    }
+                }
             }
         } else {
             logger.debug("Unhandled packet: $packetId")

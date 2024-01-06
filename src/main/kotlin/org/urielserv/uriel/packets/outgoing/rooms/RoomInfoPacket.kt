@@ -1,13 +1,11 @@
 package org.urielserv.uriel.packets.outgoing.rooms
 
-import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.rooms.Room
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 
 class RoomInfoPacket(
     private val room: Room,
-    private val habbo: Habbo,
     private val roomForward: Boolean,
     private val roomEnter: Boolean
 ) : Packet() {
@@ -15,7 +13,7 @@ class RoomInfoPacket(
     override val packetId = Outgoing.RoomInfo
 
     override suspend fun construct() {
-        appendBoolean(roomForward)
+        appendBoolean(roomEnter)
 
         appendInt(room.info.id)
         appendString(room.info.name)

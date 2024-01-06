@@ -32,7 +32,7 @@ interface Subscription : Entity<Subscription> {
     fun checkIfExpired() {
         if (!hasExpired) return
 
-        if (HotelSettings.habbos.subscription.deleteExpiredSubscriptions) {
+        if (HotelSettings.habbos.subscriptions.deleteExpiredSubscriptions) {
             delete()
         } else {
             isActive = false

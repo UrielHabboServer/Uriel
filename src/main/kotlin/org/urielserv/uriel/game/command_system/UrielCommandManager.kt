@@ -26,6 +26,8 @@ class UrielCommandManager {
 
     init {
         Database.sequenceOf(CommandsSchema).forEach {
+            if (!it.enabled) return@forEach
+
             commandInfos.add(it)
         }
 

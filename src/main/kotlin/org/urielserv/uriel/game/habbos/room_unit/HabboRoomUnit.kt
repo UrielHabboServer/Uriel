@@ -31,6 +31,10 @@ class HabboRoomUnit(
     var headRotation: RoomTileDirection = bodyRotation
 ) {
 
+    init {
+        currentTile.roomUnitsOnTile.add(this)
+    }
+
     var currentTile = currentTile
         private set(value) {
             previousTile = field

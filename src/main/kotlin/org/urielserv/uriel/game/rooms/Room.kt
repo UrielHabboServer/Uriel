@@ -59,6 +59,8 @@ class Room internal constructor(
         habbo.room = this
         habbos.add(habbo)
 
+        habbo.messenger.sendUpdateToFriends()
+
         RoomOpenPacket().send(habbo)
         RoomModelNamePacket(this).send(habbo)
 
@@ -89,13 +91,15 @@ class Room internal constructor(
 
         RoomInfoOwnerPacket(this, habbo.info.id == info.ownerHabboInfo.id).send(habbo)
         RoomThicknessPacket(this).send(habbo)
-        RoomInfoPacket(this, habbo, roomForward = false, roomEnter = true).send(habbo)
+        RoomInfoPacket(this, roomForward = false, roomEnter = true).send(habbo)
 
         RoomUnitPacket(habbos).broadcast(this)
         RoomUnitStatusPacket(habbos).broadcast(this)
     }
 
     suspend fun leave(habbo: Habbo, goToDesktopView: Boolean = true) {
+        RoomUnitRemovePacket(habbo).broadcast(this)
+
         habbo.room = null
         habbo.roomUnit = null
 
@@ -110,8 +114,6 @@ class Room internal constructor(
 
         if (goToDesktopView)
             DesktopViewPacket().send(habbo)
-
-        RoomUnitRemovePacket(habbo).broadcast(this)
 
         if (habbos.isEmpty()) {
             unload()

@@ -18,8 +18,20 @@ object Outgoing {
     const val UserCurrency = 2018
     const val UserWardrobePage = 3315
     const val UserFigure = 2429
+    const val UserProfile = 3898
 
     const val NoobnessLevel = 3738
+
+    // Messenger
+    const val MessengerInit = 1605
+    const val MessengerFriends = 3130
+    const val MessengerUpdate = 2800
+    const val MessengerChat = 1587
+    const val MessengerRequest = 2219
+    const val MessengerRequests = 280
+    const val MessengerRelationships = 2016
+    const val MessengerSearch = 973
+    const val MessengerInvite = 3870
 
     // Notifications
     const val GenericAlert = 3801 // TODO: Figure out the difference between this and SimpleAlert
@@ -51,6 +63,7 @@ object Outgoing {
     const val RoomInfo = 687
     const val RoomHeightmap = 2753
     const val RoomModel = 1301
+    const val RoomForward = 160
 
     const val RoomUnit = 374
     const val RoomUnitStatus = 1640

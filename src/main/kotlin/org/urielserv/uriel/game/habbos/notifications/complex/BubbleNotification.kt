@@ -1,7 +1,7 @@
 package org.urielserv.uriel.game.habbos.notifications.complex
 
 class BubbleNotification(
-    override val type: String,
+    override val type: String = "bubble",
     val message: String,
 ) : ComplexNotification {
 

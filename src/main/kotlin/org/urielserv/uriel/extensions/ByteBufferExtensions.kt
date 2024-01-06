@@ -10,12 +10,19 @@ import java.nio.ByteBuffer
  * @return the String read from the ByteBuffer.
  */
 fun ByteBuffer.getString(): String {
-    return try {
-        val length = this.getShort().toInt()
-        val bytes = ByteArray(length)
-        this.get(bytes, 0, length)
-        String(bytes)
-    } catch (ignored: Exception) {
-        ""
-    }
+    val length = this.getShort().toInt()
+    val bytes = ByteArray(length)
+
+    this.get(bytes, 0, length)
+
+    return String(bytes)
+}
+
+/**
+ * Reads a Boolean from the ByteBuffer (1 byte).
+ *
+ * @return the Boolean read from the ByteBuffer.
+ */
+fun ByteBuffer.getBoolean(): Boolean {
+    return this.get() == 1.toByte()
 }

@@ -8,7 +8,7 @@ import org.urielserv.uriel.packets.outgoing.users.notifications.NotificationDial
 import org.urielserv.uriel.packets.outgoing.users.notifications.SimpleAlertMessagePacket
 
 class HabboNotifications(
-    private val habbo: Habbo
+    val habbo: Habbo
 ) {
 
     /**

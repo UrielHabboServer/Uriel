@@ -9,6 +9,7 @@ import org.urielserv.uriel.core.database.schemas.users.UserDataSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.currencies.HabboCurrencies
 import org.urielserv.uriel.game.habbos.inventory.HabboInventory
+import org.urielserv.uriel.game.habbos.messenger.HabboMessenger
 import org.urielserv.uriel.game.habbos.notifications.HabboNotifications
 import org.urielserv.uriel.game.habbos.room_unit.HabboRoomUnit
 import org.urielserv.uriel.game.habbos.subscriptions.HabboSubscriptions
@@ -28,6 +29,7 @@ class Habbo internal constructor(
     val currencies = HabboCurrencies(this)
     val inventory = HabboInventory(this)
     val subscriptions = HabboSubscriptions(this)
+    val messenger = HabboMessenger(this)
 
     val notifications = HabboNotifications(this)
 
@@ -53,15 +55,18 @@ class Habbo internal constructor(
     }
 
     suspend fun disconnect() {
+        client.dispose()
+
         info.isOnline = false
         info.lastOnline = currentUnixSeconds
         info.flushChanges()
 
-        currencies.unload()
         room?.leave(this)
 
+        currencies.unload()
+        messenger.unload()
+
         HabboManager.unloadHabbo(this)
-        client.dispose()
     }
 
 }

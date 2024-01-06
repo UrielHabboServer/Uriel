@@ -26,12 +26,10 @@ object CommandsCommand : CommandBase() {
             }
         }
 
-        sender.notifications.notifyComplex(
-            PopUpNotification(
-                title = "${commands.size} commands available",
-                message = commandString
-            ).searchable()
-        )
+        PopUpNotification(
+            title = "${commands.size} commands available",
+            message = commandString
+        ).searchable().send(sender)
     }
 
 }

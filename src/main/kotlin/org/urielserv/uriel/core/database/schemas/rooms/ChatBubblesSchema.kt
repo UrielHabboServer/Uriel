@@ -6,7 +6,7 @@ import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 import org.urielserv.uriel.game.rooms.chat.ChatBubble
 
-object ChatBubblesSchema : Table<ChatBubble>("chat_bubbles") {
+object ChatBubblesSchema : Table<ChatBubble>("room_chat_bubbles") {
 
     val id = int("id").primaryKey().bindTo { it.id }
     val nitroStyleId = int("nitro_style_id").bindTo { it.nitroStyleId }

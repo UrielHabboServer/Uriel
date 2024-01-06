@@ -33,11 +33,18 @@ data class UrielHotelSettings(
         var defaultChatBubbleId: Int,
         var alertChatBubbleId: Int,
 
+        var messenger: Messenger,
+        var rooms: Rooms,
         var wardrobe: Wardrobe,
         var inventory: Inventory,
-        var subscription: Subscription,
-        var rooms: Rooms
+        var subscriptions: Subscriptions,
     ) {
+
+        @Serializable
+        data class Messenger(
+            var maxFriendsWithHabboClub: Int,
+            var maxFriends: Int
+        )
 
         @Serializable
         data class Rooms(
@@ -61,7 +68,7 @@ data class UrielHotelSettings(
         )
 
         @Serializable
-        data class Subscription(
+        data class Subscriptions(
             var deleteExpiredSubscriptions: Boolean
         )
 
