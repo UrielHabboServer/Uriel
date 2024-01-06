@@ -3,7 +3,6 @@ package org.urielserv.uriel.game.wardrobe.figure_data
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.net.URI
-import java.net.URL
 
 class UrielFigureDataManager(url: String) {
 
@@ -23,7 +22,7 @@ class UrielFigureDataManager(url: String) {
         setTypes = figureData.setTypes
     }
 
-    fun readContents(url: String): String {
+    private fun readContents(url: String): String {
         return if (isLocalFile(url)) {
             readLocalFile(url)
         } else {
