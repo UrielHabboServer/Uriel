@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 -- Currencies
 DROP TABLE IF EXISTS currencies;
 CREATE TABLE currencies
@@ -1416,3 +1418,5 @@ CREATE TABLE landing_view_articles
     button_action VARCHAR(255)                   NOT NULL,
     image_url     VARCHAR(255)                   NOT NULL
 );
+
+SET FOREIGN_KEY_CHECKS=1;
