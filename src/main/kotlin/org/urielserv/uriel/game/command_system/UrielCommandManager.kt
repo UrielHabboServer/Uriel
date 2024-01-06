@@ -6,10 +6,7 @@ import org.urielserv.uriel.Database
 import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.RoomManager
 import org.urielserv.uriel.core.database.schemas.CommandsSchema
-import org.urielserv.uriel.game.command_system.commands.users.AboutCommand
-import org.urielserv.uriel.game.command_system.commands.users.CommandsCommand
-import org.urielserv.uriel.game.command_system.commands.users.LayCommand
-import org.urielserv.uriel.game.command_system.commands.users.SitCommand
+import org.urielserv.uriel.game.command_system.commands.users.*
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.game.rooms.Room
@@ -45,19 +42,49 @@ class UrielCommandManager {
     private fun registerFunCommands() {
         registerCommand(SitCommand)
         registerCommand(LayCommand)
+        registerCommand(StandCommand)
+        registerCommand(InviteCommand)
     }
 
     private fun registerAllParameterBuilders() {
         registerParameterBuilder(Habbo::class) {
-            HabboManager.getConnectedHabboByUsername(it.removeAt(0))
+            HabboManager.getConnectedHabbo(it.removeAt(0))
         }
 
         registerParameterBuilder(HabboInfo::class) {
-            HabboManager.getHabboInfoByUsername(it.removeAt(0))
+            HabboManager.getHabboInfo(it.removeAt(0))
         }
 
         registerParameterBuilder(Room::class) {
-            RoomManager.getRoomById(it.removeAt(0).toIntOrNull() ?: 0)
+            RoomManager.getRoom(it.removeAt(0).toIntOrNull() ?: 0)
+        }
+
+        registerParameterBuilder(Array<Habbo>::class) {
+            val habbos = mutableListOf<Habbo>()
+
+            while (it.isNotEmpty()) {
+                val habbo = HabboManager.getConnectedHabbo(it.removeAt(0))
+
+                if (habbo != null) {
+                    habbos.add(habbo)
+                }
+            }
+
+            habbos.toTypedArray()
+        }
+
+        registerParameterBuilder(Array<HabboInfo>::class) {
+            val habboInfos = mutableListOf<HabboInfo>()
+
+            while (it.isNotEmpty()) {
+                val habboInfo = HabboManager.getHabboInfo(it.removeAt(0))
+
+                if (habboInfo != null) {
+                    habboInfos.add(habboInfo)
+                }
+            }
+
+            habboInfos.toTypedArray()
         }
 
         registerParameterBuilder(Short::class) {

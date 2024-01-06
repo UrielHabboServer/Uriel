@@ -16,10 +16,10 @@ class SetRelationshipStatusPacketHandler : PacketHandler {
         val targetId = packet.getInt()
         val relationshipId = packet.getInt()
 
-        val relationship = MessengerManager.getRelationshipById(relationshipId) ?: return
-        val friendship = habbo.messenger.getFriendshipByHabboId(targetId) ?: return
+        val relationship = MessengerManager.getRelationship(relationshipId) ?: return
+        val friendship = habbo.messenger.getFriendship(targetId) ?: return
 
-        friendship.relationship = relationship
+        friendship.setRelationship(habbo.info, relationship)
         friendship.flushChanges()
 
         MessengerUpdatePacket(habbo, MessengerUpdatePacket.Action.UPDATE to friendship).send(client)

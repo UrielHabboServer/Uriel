@@ -16,7 +16,7 @@ class RoomEnterPacketHandler : PacketHandler {
 
         val roomId = packet.getInt()
 
-        val room = RoomManager.getRoomById(roomId)
+        val room = RoomManager.getRoom(roomId)
 
         if (room == null) {
             DesktopViewPacket().send(client)

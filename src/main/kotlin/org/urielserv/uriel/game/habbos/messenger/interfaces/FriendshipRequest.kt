@@ -38,7 +38,8 @@ interface FriendshipRequest : Entity<FriendshipRequest> {
             habboInfoOne = senderHabboInfo
             habboInfoTwo = receiverHabboInfo
 
-            relationship = null
+            relationshipHabboOne = null
+            relationshipHabboTwo = null
 
             creationTimestamp = currentUnixSeconds
         }

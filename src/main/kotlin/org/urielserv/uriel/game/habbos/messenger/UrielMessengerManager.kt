@@ -53,19 +53,19 @@ class UrielMessengerManager {
         return relationships.any { it.id == relationshipId }
     }
 
-    fun getRelationshipById(relationshipId: Int): Relationship? {
+    fun getRelationship(relationshipId: Int): Relationship? {
         return relationships.firstOrNull { it.id == relationshipId }
     }
 
-    fun getFriendshipsByHabbo(habbo: Habbo): List<Friendship> {
-        return getFriendshipsByHabboInfo(habbo.info)
+    fun getFriendships(habbo: Habbo): List<Friendship> {
+        return getFriendships(habbo.info)
     }
 
-    fun getFriendshipsByHabboInfo(habboInfo: HabboInfo): List<Friendship> {
-        return getFriendshipsByHabboId(habboInfo.id)
+    fun getFriendships(habboInfo: HabboInfo): List<Friendship> {
+        return getFriendships(habboInfo.id)
     }
 
-    fun getFriendshipsByHabboId(habboId: Int): List<Friendship> {
+    fun getFriendships(habboId: Int): List<Friendship> {
         return friendships.filter { it.habboInfoOne.id == habboId || it.habboInfoTwo.id == habboId }
     }
 
@@ -88,15 +88,15 @@ class UrielMessengerManager {
         friendship.delete()
     }
 
-    fun getFriendshipRequestsByHabbo(habbo: Habbo): List<FriendshipRequest> {
-        return getFriendshipRequestsByHabboInfo(habbo.info)
+    fun getFriendshipRequests(habbo: Habbo): List<FriendshipRequest> {
+        return getFriendshipRequests(habbo.info)
     }
 
-    fun getFriendshipRequestsByHabboInfo(habboInfo: HabboInfo): List<FriendshipRequest> {
-        return getFriendshipRequestsByHabboId(habboInfo.id)
+    fun getFriendshipRequests(habboInfo: HabboInfo): List<FriendshipRequest> {
+        return getFriendshipRequests(habboInfo.id)
     }
 
-    fun getFriendshipRequestsByHabboId(habboId: Int): List<FriendshipRequest> {
+    fun getFriendshipRequests(habboId: Int): List<FriendshipRequest> {
         return friendshipRequests.filter { it.receiverHabboInfo.id == habboId }
     }
 
@@ -117,15 +117,15 @@ class UrielMessengerManager {
         friendshipRequest.delete()
     }
 
-    fun getOfflineMessagesByHabbo(habbo: Habbo): List<OfflineMessage> {
-        return getOfflineMessagesByHabboInfo(habbo.info)
+    fun getOfflineMessages(habbo: Habbo): List<OfflineMessage> {
+        return getOfflineMessages(habbo.info)
     }
 
-    fun getOfflineMessagesByHabboInfo(habboInfo: HabboInfo): List<OfflineMessage> {
-        return getOfflineMessagesByHabboId(habboInfo.id)
+    fun getOfflineMessages(habboInfo: HabboInfo): List<OfflineMessage> {
+        return getOfflineMessages(habboInfo.id)
     }
 
-    fun getOfflineMessagesByHabboId(habboId: Int): List<OfflineMessage> {
+    fun getOfflineMessages(habboId: Int): List<OfflineMessage> {
         return offlineMessages.filter { it.receiverHabboInfo.id == habboId }
     }
 

@@ -16,7 +16,7 @@ class RemoveFriendPacketHandler : PacketHandler {
         for (i in 0..<removeAmount) {
             val userId = packet.getInt()
 
-            habbo.messenger.getFriendshipByHabboId(userId)?.remove()
+            habbo.messenger.getFriendship(userId)?.remove()
         }
     }
 

@@ -12,14 +12,14 @@ class MessengerChatPacketHandler : PacketHandler {
 
         val habbo = client.habbo!!
 
-        val friendshipId = packet.getInt()
+        val targetId = packet.getInt()
         var message = packet.getString()
 
         if (message.length > MAX_MESSAGE_LENGTH) {
             message = message.substring(0, MAX_MESSAGE_LENGTH - 1)
         }
 
-        val friendship = habbo.messenger.getFriendshipByHabboId(friendshipId) ?: return
+        val friendship = habbo.messenger.getFriendship(targetId) ?: return
 
         friendship.sendMessage(habbo, message)
     }

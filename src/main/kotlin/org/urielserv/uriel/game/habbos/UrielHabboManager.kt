@@ -53,9 +53,14 @@ class UrielHabboManager {
             return
         }
 
+        habboInfo.isOnline = true
+        habboInfo.lastLogin = currentUnixSeconds
+
+        habboInfo.currentIp = client.ip
+
         val habbo = Habbo(habboInfo, client)
 
-        val oldHabbo = connectedHabbos[habbo.info.id]
+        val oldHabbo = connectedHabbos[habboInfo.id]
 
         if (oldHabbo != null) {
             oldHabbo.notifications.alert(
@@ -67,24 +72,19 @@ class UrielHabboManager {
         }
 
         client.habbo = habbo
-        connectedHabbos[habbo.info.id] = habbo
-
-        habbo.info.isOnline = true
-        habbo.info.lastLogin = currentUnixSeconds
-
-        habbo.info.currentIp = client.ip
+        connectedHabbos[habboInfo.id] = habbo
 
         if (HotelSettings.habbos.wardrobe.validateLooksOnLogin) {
             // Make sure the player's look is valid
             val validatedLook = ClothingValidator.validateLook(habbo)
-            habbo.info.look = validatedLook
+            habboInfo.look = validatedLook
         }
 
         if (Configuration.security.refreshSSOTicketOnLogin) {
-            habbo.info.ssoTicket = generateSafeSSOToken()
+            habboInfo.ssoTicket = generateSafeSSOToken()
         }
 
-        habbo.info.flushChanges()
+        habboInfo.flushChanges()
 
         val event = UserLoginEvent(habbo, ssoTicket)
         EventDispatcher.dispatch(Events.UserLogin, event)
@@ -114,7 +114,7 @@ class UrielHabboManager {
      * @param id The ID of the Habbo to be found.
      * @return The Habbo object if found, otherwise null.
      */
-    fun getConnectedHabboById(id: Int): Habbo? {
+    fun getConnectedHabbo(id: Int): Habbo? {
         return connectedHabbos[id]
     }
 
@@ -124,18 +124,18 @@ class UrielHabboManager {
      * @param username The username of the Habbo to be found.
      * @return The Habbo object if found, otherwise null.
      */
-    fun getConnectedHabboByUsername(username: String): Habbo? {
+    fun getConnectedHabbo(username: String): Habbo? {
         return connectedHabbos.values.firstOrNull { it.info.username == username }
     }
 
-    fun getHabboInfoById(id: Int): HabboInfo? {
+    fun getHabboInfo(id: Int): HabboInfo? {
         return Database.sequenceOf(UsersSchema)
             .find {
                 it.id eq id
             }
     }
 
-    fun getHabboInfoByUsername(username: String): HabboInfo? {
+    fun getHabboInfo(username: String): HabboInfo? {
         return Database.sequenceOf(UsersSchema)
             .find {
                 it.username eq username

@@ -27,7 +27,7 @@ class UrielRoomManager {
         }
     }
 
-    fun getRoomModelByName(name: String): RoomModel? {
+    fun getRoomModel(name: String): RoomModel? {
         return roomModels[name]
     }
 
@@ -37,35 +37,35 @@ class UrielRoomManager {
      * @param id The ID of the Room to get.
      * @return The Room with the specified ID, or null if no Room with that ID exists.
      */
-    fun getRoomById(id: Int): Room? {
+    fun getRoom(id: Int): Room? {
         return rooms[id] ?: buildRoom(id)
     }
 
-    fun getRoomsByPublicCategory(category: NavigatorPublicCategory): List<Room> {
+    fun getRooms(category: NavigatorPublicCategory): List<Room> {
         return Database.sequenceOf(RoomsSchema)
             .filter { it.publicCategory eq category.id }
-            .map { getRoomById(it.id) }
+            .map { getRoom(it.id) }
             .filterNotNull()
     }
 
-    fun getRoomsByFlatCategory(category: NavigatorFlatCategory): List<Room> {
+    fun getRooms(category: NavigatorFlatCategory): List<Room> {
         return Database.sequenceOf(RoomsSchema)
             .filter { it.flatCategory eq category.id }
-            .map { getRoomById(it.id) }
+            .map { getRoom(it.id) }
             .filterNotNull()
     }
 
-    fun getRoomsByOwner(ownerId: Int): List<Room> {
+    fun getRooms(ownerId: Int): List<Room> {
         return Database.sequenceOf(RoomsSchema)
             .filter { it.ownerId eq ownerId }
-            .map { getRoomById(it.id) }
+            .map { getRoom(it.id) }
             .filterNotNull()
     }
 
-    fun getRoomsByOwner(habbo: Habbo): List<Room> {
+    fun getRooms(habbo: Habbo): List<Room> {
         return Database.sequenceOf(RoomsSchema)
             .filter { it.ownerId eq habbo.info.id }
-            .map { getRoomById(it.id) }
+            .map { getRoom(it.id) }
             .filterNotNull()
     }
 

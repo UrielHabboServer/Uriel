@@ -30,7 +30,7 @@ class RequestFriendPacketHandler : PacketHandler {
         val username = packet.getString()
 
         // TODO: At some point replace with a Friend Request Error packet (when Nitro adds support for it)
-        val targetHabboInfo = HabboManager.getHabboInfoByUsername(username) ?: return
+        val targetHabboInfo = HabboManager.getHabboInfo(username) ?: return
 
         if (targetHabboInfo.id == habbo.info.id) return
 

@@ -12,7 +12,7 @@ class GetGuestRoomPacketHandler : PacketHandler {
         if (client.habbo == null) return
 
         val roomId = packet.getInt()
-        val room = RoomManager.getRoomById(roomId) ?: return
+        val room = RoomManager.getRoom(roomId) ?: return
 
         var enterRoom = packet.getInt() == 1
         val forwardRoom = packet.getInt() == 1

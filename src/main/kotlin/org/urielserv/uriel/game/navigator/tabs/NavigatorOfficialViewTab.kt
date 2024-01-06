@@ -31,7 +31,7 @@ class NavigatorOfficialViewTab : NavigatorTab {
         )
 
         for (category in NavigatorManager.getPublicCategories()) {
-            val rooms = RoomManager.getRoomsByPublicCategory(category).filter {
+            val rooms = RoomManager.getRooms(category).filter {
                 it.info.accessType != RoomAccessType.INVISIBLE || canSeeInvisibleRooms
             }
 

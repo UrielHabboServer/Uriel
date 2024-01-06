@@ -16,9 +16,13 @@ interface Friendship : Entity<Friendship> {
     companion object : Entity.Factory<Friendship>()
 
     val id: Int
+
     var habboInfoOne: HabboInfo
     var habboInfoTwo: HabboInfo
-    var relationship: Relationship?
+
+    var relationshipHabboOne: Relationship?
+    var relationshipHabboTwo: Relationship?
+
     var creationTimestamp: Int
 
     fun other(habboInfo: HabboInfo): HabboInfo {
@@ -26,6 +30,28 @@ interface Friendship : Entity<Friendship> {
             habboInfoTwo
         else
             habboInfoOne
+    }
+
+    fun otherRelationship(habboInfo: HabboInfo): Relationship? {
+        return if (habboInfoOne.id == habboInfo.id)
+            relationshipHabboTwo
+        else
+            relationshipHabboOne
+    }
+
+    fun selfRelationship(habboInfo: HabboInfo): Relationship? {
+        return if (habboInfoOne.id == habboInfo.id)
+            relationshipHabboOne
+        else
+            relationshipHabboTwo
+    }
+
+    fun setRelationship(habboInfo: HabboInfo, relationship: Relationship) {
+        if (habboInfoOne.id == habboInfo.id) {
+            relationshipHabboOne = relationship
+        } else {
+            relationshipHabboTwo = relationship
+        }
     }
 
     suspend fun sendMessage(sender: Habbo, message: String) {
@@ -48,6 +74,19 @@ interface Friendship : Entity<Friendship> {
         }
 
         MessengerManager.addOfflineMessage(offlineMessage)
+    }
+
+    suspend fun sendInvite(sender: Habbo, message: String) {
+        val other = other(sender.info)
+
+        if (other.habbo != null) {
+            MessengerChatPacket(
+                sender = sender,
+                message = message
+            ).send(other.habbo!!)
+
+            return
+        }
     }
 
     suspend fun follow(sender: Habbo) {

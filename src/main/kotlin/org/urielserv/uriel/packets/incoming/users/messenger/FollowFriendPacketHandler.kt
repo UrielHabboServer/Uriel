@@ -12,7 +12,7 @@ class FollowFriendPacketHandler : PacketHandler {
         val habbo = client.habbo!!
 
         val friendId = packet.getInt()
-        val friendship = habbo.messenger.getFriendshipByHabboId(friendId) ?: return
+        val friendship = habbo.messenger.getFriendship(friendId) ?: return
 
         friendship.follow(habbo)
     }

@@ -134,7 +134,7 @@ class UrielPluginLoader {
     }
 
     suspend fun shutdown() {
-        for ((pluginData, plugin) in plugins) {
+        for ((pluginData, _) in plugins) {
             unloadPlugin(pluginData.information.name)
         }
     }

@@ -16,7 +16,7 @@ class AcceptFriendPacketHandler : PacketHandler {
         for (i in 0..<requestAmount) {
             val userId = packet.getInt()
 
-            habbo.messenger.getFriendshipRequestByHabboId(userId)?.accept()
+            habbo.messenger.getFriendshipRequest(userId)?.accept()
         }
     }
 

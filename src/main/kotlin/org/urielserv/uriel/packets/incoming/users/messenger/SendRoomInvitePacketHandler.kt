@@ -22,13 +22,17 @@ class SendRoomInvitePacketHandler : PacketHandler {
 
         val message = packet.getString()
 
-        val habbos = users
-            .mapNotNull { HabboManager.getHabboInfoById(it)?.habbo }
+        users
+            .mapNotNull { HabboManager.getHabboInfo(it)?.habbo }
             .filter { // friend
                 habbo.messenger.isFriend(it.info)
             }
-
-        MessengerInvitePacket(habbo, message).broadcast(habbos)
+            .map { // friendship
+                habbo.messenger.getFriendship(it)!!
+            }
+            .forEach {
+                it.sendInvite(habbo, message)
+            }
     }
 
 }

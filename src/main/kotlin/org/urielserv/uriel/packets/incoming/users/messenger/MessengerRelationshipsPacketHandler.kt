@@ -12,7 +12,7 @@ class MessengerRelationshipsPacketHandler : PacketHandler {
         if (client.habbo == null) return
 
         val targetHabboId = packet.getInt()
-        val targetHabboInfo = HabboManager.getHabboInfoById(targetHabboId) ?: return
+        val targetHabboInfo = HabboManager.getHabboInfo(targetHabboId) ?: return
 
         MessengerRelationshipsPacket(targetHabboInfo).send(client)
     }

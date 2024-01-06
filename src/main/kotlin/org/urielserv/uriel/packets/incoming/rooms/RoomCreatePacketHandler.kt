@@ -27,7 +27,7 @@ class RoomCreatePacketHandler : PacketHandler {
             HotelSettings.habbos.rooms.maxRooms
         }
 
-        if (RoomManager.getRoomsByOwner(client.habbo!!).size >= roomLimit) {
+        if (RoomManager.getRooms(client.habbo!!).size >= roomLimit) {
             CanCreateRoomPacket(false, roomLimit).send(client)
             return
         }
@@ -39,7 +39,7 @@ class RoomCreatePacketHandler : PacketHandler {
         val maxVisitors = packet.getInt()
         val tradeType = packet.getInt()
 
-        val model = RoomManager.getRoomModelByName(modelName)
+        val model = RoomManager.getRoomModel(modelName)
 
         if (model == null) {
             logger.warn("${client.habbo!!.info.username} attempted to create a room with a non-existent model: $modelName")

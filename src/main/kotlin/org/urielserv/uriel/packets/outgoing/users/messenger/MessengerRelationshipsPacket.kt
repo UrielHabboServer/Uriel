@@ -18,14 +18,14 @@ class MessengerRelationshipsPacket(
         val friendships = if (habboInfo.isOnline) {
             habboInfo.habbo!!.messenger.getFriendships()
         } else {
-            MessengerManager.getFriendshipsByHabboInfo(habboInfo)
+            MessengerManager.getFriendships(habboInfo)
         }
 
-        // filter out friendships that are never present in any friendship
+        // filter out relationships that are never present in any friendship
         val relationships = MessengerManager.getRelationships()
             .filter { relationship ->
                 friendships.any { friendship ->
-                    friendship.relationship?.id == relationship.id
+                    friendship.selfRelationship(habboInfo)?.id == relationship.id
                 }
             }
 
@@ -34,7 +34,7 @@ class MessengerRelationshipsPacket(
 
         for (relationship in relationships) {
             val friendshipsInRelationship = friendships.filter { friendship ->
-                friendship.relationship?.id == relationship.id
+                friendship.selfRelationship(habboInfo)?.id == relationship.id
             }
             val randomFriendship = friendshipsInRelationship.random()
 

@@ -35,6 +35,6 @@ interface HabboInfo : Entity<HabboInfo> {
     var homeRoomId: Int
 
     val habbo: Habbo?
-        get() = HabboManager.getConnectedHabboById(id)
+        get() = HabboManager.getConnectedHabbo(id)
 
 }

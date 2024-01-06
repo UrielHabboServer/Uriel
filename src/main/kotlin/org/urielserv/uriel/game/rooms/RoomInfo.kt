@@ -69,6 +69,6 @@ interface RoomInfo : Entity<RoomInfo> {
     var isForSale: Boolean
 
     val room: Room?
-        get() = RoomManager.getRoomById(id)
+        get() = RoomManager.getRoom(id)
 
 }

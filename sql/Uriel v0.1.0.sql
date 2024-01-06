@@ -1,4 +1,4 @@
-SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- Currencies
 DROP TABLE IF EXISTS currencies;
@@ -118,11 +118,13 @@ CREATE TABLE messenger_friendships
     id                            INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
     user_one_id                   INT                            NOT NULL,
     user_two_id                   INT                            NOT NULL,
-    relationship_id               INT,
+    user_one_relationship_id      INT,
+    user_two_relationship_id      INT,
     friendship_creation_timestamp LONG                           NOT NULL,
     FOREIGN KEY (user_one_id) REFERENCES users (id),
     FOREIGN KEY (user_two_id) REFERENCES users (id),
-    FOREIGN KEY (relationship_id) REFERENCES messenger_relationships (id)
+    FOREIGN KEY (user_one_relationship_id) REFERENCES messenger_relationships (id),
+    FOREIGN KEY (user_two_relationship_id) REFERENCES messenger_relationships (id)
 );
 
 DROP TABLE IF EXISTS messenger_relationships;
@@ -296,7 +298,9 @@ INSERT INTO commands (name, description, invokers)
 VALUES ('about', 'Shows information about the Uriel Habbo Server', 'about,uriel,info'),
        ('commands', 'Shows all available commands for the user', 'commands,cmds,cmd,cmdlist'),
        ('lay', 'Lays your character on the ground', 'lay'),
-       ('sit', 'Sits your character on the ground', 'sit');
+       ('sit', 'Sits your character on the ground', 'sit'),
+       ('stand', 'Stands up your character', 'stand'),
+       ('invite', 'Sends your friend a room invite', 'invite');
 
 -- Furniture
 DROP TABLE IF EXISTS furniture;
@@ -1419,4 +1423,4 @@ CREATE TABLE landing_view_articles
     image_url     VARCHAR(255)                   NOT NULL
 );
 
-SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;

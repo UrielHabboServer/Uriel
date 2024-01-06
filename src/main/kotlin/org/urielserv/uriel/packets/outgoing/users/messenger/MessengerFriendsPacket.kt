@@ -26,7 +26,7 @@ class MessengerFriendsPacket(
             appendInt(other.id)
             appendString(other.username)
             appendInt(if (other.gender == HabboGender.MALE) 0 else 1)
-            appendBoolean(other.habbo != null)
+            appendBoolean(other.isOnline)
             appendBoolean(other.habbo?.room != null)
             appendString(other.look)
             appendInt(0) // Category, unimplemented in Nitro
@@ -36,7 +36,7 @@ class MessengerFriendsPacket(
             appendBoolean(false)
             appendBoolean(false)
             appendBoolean(false)
-            appendShort(friendship.relationship?.nitroId?.toShort() ?: 0)
+            appendShort(friendship.selfRelationship(habbo.info)?.nitroId?.toShort() ?: 0)
         }
     }
 

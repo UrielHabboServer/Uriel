@@ -25,7 +25,7 @@ class DeclineFriendPacketHandler : PacketHandler {
         for (i in 0..<declineAmount) {
             val userId = packet.getInt()
 
-            habbo.messenger.getFriendshipRequestByHabboId(userId)?.decline()
+            habbo.messenger.getFriendshipRequest(userId)?.decline()
         }
     }
 

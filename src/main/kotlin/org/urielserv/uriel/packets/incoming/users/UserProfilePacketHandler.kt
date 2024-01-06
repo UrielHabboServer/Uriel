@@ -17,7 +17,7 @@ class UserProfilePacketHandler : PacketHandler {
         val userId = packet.getInt()
         packet.getBoolean() // No clue what this is, not even Nitro knows
 
-        val habboInfo = HabboManager.getHabboInfoById(userId) ?: return
+        val habboInfo = HabboManager.getHabboInfo(userId) ?: return
 
         UserProfilePacket(habbo, habboInfo).send(client)
     }

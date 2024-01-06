@@ -20,10 +20,18 @@ class HabboMessenger(
     val habbo: Habbo
 ) {
 
-    private val friendships = MessengerManager.getFriendshipsByHabbo(habbo).toMutableList()
-    private val friendshipRequests = MessengerManager.getFriendshipRequestsByHabbo(habbo).toMutableList()
+    private val friendships = MessengerManager.getFriendships(habbo).toMutableList()
+    private val friendshipRequests = MessengerManager.getFriendshipRequests(habbo).toMutableList()
 
-    fun getFriendshipByHabboId(habboId: Int): Friendship? {
+    fun getFriendship(habbo: Habbo): Friendship? {
+        return getFriendship(habbo.info)
+    }
+
+    fun getFriendship(habboInfo: HabboInfo): Friendship? {
+        return getFriendship(habboInfo.id)
+    }
+
+    fun getFriendship(habboId: Int): Friendship? {
         return friendships.firstOrNull { it.other(habbo.info).id == habboId }
     }
 
@@ -57,7 +65,15 @@ class HabboMessenger(
         ).send(habbo)
     }
 
-    fun getFriendshipRequestByHabboId(habboId: Int): FriendshipRequest? {
+    fun getFriendshipRequest(habbo: Habbo): FriendshipRequest? {
+        return getFriendshipRequest(habbo.info)
+    }
+
+    fun getFriendshipRequest(habboInfo: HabboInfo): FriendshipRequest? {
+        return getFriendshipRequest(habboInfo.id)
+    }
+
+    fun getFriendshipRequest(habboId: Int): FriendshipRequest? {
         return friendshipRequests.firstOrNull { it.senderHabboInfo.id == habboId }
     }
 
@@ -82,7 +98,7 @@ class HabboMessenger(
     }
 
     suspend fun checkForOfflineMessages() {
-        val offlineMessages = MessengerManager.getOfflineMessagesByHabbo(habbo)
+        val offlineMessages = MessengerManager.getOfflineMessages(habbo)
 
         for (offlineMessage in offlineMessages) {
             MessengerChatPacket(offlineMessage).send(habbo)
@@ -91,21 +107,21 @@ class HabboMessenger(
         }
     }
 
-    suspend fun sendUpdateToFriends(action: MessengerUpdatePacket.Action = MessengerUpdatePacket.Action.UPDATE) {
+    suspend fun sendUpdateToFriends() {
         for (friendship in friendships) {
             val other = friendship.other(habbo.info)
 
             if (other.habbo != null) {
                 MessengerUpdatePacket(
                     habbo = other.habbo!!,
-                    action to friendship
+                    MessengerUpdatePacket.Action.UPDATE to friendship
                 ).send(other.habbo!!)
             }
         }
     }
 
     suspend fun unload() {
-        sendUpdateToFriends(MessengerUpdatePacket.Action.UPDATE)
+        sendUpdateToFriends()
     }
 
 }

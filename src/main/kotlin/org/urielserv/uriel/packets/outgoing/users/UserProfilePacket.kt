@@ -29,7 +29,7 @@ class UserProfilePacket(
 
         appendInt(0) // TODO: Achievement score
 
-        appendInt(MessengerManager.getFriendshipsByHabboInfo(habboInfo).size)
+        appendInt(MessengerManager.getFriendships(habboInfo).size)
         appendBoolean(viewerHabbo.messenger.isFriend(habboInfo))
         appendBoolean(viewerHabbo.messenger.hasFriendshipRequest(habboInfo))
 

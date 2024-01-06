@@ -21,7 +21,7 @@ class NavigatorMyViewTab : NavigatorTab {
                 NavigatorSearchAction.NONE,
                 NavigatorDisplayMode.EXPANDED,
                 NavigatorListMode.FORCE_THUMBNAIL,
-                RoomManager.getRoomsByOwner(habbo).toMutableList()
+                RoomManager.getRooms(habbo).toMutableList()
             )
         )
 
