@@ -23,7 +23,7 @@ maxRoomsWithHabboClub = 35
 maxRooms = 25
 
 [habbos.wardrobe]
-figureDataUrl = "https://habbo.com/gamedata/figuredata/0"
+figureDataUrl = "https://yourhotel.com/gamedata/FigureData.json" # Set your Nitro's FigureData here
 validateLooksOnHabboClubExpire = true
 validateLooksOnLogin = true
 validateLooksOnChange = true
