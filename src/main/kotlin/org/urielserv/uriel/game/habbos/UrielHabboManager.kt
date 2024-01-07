@@ -24,6 +24,7 @@ import org.urielserv.uriel.packets.outgoing.users.UserHomeRoomPacket
 import org.urielserv.uriel.packets.outgoing.users.UserPermissionsPacket
 import java.security.SecureRandom
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * The UrielHabboManager class is responsible for managing the Habbo users.
@@ -33,7 +34,7 @@ class UrielHabboManager {
 
     private val logger = noCoLogger(UrielHabboManager::class)
 
-    private val connectedHabbos = mutableMapOf<Int, Habbo>()
+    private val connectedHabbos = ConcurrentHashMap<Int, Habbo>()
 
     /**
      * Logs in a Habbo using the provided SSO ticket. If successful, a Habbo object representing the logged-in user is returned.
@@ -53,13 +54,6 @@ class UrielHabboManager {
             return
         }
 
-        habboInfo.isOnline = true
-        habboInfo.lastLogin = currentUnixSeconds
-
-        habboInfo.currentIp = client.ip
-
-        val habbo = Habbo(habboInfo, client)
-
         val oldHabbo = connectedHabbos[habboInfo.id]
 
         if (oldHabbo != null) {
@@ -70,6 +64,13 @@ class UrielHabboManager {
 
             oldHabbo.disconnect()
         }
+
+        habboInfo.isOnline = true
+        habboInfo.lastLogin = currentUnixSeconds
+
+        habboInfo.currentIp = client.ip
+
+        val habbo = Habbo(habboInfo, client)
 
         client.habbo = habbo
         connectedHabbos[habboInfo.id] = habbo
@@ -94,12 +95,12 @@ class UrielHabboManager {
             return
         }
 
-        logger.info("${habbo.info.username} logged in from ${client.ip}:${client.port}")
+        logger.info("${habboInfo.username} logged in from ${client.ip}:${client.port}")
 
         AuthenticatedPacket().send(client)
         UserHomeRoomPacket(
-            homeRoomId = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId,
-            roomIdToEnter = if (habbo.info.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habbo.info.homeRoomId
+            homeRoomId = if (habboInfo.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habboInfo.homeRoomId,
+            roomIdToEnter = if (habboInfo.homeRoomId == 0) HotelSettings.hotel.defaultRoomId else habboInfo.homeRoomId
         ).send(client)
 
         NoobnessLevelPacket(NoobnessLevelPacket.NEW_IDENTITY).send(client)

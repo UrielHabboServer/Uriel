@@ -1,14 +1,6 @@
 package org.urielserv.uriel.game.habbos.messenger
 
-import org.ktorm.dsl.eq
-import org.ktorm.dsl.or
-import org.ktorm.entity.filter
-import org.ktorm.entity.forEach
-import org.urielserv.uriel.Database
 import org.urielserv.uriel.MessengerManager
-import org.urielserv.uriel.core.database.schemas.messenger.MessengerFriendshipRequestsSchema
-import org.urielserv.uriel.core.database.schemas.messenger.MessengerFriendshipsSchema
-import org.urielserv.uriel.core.database.schemas.messenger.MessengerOfflineMessagesSchema
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.game.habbos.messenger.interfaces.Friendship
@@ -22,6 +14,17 @@ class HabboMessenger(
 
     private val friendships = MessengerManager.getFriendships(habbo).toMutableList()
     private val friendshipRequests = MessengerManager.getFriendshipRequests(habbo).toMutableList()
+
+    init {
+        for (friendship in friendships) {
+            // Update habboInfo to habbo.info
+            if (friendship.habboInfoOne.id == habbo.info.id) {
+                friendship.habboInfoOne = habbo.info
+            } else {
+                friendship.habboInfoTwo = habbo.info
+            }
+        }
+    }
 
     fun getFriendship(habbo: Habbo): Friendship? {
         return getFriendship(habbo.info)

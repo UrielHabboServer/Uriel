@@ -149,10 +149,7 @@ class UrielCommandManager {
         val commandInfo = commandInfos.find { invoker in it.invokers }
         val commandBase = commandMap[commandInfo]
 
-        if (commandInfo == null || commandBase == null) {
-            logger.error("Couldn't find any Command Information for Command: $invoker")
-            return null
-        }
+        if (commandInfo == null || commandBase == null) return null
 
         return Pair(commandInfo, commandBase)
     }

@@ -29,7 +29,7 @@ abstract class CommandBase {
             .firstOrNull() ?: "unknown"
 
     internal suspend fun execute(habbo: Habbo, args: List<String>) {
-        val mutableArgs = args.toMutableList()
+        var mutableArgs = args.toMutableList()
 
         val executor = getExecutorFunction(mutableArgs)
         val executorFunction = executor?.first
@@ -42,7 +42,8 @@ abstract class CommandBase {
 
         val parameters = mutableListOf<Any?>()
         var hasUsedFirstHabboAsSender = false
-        for (parameter in executorFunction.parameters.drop(1)) {
+        val functionParameters = executorFunction.parameters.drop(1)
+        for ((index, parameter) in functionParameters.withIndex()) {
             val type = parameter.type.classifier as KClass<*>
             val parameterBuilder = CommandManager.getParameterBuilder(type)
 
@@ -62,14 +63,26 @@ abstract class CommandBase {
                 return
             }
 
-            val parameterValue = parameterBuilder(mutableArgs) // will consume the arguments as needed
+            val clonedArgs = mutableArgs.toMutableList()
 
-            if (parameterValue == null) {
-                habbo.roomUnit!!.sendAlert("Invalid parameter: ${parameter.name}")
+            try {
+                val parameterValue = parameterBuilder(clonedArgs) // will consume the arguments as needed
+
+                if (parameterValue == null && functionParameters.size == index) {
+                    habbo.roomUnit!!.sendAlert("Invalid parameter: ${parameter.name}")
+                    return
+                } else if (parameterValue == null && parameter.isOptional) {
+                    parameters.add(null)
+                    continue
+                }
+
+                mutableArgs = clonedArgs
+                parameters.add(parameterValue)
+            } catch (exc: Exception) {
+                logger.error("Error building parameter: ${parameter.name}")
+                exc.printStackTrace()
                 return
             }
-
-            parameters.add(parameterValue)
         }
 
         try {

@@ -5,6 +5,7 @@ import org.urielserv.uriel.ChatBubblesManager
 import org.urielserv.uriel.CommandManager
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.extensions.hasPermission
+import org.urielserv.uriel.extensions.schedule
 import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.rooms.Room
@@ -56,7 +57,9 @@ class HabboRoomUnit(
     private var goalTile: RoomTile? = null
     private var goalPath: List<RoomTile>? = null
     private var goalJob: RepeatingJob? = null
-    private var isWalking = false
+
+    var isWalking = false
+        private set
 
     var isStanding = true
         private set
@@ -71,9 +74,9 @@ class HabboRoomUnit(
     var isLayingOnFloor = false
         private set
 
-    suspend fun talk(message: RoomChatMessage) {
-        if (message.message.startsWith(HotelSettings.commands.prefix)) {
-            val split = message.message.substring(1).split(" ")
+    suspend fun talk(chatMessage: RoomChatMessage) {
+        if (chatMessage.message.startsWith(HotelSettings.commands.prefix)) {
+            val split = chatMessage.message.substring(1).split(" ")
             val invoker = split[0]
 
             val command = CommandManager.getCommandByInvoker(invoker)
@@ -88,19 +91,19 @@ class HabboRoomUnit(
             }
         }
 
-        when (message.type) {
+        when (chatMessage.type) {
             RoomChatMessage.ChatType.TALK -> {
-                RoomUnitChatPacket(message).broadcast(room)
+                RoomUnitChatPacket(chatMessage).broadcast(room)
             }
 
             RoomChatMessage.ChatType.SHOUT -> {
-                RoomUnitChatShoutPacket(message).broadcast(room)
+                RoomUnitChatShoutPacket(chatMessage).broadcast(room)
             }
 
             RoomChatMessage.ChatType.WHISPER -> {
-                if (message.whisperTarget == null) return
+                if (chatMessage.whisperTarget == null) return
 
-                RoomUnitChatWhisperPacket(message).broadcast(habbo, message.whisperTarget!!)
+                RoomUnitChatWhisperPacket(chatMessage).broadcast(habbo, chatMessage.whisperTarget!!)
             }
         }
     }

@@ -9,16 +9,22 @@ class RoomUnitLookPacketHandler : PacketHandler {
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         if (client.habbo == null) return
 
-        if (client.habbo!!.room == null) return
+        val habbo = client.habbo!!
+
+        if (habbo.room == null) return
 
         val x = packet.getInt()
         val y = packet.getInt()
 
-        val tile = client.habbo!!.room!!.tileMap!!.getTile(x, y) ?: return
+        val tile = habbo.room!!.tileMap!!.getTile(x, y) ?: return
 
-        if (client.habbo!!.roomUnit!! in tile.roomUnitsOnTile) return
+        val roomUnit = habbo.roomUnit!!
 
-        client.habbo!!.roomUnit!!.lookAt(tile)
+        if (roomUnit in tile.roomUnitsOnTile) return
+
+        if (roomUnit.isWalking && tile == roomUnit.previousTile) return
+
+        roomUnit.lookAt(tile)
     }
 
 }

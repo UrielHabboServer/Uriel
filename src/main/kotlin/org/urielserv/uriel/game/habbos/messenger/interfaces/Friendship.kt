@@ -1,15 +1,13 @@
 package org.urielserv.uriel.game.habbos.messenger.interfaces
 
 import org.ktorm.entity.Entity
-import org.ktorm.entity.add
-import org.urielserv.uriel.Database
 import org.urielserv.uriel.MessengerManager
-import org.urielserv.uriel.core.database.schemas.messenger.MessengerOfflineMessagesSchema
 import org.urielserv.uriel.extensions.currentUnixSeconds
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.packets.outgoing.rooms.RoomForwardPacket
 import org.urielserv.uriel.packets.outgoing.users.messenger.MessengerChatPacket
+import org.urielserv.uriel.packets.outgoing.users.messenger.MessengerInvitePacket
 
 interface Friendship : Entity<Friendship> {
 
@@ -80,8 +78,8 @@ interface Friendship : Entity<Friendship> {
         val other = other(sender.info)
 
         if (other.habbo != null) {
-            MessengerChatPacket(
-                sender = sender,
+            MessengerInvitePacket(
+                habbo = sender,
                 message = message
             ).send(other.habbo!!)
 

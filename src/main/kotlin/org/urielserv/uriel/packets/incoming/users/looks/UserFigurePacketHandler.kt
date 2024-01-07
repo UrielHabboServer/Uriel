@@ -58,6 +58,8 @@ class UserFigurePacketHandler : PacketHandler {
         if (habbo.room != null) {
             RoomUnitInfoPacket(habbo).broadcast(habbo.room!!)
         }
+
+        habbo.messenger.sendUpdateToFriends()
     }
 
 }

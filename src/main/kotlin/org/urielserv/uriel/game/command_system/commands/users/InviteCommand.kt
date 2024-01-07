@@ -9,13 +9,17 @@ import org.urielserv.uriel.game.habbos.Habbo
 object InviteCommand : CommandBase() {
 
     @MainCommand
-    suspend fun main(sender: Habbo, vararg habbos: Habbo) {
+    suspend fun main(sender: Habbo, target: Habbo? = null, message: String = " ") {
         if (sender.roomUnit == null) return
 
-        for (habbo in habbos) {
-            val friendship = sender.messenger.getFriendship(habbo.info.id) ?: continue
+        val targetFriendships = if (target == null) {
+            sender.messenger.getFriendships()
+        } else {
+            listOf(sender.messenger.getFriendship(target) ?: return)
+        }
 
-            friendship.sendInvite(sender, "")
+        for (friendship in targetFriendships) {
+            friendship.sendInvite(sender, message)
         }
     }
 
