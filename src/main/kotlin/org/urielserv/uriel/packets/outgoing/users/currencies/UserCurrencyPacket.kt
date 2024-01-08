@@ -12,7 +12,7 @@ class UserCurrencyPacket(
     override val packetId = Outgoing.UserCurrency
 
     override suspend fun construct() {
-        val currencies = CurrencyManager.getCurrencies().filter { it.isSeasonal }
+        val currencies = CurrencyManager.currencies.values.filter { it.isSeasonal }
 
         appendInt(currencies.size)
         for (currency in currencies) {

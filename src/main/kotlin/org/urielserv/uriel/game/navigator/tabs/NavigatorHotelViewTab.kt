@@ -26,7 +26,7 @@ class NavigatorHotelViewTab : NavigatorTab {
                 NavigatorSearchAction.NONE,
                 NavigatorDisplayMode.EXPANDED,
                 NavigatorListMode.FORCE_THUMBNAIL,
-                RoomManager.getPopularRooms().filter {
+                RoomManager.popularRooms.filter {
                     it.info.accessType != RoomAccessType.INVISIBLE || canSeeInvisibleRooms
                 }.toMutableList()
             )

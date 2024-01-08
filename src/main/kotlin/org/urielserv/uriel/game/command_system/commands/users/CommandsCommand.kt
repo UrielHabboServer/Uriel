@@ -13,7 +13,7 @@ object CommandsCommand : CommandBase() {
 
     @MainCommand
     suspend fun main(sender: Habbo) {
-        val commands = CommandManager.getCommands()
+        val commands = CommandManager.commands.keys
             .filter {
                 (it.permission.isBlank() || sender.hasPermission(it.permission)) && it.name != "commands"
             }

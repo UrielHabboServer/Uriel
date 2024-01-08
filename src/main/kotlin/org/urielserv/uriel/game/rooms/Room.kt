@@ -16,7 +16,9 @@ class Room internal constructor(
     val info: RoomInfo,
 ) {
 
-    private val habbos = mutableListOf<Habbo>()
+    private val _habbos = mutableListOf<Habbo>()
+    val habbos: List<Habbo>
+        get() = _habbos.toList()
 
     var tickLoop: TickLoop? = null
         private set
@@ -35,7 +37,7 @@ class Room internal constructor(
 
         tileMap = RoomTileMap(this, info.model)
 
-        info.users = habbos.size
+        info.users = _habbos.size
         info.flushChanges()
 
         isLoaded = true
@@ -57,7 +59,7 @@ class Room internal constructor(
 
     private suspend fun prepareEnter(habbo: Habbo) {
         habbo.room = this
-        habbos.add(habbo)
+        _habbos.add(habbo)
 
         habbo.messenger.sendUpdateToFriends()
 
@@ -86,15 +88,15 @@ class Room internal constructor(
             bodyRotation = tileMap!!.doorDirection
         )
 
-        info.users = habbos.size
+        info.users = _habbos.size
         info.flushChanges()
 
         RoomInfoOwnerPacket(this, habbo.info.id == info.ownerHabboInfo.id).send(habbo)
         RoomThicknessPacket(this).send(habbo)
         RoomInfoPacket(this, roomForward = false, roomEnter = true).send(habbo)
 
-        RoomUnitPacket(habbos).broadcast(this)
-        RoomUnitStatusPacket(habbos).broadcast(this)
+        RoomUnitPacket(_habbos).broadcast(this)
+        RoomUnitStatusPacket(_habbos).broadcast(this)
     }
 
     suspend fun leave(habbo: Habbo, goToDesktopView: Boolean = true) {
@@ -103,9 +105,9 @@ class Room internal constructor(
         habbo.room = null
         habbo.roomUnit = null
 
-        habbos.remove(habbo)
+        _habbos.remove(habbo)
 
-        info.users = habbos.size
+        info.users = _habbos.size
         info.flushChanges()
 
         for (tile in tileMap!!.tiles.flatten()) {
@@ -115,23 +117,15 @@ class Room internal constructor(
         if (goToDesktopView)
             DesktopViewPacket().send(habbo)
 
-        if (habbos.isEmpty()) {
+        if (_habbos.isEmpty()) {
             unload()
         }
-    }
-
-    fun getHabbos(): List<Habbo> {
-        return habbos
-    }
-
-    fun getHabboByUsername(username: String): Habbo? {
-        return habbos.find { it.info.username == username }
     }
 
     suspend fun unload() {
         if (!isLoaded) return
 
-        for (habbo in habbos) {
+        for (habbo in _habbos) {
             leave(habbo)
         }
 
@@ -143,6 +137,10 @@ class Room internal constructor(
         tileMap = null
 
         isLoaded = false
+    }
+
+    fun getHabboByUsername(username: String): Habbo? {
+        return _habbos.find { it.info.username == username }
     }
 
     fun appendToPacket(packet: Packet) {

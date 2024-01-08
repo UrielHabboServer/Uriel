@@ -16,7 +16,7 @@ class MessengerRelationshipsPacket(
 
     override suspend fun construct() {
         val friendships = if (habboInfo.isOnline) {
-            habboInfo.habbo!!.messenger.getFriendships()
+            habboInfo.habbo!!.messenger.friendships
         } else {
             MessengerManager.getFriendships(habboInfo)
         }

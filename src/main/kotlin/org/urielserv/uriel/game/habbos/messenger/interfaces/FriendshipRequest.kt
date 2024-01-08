@@ -31,7 +31,7 @@ interface FriendshipRequest : Entity<FriendshipRequest> {
             }
 
             if (!receiverHabbo.hasPermission("uriel.messenger.unlimited_friends")
-                && receiverHabbo.messenger.getFriendships().size >= friendLimit) return
+                && receiverHabbo.messenger.friendships.size >= friendLimit) return
         }
 
         val friendship = Friendship {

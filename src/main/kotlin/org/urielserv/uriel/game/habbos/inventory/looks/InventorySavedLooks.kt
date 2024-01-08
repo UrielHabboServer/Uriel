@@ -13,18 +13,18 @@ class InventorySavedLooks(
     val habbo: Habbo
 ) {
 
-    private val savedLooks = mutableListOf<SavedLook>()
+    private val _looks = mutableListOf<SavedLook>()
+    val looks: List<SavedLook>
+        get() = _looks.toList()
 
     init {
         Database.sequenceOf(UserSavedLooksSchema)
             .filter { it.userId eq habbo.info.id }
-            .forEach { savedLooks.add(it) }
+            .forEach { _looks.add(it) }
     }
 
     fun getLook(slotId: Int): SavedLook? =
-        savedLooks.firstOrNull { it.slotId == slotId }
-
-    fun getLooks(): List<SavedLook> = savedLooks.toList()
+        _looks.firstOrNull { it.slotId == slotId }
 
     fun setLook(slotId: Int, look: String, gender: HabboGender) {
         assert(slotId in 0..9)

@@ -28,7 +28,7 @@ abstract class Packet {
     abstract suspend fun construct()
 
     suspend fun broadcast() {
-        for (habbo in HabboManager.getHabbos()) {
+        for (habbo in HabboManager.onlineHabbos) {
             send(habbo)
         }
     }
@@ -46,7 +46,7 @@ abstract class Packet {
     }
 
     suspend fun broadcast(room: Room) {
-        for (habbo in room.getHabbos()) {
+        for (habbo in room.habbos) {
             send(habbo)
         }
     }

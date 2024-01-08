@@ -19,16 +19,19 @@ class HabboCurrencies(
     val habbo: Habbo
 ) {
 
-    private val currencies = mutableMapOf<Int, HabboCurrency>()
+    private val _currencies = mutableMapOf<Int, HabboCurrency>()
+    val currencies: List<HabboCurrency>
+        get() = _currencies.values.toList()
+
     private val currencyTimerTasks = mutableMapOf<HabboCurrency, RepeatingJob>()
 
     init {
-        for (currency in CurrencyManager.getCurrencies()) {
+        for (currency in CurrencyManager.currencies.values) {
             var habboCurrency = Database.sequenceOf(UserCurrenciesSchema)
                 .find { (it.userId eq habbo.info.id) and (it.currencyId eq currency.id) }
 
             if (habboCurrency != null)
-                currencies[currency.id] = habboCurrency
+                _currencies[currency.id] = habboCurrency
             else {
                 val newCurrency = HabboCurrency {
                     this.currency = currency
@@ -37,7 +40,7 @@ class HabboCurrencies(
                 }
 
                 Database.sequenceOf(UserCurrenciesSchema).add(newCurrency)
-                currencies[currency.id] = newCurrency
+                _currencies[currency.id] = newCurrency
 
                 habboCurrency = newCurrency
             }
@@ -54,19 +57,19 @@ class HabboCurrencies(
     }
 
     fun getCurrency(currency: UrielCurrency): HabboCurrency? {
-        return currencies[currency.id]
+        return _currencies[currency.id]
     }
 
     fun getById(id: Int): HabboCurrency? {
-        return currencies[id]
+        return _currencies[id]
     }
 
     fun getByName(name: String): HabboCurrency? {
-        return currencies.values.firstOrNull { it.currency.name == name || "${it.currency.name}s" == name }
+        return _currencies.values.firstOrNull { it.currency.name == name || "${it.currency.name}s" == name }
     }
 
     fun unload() {
-        for ((_, currency) in currencies) {
+        for ((_, currency) in _currencies) {
             currency.flushChanges()
         }
 

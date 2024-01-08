@@ -15,7 +15,7 @@ class DeclineFriendPacketHandler : PacketHandler {
         val declineAll = packet.getBoolean()
 
         if (declineAll) {
-            habbo.messenger.getFriendshipRequests().forEach { it.decline() }
+            habbo.messenger.friendshipRequests.forEach { it.decline() }
 
             return
         }

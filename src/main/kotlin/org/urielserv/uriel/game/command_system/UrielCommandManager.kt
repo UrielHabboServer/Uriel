@@ -17,7 +17,9 @@ class UrielCommandManager {
     private val logger = noCoLogger(UrielCommandManager::class)
 
     private val commandInfos = mutableListOf<CommandInfo>()
-    private val commandMap = mutableMapOf<CommandInfo, CommandBase>()
+    private val _commands = mutableMapOf<CommandInfo, CommandBase>()
+    val commands: Map<CommandInfo, CommandBase>
+        get() = _commands.toMap()
 
     private val parameterBuilders = mutableMapOf<KClass<*>, (argumentConsumer: MutableList<String>) -> Any?>()
 
@@ -130,7 +132,7 @@ class UrielCommandManager {
             return
         }
 
-        commandMap[commandInfo] = commandBase
+        _commands[commandInfo] = commandBase
     }
 
     fun registerParameterBuilder(clazz: KClass<*>, builder: (argumentConsumer: MutableList<String>) -> Any?) {
@@ -142,20 +144,16 @@ class UrielCommandManager {
     }
 
     fun getCommandBase(commandInfo: CommandInfo): CommandBase? {
-        return commandMap[commandInfo]
+        return _commands[commandInfo]
     }
 
     fun getCommandByInvoker(invoker: String): Pair<CommandInfo, CommandBase>? {
         val commandInfo = commandInfos.find { invoker in it.invokers }
-        val commandBase = commandMap[commandInfo]
+        val commandBase = _commands[commandInfo]
 
         if (commandInfo == null || commandBase == null) return null
 
         return Pair(commandInfo, commandBase)
-    }
-
-    fun getCommands(): List<CommandInfo> {
-        return commandInfos
     }
 
     fun getParameterBuilder(clazz: KClass<*>): ((argumentConsumer: MutableList<String>) -> Any?)? {

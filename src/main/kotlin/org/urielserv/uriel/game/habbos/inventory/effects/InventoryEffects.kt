@@ -13,31 +13,33 @@ class InventoryEffects(
     val habbo: Habbo
 ) : Iterable<Effect> {
 
-    private val effects = mutableListOf<Effect>()
+    val _effects = mutableListOf<Effect>()
+    val effects: List<Effect>
+        get() = _effects.toList()
 
     init {
         Database.sequenceOf(UserEffectsSchema)
             .filter { it.userId eq habbo.info.id }
-            .forEach { effects.add(it) }
+            .forEach { _effects.add(it) }
 
-        UserEffectListPacket(effects.toList()).sendSync(habbo)
+        UserEffectListPacket(_effects.toList()).sendSync(habbo)
     }
 
     fun checkIfExpired() {
-        effects.forEach { it.checkIfExpired() }
+        _effects.forEach { it.checkIfExpired() }
     }
 
     fun hasActiveEffect(effectId: Int): Boolean =
-        effects.any { it.effectId == effectId && it.isActive }
+        _effects.any { it.effectId == effectId && it.isActive }
 
     fun getEffect(effectId: Int): Effect? =
-        effects.firstOrNull { it.effectId == effectId }
+        _effects.firstOrNull { it.effectId == effectId }
 
     fun getActiveEffect(effectId: Int): Effect? =
-        effects.firstOrNull { it.effectId == effectId && it.isActive }
+        _effects.firstOrNull { it.effectId == effectId && it.isActive }
 
     fun registerEffect(effect: Effect) {
-        effects.add(effect)
+        _effects.add(effect)
 
         Database.sequenceOf(UserEffectsSchema)
             .add(Effect {
@@ -51,7 +53,7 @@ class InventoryEffects(
     }
 
     override fun iterator(): Iterator<Effect> {
-        return effects.iterator()
+        return _effects.iterator()
     }
 
 }

@@ -34,7 +34,9 @@ class UrielHabboManager {
 
     private val logger = noCoLogger(UrielHabboManager::class)
 
-    private val connectedHabbos = ConcurrentHashMap<Int, Habbo>()
+    private val _onlineHabbos = ConcurrentHashMap<Int, Habbo>()
+    val onlineHabbos: List<Habbo>
+        get() = _onlineHabbos.values.toList()
 
     /**
      * Logs in a Habbo using the provided SSO ticket. If successful, a Habbo object representing the logged-in user is returned.
@@ -54,7 +56,7 @@ class UrielHabboManager {
             return
         }
 
-        val oldHabbo = connectedHabbos[habboInfo.id]
+        val oldHabbo = _onlineHabbos[habboInfo.id]
 
         if (oldHabbo != null) {
             oldHabbo.notifications.alert(
@@ -73,7 +75,7 @@ class UrielHabboManager {
         val habbo = Habbo(habboInfo, client)
 
         client.habbo = habbo
-        connectedHabbos[habboInfo.id] = habbo
+        _onlineHabbos[habboInfo.id] = habbo
 
         if (HotelSettings.habbos.wardrobe.validateLooksOnLogin) {
             // Make sure the player's look is valid
@@ -116,7 +118,7 @@ class UrielHabboManager {
      * @return The Habbo object if found, otherwise null.
      */
     fun getConnectedHabbo(id: Int): Habbo? {
-        return connectedHabbos[id]
+        return _onlineHabbos[id]
     }
 
     /**
@@ -126,7 +128,7 @@ class UrielHabboManager {
      * @return The Habbo object if found, otherwise null.
      */
     fun getConnectedHabbo(username: String): Habbo? {
-        return connectedHabbos.values.firstOrNull { it.info.username == username }
+        return _onlineHabbos.values.firstOrNull { it.info.username == username }
     }
 
     fun getHabboInfo(id: Int): HabboInfo? {
@@ -157,17 +159,13 @@ class UrielHabboManager {
      * @param habbo The Habbo object to be removed.
      */
     fun unloadHabbo(habbo: Habbo) {
-        connectedHabbos.remove(habbo.info.id)
+        _onlineHabbos.remove(habbo.info.id)
 
         logger.info("${habbo.info.username} (${habbo.client.ip}:${habbo.client.port}) disconnected")
     }
 
-    fun getHabbos(): List<Habbo> {
-        return connectedHabbos.values.toList()
-    }
-
     internal suspend fun shutdown() {
-        for (habbo in connectedHabbos.values) {
+        for (habbo in _onlineHabbos.values) {
             habbo.disconnect()
         }
     }

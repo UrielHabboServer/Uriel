@@ -23,11 +23,11 @@ interface ComplexNotification {
     }
 
     suspend fun broadcast(room: Room) {
-        broadcast(room.getHabbos())
+        broadcast(room.habbos)
     }
 
     suspend fun broadcast() {
-        broadcast(HabboManager.getHabbos())
+        broadcast(HabboManager.onlineHabbos)
     }
 
 }

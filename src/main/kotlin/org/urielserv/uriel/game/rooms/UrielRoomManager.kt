@@ -18,7 +18,10 @@ class UrielRoomManager {
 
     private val logger = noCoLogger<UrielRoomManager>()
 
-    private val rooms = mutableMapOf<Int, Room>()
+    private val _rooms = mutableMapOf<Int, Room>()
+    val rooms: List<Room>
+        get() = _rooms.values.toList()
+
     private val roomModels = mutableMapOf<String, RoomModel>()
 
     init {
@@ -38,7 +41,7 @@ class UrielRoomManager {
      * @return The Room with the specified ID, or null if no Room with that ID exists.
      */
     fun getRoom(id: Int): Room? {
-        return rooms[id] ?: buildRoom(id)
+        return _rooms[id] ?: buildRoom(id)
     }
 
     fun getRooms(category: NavigatorPublicCategory): List<Room> {
@@ -69,19 +72,17 @@ class UrielRoomManager {
             .filterNotNull()
     }
 
-    fun getPublicRooms(): List<Room> {
-        return rooms.values.filter {
+    val publicRooms: List<Room>
+        get() = _rooms.values.filter {
             it.info.isPublic
         }
-    }
 
-    fun getPopularRooms(): List<Room> {
-        return rooms.values.filter {
+    val popularRooms: List<Room>
+        get() = _rooms.values.filter {
             it.info.users > 0
         }.sortedByDescending {
             it.info.users
         }
-    }
 
     fun createRoom(
         owner: Habbo,
@@ -133,13 +134,13 @@ class UrielRoomManager {
         roomInfo.users = 0
         roomInfo.flushChanges()
 
-        rooms[roomId] = Room(roomInfo)
+        _rooms[roomId] = Room(roomInfo)
 
-        return rooms[roomId]
+        return _rooms[roomId]
     }
 
     internal suspend fun shutdown() {
-        for (room in rooms.values) {
+        for (room in _rooms.values) {
             room.unload()
         }
     }

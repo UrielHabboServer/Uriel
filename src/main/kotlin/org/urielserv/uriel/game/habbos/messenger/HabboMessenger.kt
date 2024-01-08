@@ -12,11 +12,16 @@ class HabboMessenger(
     val habbo: Habbo
 ) {
 
-    private val friendships = MessengerManager.getFriendships(habbo).toMutableList()
-    private val friendshipRequests = MessengerManager.getFriendshipRequests(habbo).toMutableList()
+    private val _friendships = MessengerManager.getFriendships(habbo).toMutableList()
+    val friendships: List<Friendship>
+        get() = _friendships.toList()
+
+    private val _friendshipRequests = MessengerManager.getFriendshipRequests(habbo).toMutableList()
+    val friendshipRequests: List<FriendshipRequest>
+        get() = _friendshipRequests.toList()
 
     init {
-        for (friendship in friendships) {
+        for (friendship in _friendships) {
             // Update habboInfo to habbo.info
             if (friendship.habboInfoOne.id == habbo.info.id) {
                 friendship.habboInfoOne = habbo.info
@@ -35,11 +40,7 @@ class HabboMessenger(
     }
 
     fun getFriendship(habboId: Int): Friendship? {
-        return friendships.firstOrNull { it.other(habbo.info).id == habboId }
-    }
-
-    fun getFriendships(): List<Friendship> {
-        return friendships
+        return _friendships.firstOrNull { it.other(habbo.info).id == habboId }
     }
 
     fun isFriend(habboInfo: HabboInfo): Boolean {
@@ -47,11 +48,11 @@ class HabboMessenger(
     }
 
     fun isFriend(habboId: Int): Boolean {
-        return friendships.any { it.other(habbo.info).id == habboId }
+        return _friendships.any { it.other(habbo.info).id == habboId }
     }
 
     suspend fun addFriendship(friendship: Friendship) {
-        friendships.add(friendship)
+        _friendships.add(friendship)
 
         MessengerUpdatePacket(
             habbo = habbo,
@@ -60,7 +61,7 @@ class HabboMessenger(
     }
 
     suspend fun deleteFriendship(friendship: Friendship) {
-        friendships.remove(friendship)
+        _friendships.remove(friendship)
 
         MessengerUpdatePacket(
             habbo = habbo,
@@ -77,11 +78,7 @@ class HabboMessenger(
     }
 
     fun getFriendshipRequest(habboId: Int): FriendshipRequest? {
-        return friendshipRequests.firstOrNull { it.senderHabboInfo.id == habboId }
-    }
-
-    fun getFriendshipRequests(): List<FriendshipRequest> {
-        return friendshipRequests
+        return _friendshipRequests.firstOrNull { it.senderHabboInfo.id == habboId }
     }
 
     fun hasFriendshipRequest(habboInfo: HabboInfo): Boolean {
@@ -89,15 +86,15 @@ class HabboMessenger(
     }
 
     fun hasFriendshipRequest(habboId: Int): Boolean {
-        return friendshipRequests.any { it.senderHabboInfo.id == habboId }
+        return _friendshipRequests.any { it.senderHabboInfo.id == habboId }
     }
 
     fun addFriendshipRequest(friendshipRequest: FriendshipRequest) {
-        friendshipRequests.add(friendshipRequest)
+        _friendshipRequests.add(friendshipRequest)
     }
 
     fun deleteFriendshipRequest(friendshipRequest: FriendshipRequest) {
-        friendshipRequests.remove(friendshipRequest)
+        _friendshipRequests.remove(friendshipRequest)
     }
 
     suspend fun checkForOfflineMessages() {
@@ -111,7 +108,7 @@ class HabboMessenger(
     }
 
     suspend fun sendUpdateToFriends() {
-        for (friendship in friendships) {
+        for (friendship in _friendships) {
             val other = friendship.other(habbo.info)
 
             if (other.habbo != null) {

@@ -16,7 +16,7 @@ class MessengerInitPacketHandler : PacketHandler {
 
         MessengerInitPacket(habbo).send(client)
 
-        val friends = habbo.messenger.getFriendships()
+        val friends = habbo.messenger.friendships
         val batchSize = 750
         val totalFragments = ceil(friends.size.toDouble() / batchSize).toInt()
         for (i in 0..<totalFragments) {

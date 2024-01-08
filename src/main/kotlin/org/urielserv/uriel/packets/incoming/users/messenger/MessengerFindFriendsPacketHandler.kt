@@ -23,7 +23,7 @@ class MessengerFindFriendsPacketHandler : PacketHandler {
                 !habbo.messenger.isFriend(habboInfo)
             }
 
-        val friendSearchResults = habbo.messenger.getFriendships()
+        val friendSearchResults = habbo.messenger.friendships
             .filter { friendship ->
                 friendship.other(habbo.info).username.startsWith(query, true)
             }

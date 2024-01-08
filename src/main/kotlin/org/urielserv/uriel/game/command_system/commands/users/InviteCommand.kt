@@ -13,7 +13,7 @@ object InviteCommand : CommandBase() {
         if (sender.roomUnit == null) return
 
         val targetFriendships = if (target == null) {
-            sender.messenger.getFriendships()
+            sender.messenger.friendships
         } else {
             listOf(sender.messenger.getFriendship(target) ?: return)
         }

@@ -6,7 +6,7 @@ import kotlin.math.abs
 
 class RoomTileMap(
     private val room: Room,
-    private val model: RoomModel
+    model: RoomModel
 ) {
 
     companion object {

@@ -6,20 +6,13 @@ import org.urielserv.uriel.core.database.schemas.currencies.CurrenciesSchema
 
 class UrielCurrencyManager {
 
-    private val currencies = mutableMapOf<Int, UrielCurrency>()
+    private val _currencies = mutableMapOf<Int, UrielCurrency>()
+    val currencies: Map<Int, UrielCurrency>
+        get() = _currencies.toMap()
 
     init {
         Database.sequenceOf(CurrenciesSchema)
-            .forEach { currencies[it.id] = it }
-    }
-
-    /**
-     * Get the currencies in the hotel
-     *
-     * @return List of Currencies
-     */
-    fun getCurrencies(): List<UrielCurrency> {
-        return currencies.values.toList()
+            .forEach { _currencies[it.id] = it }
     }
 
 }

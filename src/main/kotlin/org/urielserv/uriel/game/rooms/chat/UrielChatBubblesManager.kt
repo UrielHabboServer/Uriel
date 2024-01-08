@@ -6,21 +6,21 @@ import org.urielserv.uriel.core.database.schemas.rooms.ChatBubblesSchema
 
 class UrielChatBubblesManager {
 
-    private val chatBubbles = mutableMapOf<Int, ChatBubble>()
+    private val _chatBubbles = mutableMapOf<Int, ChatBubble>()
+    val chatBubbles: List<ChatBubble>
+        get() = _chatBubbles.values.toList()
 
     init {
         Database.sequenceOf(ChatBubblesSchema)
-            .forEach { chatBubbles[it.id] = it }
+            .forEach { _chatBubbles[it.id] = it }
     }
 
-    fun getChatBubbleById(id: Int): ChatBubble? = chatBubbles[id]
+    fun getChatBubbleById(id: Int): ChatBubble? = _chatBubbles[id]
 
     fun getChatBubbleByName(name: String): ChatBubble? =
-        chatBubbles.values.firstOrNull { it.name == name }
+        _chatBubbles.values.firstOrNull { it.name == name }
 
     fun getChatBubbleByNitroStyleId(nitroStyleId: Int): ChatBubble? =
-        chatBubbles.values.firstOrNull { it.nitroStyleId == nitroStyleId }
-
-    fun getChatBubbles(): List<ChatBubble> = chatBubbles.values.toList()
+        _chatBubbles.values.firstOrNull { it.nitroStyleId == nitroStyleId }
 
 }

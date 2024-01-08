@@ -26,7 +26,7 @@ class NavigatorOfficialViewTab : NavigatorTab {
                 NavigatorSearchAction.NONE,
                 NavigatorDisplayMode.EXPANDED,
                 NavigatorListMode.FORCE_THUMBNAIL,
-                RoomManager.getPublicRooms().toMutableList()
+                RoomManager.publicRooms.toMutableList()
             )
         )
 

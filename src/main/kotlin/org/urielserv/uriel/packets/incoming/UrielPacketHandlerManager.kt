@@ -36,28 +36,28 @@ class UrielPacketHandlerManager {
 
     private val logger = logger(UrielPacketHandlerManager::class)
 
-    private val packets = mutableMapOf<Short, PacketHandler>()
+    private val packetHandlers = mutableMapOf<Short, PacketHandler>()
 
     init {
-        registerAllPackets()
+        registerAllPacketHandlers()
     }
 
-    private fun registerAllPackets() {
-        registerHandshakePackets()
-        registerUserPackets()
-        registerMessengerPackets()
-        registerLandingViewPackets()
-        registerNavigatorPackets()
-        registerRoomPackets()
+    private fun registerAllPacketHandlers() {
+        registerHandshakePacketHandlers()
+        registerUserPacketHandlers()
+        registerMessengerPacketHandlers()
+        registerLandingViewPacketHandlers()
+        registerNavigatorPacketHandlers()
+        registerRoomPacketHandlers()
     }
 
-    private fun registerHandshakePackets() {
+    private fun registerHandshakePacketHandlers() {
         registerPacket(Incoming.ReleaseVersion, ReleaseVersionPacketHandler())
         registerPacket(Incoming.SecurityTicket, SecurityTicketPacketHandler())
         registerPacket(Incoming.ClientPong, ClientPongPacketHandler())
     }
 
-    private fun registerUserPackets() {
+    private fun registerUserPacketHandlers() {
         registerPacket(Incoming.UserInfo, UserInfoPacketHandler())
         registerPacket(Incoming.UserSubscription, UserSubscriptionPacketHandler())
         registerPacket(Incoming.UserCurrency, UserCurrencyPacketHandler())
@@ -67,7 +67,7 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.UserProfile, UserProfilePacketHandler())
     }
 
-    private fun registerMessengerPackets() {
+    private fun registerMessengerPacketHandlers() {
         registerPacket(Incoming.MessengerInit, MessengerInitPacketHandler())
         registerPacket(Incoming.MessengerChat, MessengerChatPacketHandler())
         registerPacket(Incoming.RequestFriend, RequestFriendPacketHandler())
@@ -83,17 +83,17 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.SendRoomInvite, SendRoomInvitePacketHandler())
     }
 
-    private fun registerLandingViewPackets() {
+    private fun registerLandingViewPacketHandlers() {
         registerPacket(Incoming.DesktopView, DesktopViewPacketHandler())
         registerPacket(Incoming.GetPromoArticles, GetPromoArticlesPacketHandler())
     }
 
-    private fun registerNavigatorPackets() {
+    private fun registerNavigatorPacketHandlers() {
         registerPacket(Incoming.NavigatorInit, NavigatorInitPacketHandler())
         registerPacket(Incoming.NavigatorSearch, NavigatorSearchPacketHandler())
     }
 
-    private fun registerRoomPackets() {
+    private fun registerRoomPacketHandlers() {
         registerPacket(Incoming.GetUserFlatCats, GetUserFlatCatsPacketHandler())
         registerPacket(Incoming.RoomCreate, RoomCreatePacketHandler())
         registerPacket(Incoming.RoomEnter, RoomEnterPacketHandler())
@@ -117,7 +117,7 @@ class UrielPacketHandlerManager {
      * @param packetHandler The handler for the registered packet.
      */
     fun registerPacket(packetId: Int, packetHandler: PacketHandler) {
-        packets[packetId.toShort()] = packetHandler
+        packetHandlers[packetId.toShort()] = packetHandler
     }
 
     /**
@@ -126,7 +126,7 @@ class UrielPacketHandlerManager {
      * @param packetId The ID of the packet to unregister.
      */
     fun unregisterPacket(packetId: Int) {
-        packets.remove(packetId.toShort())
+        packetHandlers.remove(packetId.toShort())
     }
 
     /**
@@ -138,9 +138,9 @@ class UrielPacketHandlerManager {
      * @throws NoSuchElementException if the packetId does not exist in the packets map.
      */
     suspend fun handlePacket(packetId: Short, client: UrielServerClient, packet: ByteBuffer) {
-        if (packetId in packets) {
+        if (packetId in packetHandlers) {
             try {
-                packets[packetId]?.handle(client, packet)
+                packetHandlers[packetId]?.handle(client, packet)
             } catch (exc: Exception) {
                 when (exc) {
                     is BufferUnderflowException, is BufferOverflowException -> {

@@ -12,7 +12,7 @@ class GetFriendRequestsPacketHandler : PacketHandler {
 
         val habbo = client.habbo!!
 
-        MessengerRequestsPacket(habbo.messenger.getFriendshipRequests()).send(client)
+        MessengerRequestsPacket(habbo.messenger.friendshipRequests).send(client)
     }
 
 }
