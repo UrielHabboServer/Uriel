@@ -2,6 +2,7 @@ package org.urielserv.uriel.game.command_system.commands.users
 
 import org.urielserv.uriel.CommandManager
 import org.urielserv.uriel.extensions.hasPermission
+import org.urielserv.uriel.extensions.text
 import org.urielserv.uriel.game.command_system.CommandBase
 import org.urielserv.uriel.game.command_system.annotations.Command
 import org.urielserv.uriel.game.command_system.annotations.MainCommand
@@ -18,7 +19,6 @@ object CommandsCommand : CommandBase() {
                 (it.permission.isBlank() || sender.hasPermission(it.permission)) && it.name != "commands"
             }
             .sortedBy { it.name }
-            .sortedByDescending { it.permission.length }
 
         val commandString = buildString {
             for (command in commands) {
@@ -27,7 +27,9 @@ object CommandsCommand : CommandBase() {
         }
 
         PopUpNotification(
-            title = "${commands.size} commands available",
+            title = text("uriel.commands.commands.title",
+                "command_amount" to commands.size.toString()
+            ),
             message = commandString
         ).searchable().send(sender)
     }

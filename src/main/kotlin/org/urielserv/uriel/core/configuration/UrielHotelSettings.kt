@@ -32,6 +32,7 @@ data class UrielHotelSettings(
     data class Habbos(
         var defaultChatBubbleId: Int,
         var alertChatBubbleId: Int,
+        var mottoMaxLength: Int,
 
         var messenger: Messenger,
         var rooms: Rooms,

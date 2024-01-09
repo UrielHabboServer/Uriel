@@ -176,6 +176,7 @@ DROP TABLE IF EXISTS ranks;
 CREATE TABLE ranks
 (
     id           INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    nitro_id     INT                            NOT NULL,
     name         VARCHAR(255)                   NOT NULL,
     weight       INT                            NOT NULL,
     parent_id    INT,
@@ -184,11 +185,11 @@ CREATE TABLE ranks
     prefix_color VARCHAR(255),
     FOREIGN KEY (parent_id) REFERENCES ranks (id)
 );
-INSERT INTO ranks (name, weight)
-VALUES ('Default', 0);
-INSERT INTO ranks (name, weight, parent_id)
-VALUES ('Moderator', 100, 1),
-       ('Administrator', 200, 2);
+INSERT INTO ranks (nitro_id, name, weight)
+VALUES (1, 'Default', 0);
+INSERT INTO ranks (nitro_id, name, weight, parent_id)
+VALUES (5, 'Moderator', 100, 1),
+       (7, 'Administrator', 200, 2);
 
 DROP TABLE IF EXISTS rank_permissions;
 CREATE TABLE rank_permissions
@@ -252,7 +253,13 @@ VALUES (3, 'uriel.*', true),
        (1, 'uriel.chat_bubbles.35', true),
        (1, 'uriel.chat_bubbles.36', true),
        (1, 'uriel.chat_bubbles.37', true),
-       (1, 'uriel.chat_bubbles.38', true);
+       (1, 'uriel.chat_bubbles.38', true),
+       (1, 'uriel.commands.about', true),
+       (1, 'uriel.commands.commands', true),
+       (1, 'uriel.commands.lay', true),
+       (1, 'uriel.commands.sit', true),
+       (1, 'uriel.commands.stand', true),
+       (1, 'uriel.commands.invite', true);
 
 -- Navigator
 DROP TABLE IF EXISTS navigator_public_categories;
@@ -301,7 +308,6 @@ CREATE TABLE commands
     id          INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
     name        VARCHAR(255)                   NOT NULL,
     description TEXT    DEFAULT ''             NOT NULL,
-    permission  TEXT    DEFAULT ''             NOT NULL,
     enabled     BOOLEAN DEFAULT true           NOT NULL,
     invokers    TEXT                           NOT NULL
 );
@@ -311,7 +317,8 @@ VALUES ('about', 'Shows information about the Uriel Habbo Server', 'about,uriel,
        ('lay', 'Lays your character on the ground', 'lay'),
        ('sit', 'Sits your character on the ground', 'sit'),
        ('stand', 'Stands up your character', 'stand'),
-       ('invite', 'Sends your friend a room invite', 'invite');
+       ('invite', 'Sends your friend a room invite', 'invite'),
+       ('give', 'Gives a user a badge, currency, etc.', 'give');
 
 -- Furniture
 DROP TABLE IF EXISTS furniture;
@@ -1413,8 +1420,15 @@ CREATE TABLE uriel_texts
     value VARCHAR(255) DEFAULT NULL
 );
 INSERT INTO uriel_texts (`key`, value)
-VALUES ('uriel.error.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
-       ('uriel.error.connection', 'Connection Error');
+VALUES ('uriel.errors.login_elsewhere', 'You\'ve been disconnected as you\'ve logged in elsewhere!'),
+       ('uriel.errors.connection', 'Connection Error'),
+       ('uriel.command_system.error.invalid_parameter', 'Invalid parameter: %parameter_name%'),
+       ('uriel.command_system.error.unknown_subcommand', 'Unknown sub-command %subcommand%'),
+       ('uriel.commands.commands.title', '%command_amount% commands available'),
+       ('uriel.commands.give.available_options', 'You must include the type you want to give (badge, currency, etc)'),
+       ('uriel.commands.give.badge_already_existing', 'The user already has that badge!'),
+       ('uriel.commands.give.gave_badge', 'You have given %target% the following badge: %badge%'),
+       ('uriel.commands.give.received_badge', 'You have received a badge! Check your inventory');
 
 DROP TABLE IF EXISTS uriel_hotel_setting_overrides;
 CREATE TABLE uriel_hotel_setting_overrides

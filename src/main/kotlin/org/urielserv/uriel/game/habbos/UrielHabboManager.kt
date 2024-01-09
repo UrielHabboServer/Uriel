@@ -60,8 +60,8 @@ class UrielHabboManager {
 
         if (oldHabbo != null) {
             oldHabbo.notifications.alert(
-                message = text("uriel.error.login_elsewhere"),
-                title = text("uriel.error.connection")
+                message = text("uriel.errors.login_elsewhere"),
+                title = text("uriel.errors.connection")
             )
 
             oldHabbo.disconnect()

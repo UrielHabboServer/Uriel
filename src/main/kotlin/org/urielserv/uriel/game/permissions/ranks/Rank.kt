@@ -6,6 +6,7 @@ import org.urielserv.uriel.RankManager
 interface Rank : Entity<Rank> {
 
     val id: Int
+    val nitroId: Int
     val name: String
 
     val weight: Int

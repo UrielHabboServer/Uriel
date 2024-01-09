@@ -22,6 +22,15 @@ class HabboNotifications(
     }
 
     /**
+     * Sends a chat bubble alert message to the Habbo
+     *
+     * @param message Message to show
+     */
+    suspend fun chatAlert(message: String) {
+        habbo.roomUnit?.sendAlert(message)
+    }
+
+    /**
      * Sends the Habbo a notification, bubble alert, window, etc...
      *
      * @param type Key of notification

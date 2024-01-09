@@ -3,6 +3,7 @@ package org.urielserv.uriel.game.command_system
 import io.klogging.noCoLogger
 import org.urielserv.uriel.CommandManager
 import org.urielserv.uriel.extensions.localise
+import org.urielserv.uriel.extensions.text
 import org.urielserv.uriel.game.command_system.annotations.Command
 import org.urielserv.uriel.game.command_system.annotations.MainCommand
 import org.urielserv.uriel.game.command_system.annotations.SubCommand
@@ -36,7 +37,7 @@ abstract class CommandBase {
         val executorClass = executor?.second
 
         if (executorFunction == null) {
-            habbo.roomUnit!!.sendAlert("Unknown sub-command: ${args.first()}")
+            habbo.notifications.chatAlert(text("uriel.command_system.error.unknown_subcommand", "subcommand" to name))
             return
         }
 
@@ -69,7 +70,7 @@ abstract class CommandBase {
                 val parameterValue = parameterBuilder(clonedArgs) // will consume the arguments as needed
 
                 if (parameterValue == null && functionParameters.size == index) {
-                    habbo.roomUnit!!.sendAlert("Invalid parameter: ${parameter.name}")
+                    habbo.notifications.chatAlert(text("uriel.command_system.error.invalid_parameter", "parameter_name" to parameter.name!!))
                     return
                 } else if (parameterValue == null && parameter.isOptional) {
                     parameters.add(null)

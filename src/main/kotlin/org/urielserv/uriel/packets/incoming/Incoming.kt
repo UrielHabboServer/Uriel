@@ -20,6 +20,7 @@ object Incoming {
     const val UserBadges = 2769
     const val UserBadgesCurrentUpdate = 644
     const val UserBadgesCurrent = 2091
+    const val UserMotto = 2228
 
     // Landing View
     const val DesktopView = 105

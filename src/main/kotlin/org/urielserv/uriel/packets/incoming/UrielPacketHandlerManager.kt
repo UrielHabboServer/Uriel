@@ -17,6 +17,7 @@ import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitStopTyp
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitTypingPacketHandler
 import org.urielserv.uriel.packets.incoming.users.DesktopViewPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
+import org.urielserv.uriel.packets.incoming.users.UserMottoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserProfilePacketHandler
 import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
 import org.urielserv.uriel.packets.incoming.users.inventory.badges.UserBadgesCurrentPacketHandler
@@ -70,6 +71,7 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.UserBadges, UserBadgesPacketHandler())
         registerPacket(Incoming.UserBadgesCurrentUpdate, UserBadgesCurrentUpdatePacketHandler())
         registerPacket(Incoming.UserBadgesCurrent, UserBadgesCurrentPacketHandler())
+        registerPacket(Incoming.UserMotto, UserMottoPacketHandler())
     }
 
     private fun registerMessengerPacketHandlers() {

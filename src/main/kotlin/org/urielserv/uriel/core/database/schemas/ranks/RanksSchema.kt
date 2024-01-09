@@ -8,6 +8,7 @@ import org.urielserv.uriel.game.permissions.ranks.Rank
 object RanksSchema : Table<Rank>("ranks") {
 
     val id = int("id").primaryKey().bindTo { it.id }
+    val nitroId = int("nitro_id").bindTo { it.nitroId }
     val name = varchar("name").bindTo { it.name }
 
     val weight = int("weight").bindTo { it.weight }

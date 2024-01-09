@@ -13,6 +13,7 @@ discountDaysBeforeEnd = 7
 [habbos]
 defaultChatBubbleId = 1
 alertChatBubbleId = 2
+mottoMaxLength = 38
 
 [habbos.messenger]
 maxFriendsWithHabboClub = 500

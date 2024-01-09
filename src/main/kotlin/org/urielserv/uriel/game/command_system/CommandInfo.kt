@@ -12,6 +12,7 @@ interface CommandInfo : Entity<CommandInfo> {
     val description: String
 
     val permission: String
+        get() = "uriel.commands.$name"
     val enabled: Boolean
 
     val rawInvokers: String
