@@ -13,9 +13,9 @@ class RoomUnitChatPacketHandler(
 ) : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        if (client.habbo!!.room == null) return
+        if (habbo.room == null) return
 
         val message = packet.getString()
         val bubbleId = packet.getInt()
@@ -24,7 +24,7 @@ class RoomUnitChatPacketHandler(
             ChatBubblesManager.getChatBubbleByNitroStyleId(bubbleId)
                 ?: ChatBubblesManager.getChatBubbleById(HotelSettings.habbos.defaultChatBubbleId)!!
 
-        client.habbo!!.roomUnit!!.talk(RoomChatMessage(client.habbo!!, message, bubble, type))
+        habbo.roomUnit!!.talk(RoomChatMessage(habbo, message, bubble, type))
     }
 
 }

@@ -1,7 +1,6 @@
 package org.urielserv.uriel.packets.incoming.users.messenger
 
 import org.urielserv.uriel.HabboManager
-import org.urielserv.uriel.MessengerManager
 import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
@@ -11,9 +10,7 @@ import java.nio.ByteBuffer
 class MessengerFindFriendsPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        val habbo = client.habbo ?: return
 
         val query = packet.getString()
 

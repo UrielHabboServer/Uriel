@@ -7,9 +7,7 @@ import java.nio.ByteBuffer
 class RemoveFriendPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        val habbo = client.habbo ?: return
 
         val removeAmount = packet.getInt()
 

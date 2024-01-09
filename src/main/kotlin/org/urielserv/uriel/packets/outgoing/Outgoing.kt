@@ -19,6 +19,8 @@ object Outgoing {
     const val UserWardrobePage = 3315
     const val UserFigure = 2429
     const val UserProfile = 3898
+    const val UserBadges = 717
+    const val UserCurrentBadges = 1087
 
     const val NoobnessLevel = 3738
 

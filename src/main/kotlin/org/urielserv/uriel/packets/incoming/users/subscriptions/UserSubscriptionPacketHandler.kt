@@ -9,12 +9,12 @@ import java.nio.ByteBuffer
 class UserSubscriptionPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
         val subscriptionType = packet.getString()
-        val subscription = client.habbo!!.subscriptions.getSubscription(subscriptionType) ?: return
+        val subscription = habbo.subscriptions.getSubscription(subscriptionType) ?: return
 
-        UserSubscriptionPacket(client.habbo!!, subscription, UserSubscriptionPacket.RESPONSE_TYPE_NORMAL)
+        UserSubscriptionPacket(habbo, subscription, UserSubscriptionPacket.RESPONSE_TYPE_NORMAL)
             .send(client)
     }
 

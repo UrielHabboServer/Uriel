@@ -11,7 +11,7 @@ class UserWardrobePagePacket(
     override val packetId = Outgoing.UserWardrobePage
 
     override suspend fun construct() {
-        val looks = habbo.inventory.savedLooks.looks
+        val looks = habbo.inventory.savedLooks
 
         appendInt(1)
         appendInt(looks.size)

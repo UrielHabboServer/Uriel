@@ -4,15 +4,12 @@ import org.urielserv.uriel.HabboManager
 import org.urielserv.uriel.extensions.getString
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
-import org.urielserv.uriel.packets.outgoing.users.messenger.MessengerInvitePacket
 import java.nio.ByteBuffer
 
 class SendRoomInvitePacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        val habbo = client.habbo ?: return
 
         val userAmount = packet.getInt()
         val users = mutableListOf<Int>()

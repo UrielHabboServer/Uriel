@@ -15,9 +15,9 @@ class UserInfoPacketHandler : PacketHandler {
         - UserClientSettings
          */
 
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        UserInfoPacket(client.habbo!!).send(client)
+        UserInfoPacket(habbo).send(client)
     }
 
 }

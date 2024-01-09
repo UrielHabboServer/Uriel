@@ -17,6 +17,9 @@ object Incoming {
     const val SaveWardrobeOutfit = 800
     const val UserFigure = 2730
     const val UserProfile = 3265
+    const val UserBadges = 2769
+    const val UserBadgesCurrentUpdate = 644
+    const val UserBadgesCurrent = 2091
 
     // Landing View
     const val DesktopView = 105

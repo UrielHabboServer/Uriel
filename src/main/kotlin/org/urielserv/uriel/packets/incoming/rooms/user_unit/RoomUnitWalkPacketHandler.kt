@@ -7,21 +7,21 @@ import java.nio.ByteBuffer
 class RoomUnitWalkPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        if (client.habbo!!.roomUnit == null) return
+        if (habbo.roomUnit == null) return
 
         val x = packet.getInt()
         val y = packet.getInt()
 
-        val tile = client.habbo!!.room!!.tileMap!!.getTile(x, y)
+        val tile = habbo.room!!.tileMap!!.getTile(x, y)
 
         if (tile == null) {
-            client.habbo!!.room!!.leave(client.habbo!!)
+            habbo.room!!.leave(habbo)
             return
         }
 
-        client.habbo!!.roomUnit!!.walkTo(tile)
+        habbo.roomUnit!!.walkTo(tile)
     }
 
 }

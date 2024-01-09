@@ -11,11 +11,12 @@ import org.urielserv.uriel.packets.outgoing.users.inventory.UserEffectListPacket
 
 class InventoryEffects(
     val habbo: Habbo
-) : Iterable<Effect> {
+) : Collection<Effect> {
 
-    val _effects = mutableListOf<Effect>()
-    val effects: List<Effect>
-        get() = _effects.toList()
+    private val _effects = mutableListOf<Effect>()
+
+    override val size: Int
+        get() = _effects.size
 
     init {
         Database.sequenceOf(UserEffectsSchema)
@@ -54,6 +55,18 @@ class InventoryEffects(
 
     override fun iterator(): Iterator<Effect> {
         return _effects.iterator()
+    }
+
+    override fun isEmpty(): Boolean {
+        return _effects.isEmpty()
+    }
+
+    override fun containsAll(elements: Collection<Effect>): Boolean {
+        return _effects.containsAll(elements)
+    }
+
+    override fun contains(element: Effect): Boolean {
+        return _effects.contains(element)
     }
 
 }

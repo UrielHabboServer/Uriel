@@ -9,7 +9,7 @@ import java.nio.ByteBuffer
 class MessengerRelationshipsPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        client.habbo ?: return
 
         val targetHabboId = packet.getInt()
         val targetHabboInfo = HabboManager.getHabboInfo(targetHabboId) ?: return

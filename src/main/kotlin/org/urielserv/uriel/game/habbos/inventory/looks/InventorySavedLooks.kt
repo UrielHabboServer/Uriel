@@ -11,11 +11,12 @@ import org.urielserv.uriel.game.habbos.HabboGender
 
 class InventorySavedLooks(
     val habbo: Habbo
-) {
+) : Collection<SavedLook> {
 
     private val _looks = mutableListOf<SavedLook>()
-    val looks: List<SavedLook>
-        get() = _looks.toList()
+
+    override val size: Int
+        get() = _looks.size
 
     init {
         Database.sequenceOf(UserSavedLooksSchema)
@@ -58,6 +59,22 @@ class InventorySavedLooks(
         Database.sequenceOf(UserSavedLooksSchema)
             .filter { it.userId eq habbo.info.id }
             .forEach { it.delete() }
+    }
+
+    override fun iterator(): Iterator<SavedLook> {
+        return _looks.iterator()
+    }
+
+    override fun isEmpty(): Boolean {
+        return _looks.isEmpty()
+    }
+
+    override fun containsAll(elements: Collection<SavedLook>): Boolean {
+        return _looks.containsAll(elements)
+    }
+
+    override fun contains(element: SavedLook): Boolean {
+        return _looks.contains(element)
     }
 
 }

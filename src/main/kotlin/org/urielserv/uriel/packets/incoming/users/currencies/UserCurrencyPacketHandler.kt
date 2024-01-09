@@ -9,14 +9,14 @@ import java.nio.ByteBuffer
 class UserCurrencyPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        val habboCreditsCurrency = client.habbo!!.currencies.getByName("credits")
+        val habboCreditsCurrency = habbo.currencies.getByName("credits")
         if (habboCreditsCurrency != null) {
             UserCreditsPacket(habboCreditsCurrency.amount).send(client)
         }
 
-        UserCurrencyPacket(client.habbo!!).send(client)
+        UserCurrencyPacket(habbo).send(client)
     }
 
 }

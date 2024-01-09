@@ -8,11 +8,11 @@ import java.nio.ByteBuffer
 class RoomUnitStopTypingPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        if (client.habbo!!.roomUnit == null) return
+        if (habbo.roomUnit == null) return
 
-        RoomUnitTypingPacket(client.habbo!!, false).broadcast(client.habbo!!.room!!)
+        RoomUnitTypingPacket(habbo, false).broadcast(habbo.room!!)
     }
 
 }

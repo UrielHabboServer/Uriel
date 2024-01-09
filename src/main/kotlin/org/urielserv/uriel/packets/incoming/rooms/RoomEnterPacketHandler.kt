@@ -12,7 +12,7 @@ import java.nio.ByteBuffer
 class RoomEnterPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
         val roomId = packet.getInt()
 
@@ -23,7 +23,7 @@ class RoomEnterPacketHandler : PacketHandler {
             return
         }
 
-        val event = RoomEnterEvent(client.habbo!!, room)
+        val event = RoomEnterEvent(habbo, room)
         EventDispatcher.dispatch(Events.RoomEnter, event)
 
         if (event.isCancelled) {
@@ -31,7 +31,7 @@ class RoomEnterPacketHandler : PacketHandler {
             return
         }
 
-        room.enter(client.habbo!!)
+        room.enter(habbo)
     }
 
 }

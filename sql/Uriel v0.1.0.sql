@@ -64,6 +64,17 @@ CREATE TABLE user_currencies
     FOREIGN KEY (currency_id) REFERENCES currencies (id)
 );
 
+DROP TABLE IF EXISTS user_badges;
+CREATE TABLE user_badges
+(
+    id        INT AUTO_INCREMENT PRIMARY KEY NOT NULL UNIQUE,
+    user_id   INT                            NOT NULL,
+    badge     VARCHAR(255)                   NOT NULL,
+    is_active BOOLEAN DEFAULT false          NOT NULL,
+    slot_id   INT     DEFAULT 0              NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 DROP TABLE IF EXISTS user_subscriptions;
 CREATE TABLE user_subscriptions
 (

@@ -19,15 +19,15 @@ class RoomCreatePacketHandler : PacketHandler {
     val logger = logger(RoomCreatePacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        val roomLimit = if (client.habbo!!.subscriptions.hasActiveHabboClubMembership()) {
+        val roomLimit = if (habbo.subscriptions.hasActiveHabboClubMembership()) {
             HotelSettings.habbos.rooms.maxRoomsWithHabboClub
         } else {
             HotelSettings.habbos.rooms.maxRooms
         }
 
-        if (RoomManager.getRooms(client.habbo!!).size >= roomLimit) {
+        if (RoomManager.getRooms(habbo).size >= roomLimit) {
             CanCreateRoomPacket(false, roomLimit).send(client)
             return
         }
@@ -42,25 +42,25 @@ class RoomCreatePacketHandler : PacketHandler {
         val model = RoomManager.getRoomModel(modelName)
 
         if (model == null) {
-            logger.warn("${client.habbo!!.info.username} attempted to create a room with a non-existent model: $modelName")
+            logger.warn("${habbo.info.username} attempted to create a room with a non-existent model: $modelName")
             return
         }
 
         val category = NavigatorManager.getFlatCategory(categoryId)
 
         if (category == null) {
-            logger.warn("${client.habbo!!.info.username} attempted to create a room with a non-existent category: $categoryId")
+            logger.warn("${habbo.info.username} attempted to create a room with a non-existent category: $categoryId")
             return
         }
 
-        val event = RoomCreateEvent(client.habbo!!, roomName, roomDescription, model, category, maxVisitors, tradeType)
+        val event = RoomCreateEvent(habbo, roomName, roomDescription, model, category, maxVisitors, tradeType)
         EventDispatcher.dispatch(Events.RoomCreate, event)
 
         if (event.isCancelled) return
 
         val room =
             RoomManager.createRoom(
-                client.habbo!!,
+                habbo,
                 event.name,
                 event.description,
                 event.model,

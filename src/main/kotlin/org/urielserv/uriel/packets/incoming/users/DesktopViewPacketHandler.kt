@@ -7,11 +7,11 @@ import java.nio.ByteBuffer
 class DesktopViewPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        if (client.habbo!!.room == null) return
+        if (habbo.room == null) return
 
-        client.habbo!!.room!!.leave(client.habbo!!)
+        habbo.room!!.leave(habbo)
     }
 
 }

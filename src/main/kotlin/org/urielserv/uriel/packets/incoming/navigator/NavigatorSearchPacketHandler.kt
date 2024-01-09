@@ -10,7 +10,7 @@ import java.nio.ByteBuffer
 class NavigatorSearchPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
         var searchCode = packet.getString()
         val data = packet.getString()
@@ -20,7 +20,7 @@ class NavigatorSearchPacketHandler : PacketHandler {
         }
 
         val tab = NavigatorManager.getTab(searchCode) ?: return
-        val searchResultLists = tab.getSearchResultListsForHabbo(client.habbo!!)
+        val searchResultLists = tab.getSearchResultListsForHabbo(habbo)
 
         if (data.isNotBlank()) {
             val filterId = if (data.contains(":")) {

@@ -35,6 +35,7 @@ data class UrielHotelSettings(
 
         var messenger: Messenger,
         var rooms: Rooms,
+        var badges: Badges,
         var wardrobe: Wardrobe,
         var inventory: Inventory,
         var subscriptions: Subscriptions,
@@ -53,8 +54,14 @@ data class UrielHotelSettings(
         )
 
         @Serializable
+        data class Badges(
+            var maxActiveBadges: Int
+        )
+
+        @Serializable
         data class Wardrobe(
             var figureDataUrl: String,
+            var maxSlots: Int,
             var validateLooksOnHabboClubExpire: Boolean,
             var validateLooksOnLogin: Boolean,
             var validateLooksOnChange: Boolean,

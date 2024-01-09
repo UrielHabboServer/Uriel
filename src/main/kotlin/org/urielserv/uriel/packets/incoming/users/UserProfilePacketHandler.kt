@@ -10,9 +10,7 @@ import java.nio.ByteBuffer
 class UserProfilePacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        val habbo = client.habbo ?: return
 
         val userId = packet.getInt()
         packet.getBoolean() // No clue what this is, not even Nitro knows

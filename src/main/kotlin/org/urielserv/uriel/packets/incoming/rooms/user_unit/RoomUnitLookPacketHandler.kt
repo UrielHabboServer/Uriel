@@ -7,9 +7,7 @@ import java.nio.ByteBuffer
 class RoomUnitLookPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        val habbo = client.habbo ?: return
 
         if (habbo.room == null) return
 

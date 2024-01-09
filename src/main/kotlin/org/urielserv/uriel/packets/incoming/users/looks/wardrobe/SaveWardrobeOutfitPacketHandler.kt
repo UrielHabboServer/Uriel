@@ -17,13 +17,11 @@ class SaveWardrobeOutfitPacketHandler : PacketHandler {
     private val logger = logger(SaveWardrobeOutfitPacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
         val slotId = packet.getInt()
 
-        val habbo = client.habbo!!
-
-        if (slotId < 0 || slotId > 9) {
+        if (slotId < 0 || slotId > HotelSettings.habbos.wardrobe.maxSlots) {
             logger.warn("${habbo.info.username} attempted to save a look with an invalid slot ID")
             return
         }

@@ -9,7 +9,7 @@ import java.nio.ByteBuffer
 class GetGuestRoomPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        client.habbo ?: return
 
         val roomId = packet.getInt()
         val room = RoomManager.getRoom(roomId) ?: return

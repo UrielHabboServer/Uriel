@@ -8,9 +8,9 @@ import java.nio.ByteBuffer
 class GetUserFlatCatsPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        NavigatorCategoriesPacket(client.habbo!!).send(client)
+        NavigatorCategoriesPacket(habbo).send(client)
     }
 
 }

@@ -1,18 +1,16 @@
-package org.urielserv.uriel.packets.incoming.users.messenger
+package org.urielserv.uriel.packets.incoming.users.inventory.badges
 
 import org.urielserv.uriel.networking.UrielServerClient
 import org.urielserv.uriel.packets.incoming.PacketHandler
+import org.urielserv.uriel.packets.outgoing.users.inventory.badges.UserBadgesPacket
 import java.nio.ByteBuffer
 
-class FollowFriendPacketHandler : PacketHandler {
+class UserBadgesPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         val habbo = client.habbo ?: return
-
-        val friendId = packet.getInt()
-        val friendship = habbo.messenger.getFriendship(friendId) ?: return
-
-        friendship.follow(habbo)
+        
+        UserBadgesPacket(habbo).send(habbo)
     }
-
+    
 }

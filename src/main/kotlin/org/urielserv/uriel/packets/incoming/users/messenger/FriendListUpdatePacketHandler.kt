@@ -7,9 +7,7 @@ import java.nio.ByteBuffer
 class FriendListUpdatePacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        client.habbo ?: return
 
         // TODO: Implement
     }

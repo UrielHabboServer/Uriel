@@ -9,7 +9,7 @@ import java.nio.ByteBuffer
 class NavigatorInitPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        client.habbo ?: return
 
         NavigatorMetadataPacket().send(client)
         NavigatorEventCategories().send(client)

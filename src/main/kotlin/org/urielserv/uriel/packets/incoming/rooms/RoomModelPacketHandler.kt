@@ -9,14 +9,14 @@ import java.nio.ByteBuffer
 class RoomModelPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        if (client.habbo!!.room == null) return
+        if (habbo.room == null) return
 
-        RoomHeightmapPacket(client.habbo!!.room!!).send(client)
-        RoomModelPacket(client.habbo!!.room!!).send(client)
+        RoomHeightmapPacket(habbo.room!!).send(client)
+        RoomModelPacket(habbo.room!!).send(client)
 
-        client.habbo!!.room!!.finishEnter(client.habbo!!)
+        habbo.room!!.finishEnter(habbo)
     }
 
 }

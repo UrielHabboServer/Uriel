@@ -10,9 +10,7 @@ import kotlin.math.ceil
 class MessengerInitPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
-
-        val habbo = client.habbo!!
+        val habbo = client.habbo ?: return
 
         MessengerInitPacket(habbo).send(client)
 

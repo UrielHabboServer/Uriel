@@ -19,14 +19,10 @@ class UserFigurePacketHandler : PacketHandler {
     private val logger = logger(UserFigurePacketHandler::class)
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) {
-            return
-        }
+        val habbo = client.habbo ?: return
 
         val shortGender = packet.getString()
         var look = packet.getString()
-
-        val habbo = client.habbo!!
 
         val gender = try {
             HabboGender.tryFromShort(shortGender)

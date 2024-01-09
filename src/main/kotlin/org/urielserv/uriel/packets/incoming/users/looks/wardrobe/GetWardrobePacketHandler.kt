@@ -8,9 +8,9 @@ import java.nio.ByteBuffer
 class GetWardrobePacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
-        if (client.habbo == null) return
+        val habbo = client.habbo ?: return
 
-        UserWardrobePagePacket(client.habbo!!).send(client)
+        UserWardrobePagePacket(habbo).send(client)
     }
 
 }
