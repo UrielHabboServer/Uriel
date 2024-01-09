@@ -20,7 +20,7 @@ Uriel aims to become the mainstream Habbo server, with a focus on performance & 
 * [ ] Inventory
 * [ ] Furniture
 * [ ] Catalog
-* [ ] Friends & Messenger
+* [x] Friends & Messenger
 * [ ] Moderation
 * [ ] Wired
 
