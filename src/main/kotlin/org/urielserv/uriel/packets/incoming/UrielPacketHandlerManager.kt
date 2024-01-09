@@ -16,13 +16,12 @@ import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitChatPac
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitStopTypingPacketHandler
 import org.urielserv.uriel.packets.incoming.rooms.user_unit.chat.RoomUnitTypingPacketHandler
 import org.urielserv.uriel.packets.incoming.users.DesktopViewPacketHandler
-import org.urielserv.uriel.packets.incoming.users.inventory.badges.UserBadgesPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserInfoPacketHandler
 import org.urielserv.uriel.packets.incoming.users.UserProfilePacketHandler
-import org.urielserv.uriel.packets.incoming.users.inventory.badges.UserBadgesCurrentUpdatePacketHandler
-import org.urielserv.uriel.packets.incoming.users.messenger.MessengerRelationshipsPacketHandler
 import org.urielserv.uriel.packets.incoming.users.currencies.UserCurrencyPacketHandler
 import org.urielserv.uriel.packets.incoming.users.inventory.badges.UserBadgesCurrentPacketHandler
+import org.urielserv.uriel.packets.incoming.users.inventory.badges.UserBadgesCurrentUpdatePacketHandler
+import org.urielserv.uriel.packets.incoming.users.inventory.badges.UserBadgesPacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.UserFigurePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.GetWardrobePacketHandler
 import org.urielserv.uriel.packets.incoming.users.looks.wardrobe.SaveWardrobeOutfitPacketHandler
@@ -158,6 +157,7 @@ class UrielPacketHandlerManager {
                             client.dispose()
                         }
                     }
+
                     else -> {
                         logger.error("Error handling packet $packetId:")
                         exc.printStackTrace()

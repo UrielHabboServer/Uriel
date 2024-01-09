@@ -7,7 +7,7 @@ import org.urielserv.uriel.game.habbos.HabboInfo
 import org.urielserv.uriel.packets.outgoing.Outgoing
 import org.urielserv.uriel.packets.outgoing.Packet
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 class UserProfilePacket(
     private val viewerHabbo: Habbo,

@@ -5,7 +5,6 @@ import org.urielserv.uriel.ChatBubblesManager
 import org.urielserv.uriel.CommandManager
 import org.urielserv.uriel.HotelSettings
 import org.urielserv.uriel.extensions.hasPermission
-import org.urielserv.uriel.extensions.schedule
 import org.urielserv.uriel.extensions.scheduleRepeating
 import org.urielserv.uriel.game.habbos.Habbo
 import org.urielserv.uriel.game.rooms.Room

@@ -33,7 +33,7 @@ class PopUpNotification(
     }
 
     override fun build(): List<Pair<String, String>> {
-        val pairs =  listOf(
+        val pairs = listOf(
             "title" to title,
             "linkTitle" to buttonLinkTitle,
             "linkUrl" to buttonLinkUrl,

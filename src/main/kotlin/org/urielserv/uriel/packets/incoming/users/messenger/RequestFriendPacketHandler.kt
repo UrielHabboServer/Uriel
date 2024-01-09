@@ -23,7 +23,8 @@ class RequestFriendPacketHandler : PacketHandler {
         }
 
         if (!habbo.hasPermission("uriel.messenger.unlimited_friends")
-            && habbo.messenger.friendships.size >= friendLimit) return
+            && habbo.messenger.friendships.size >= friendLimit
+        ) return
 
         val username = packet.getString()
 

@@ -13,6 +13,7 @@ data class UrielPluginData(
 
     @Transient
     internal lateinit var pluginFile: File
+
     @Transient
     internal lateinit var jarFile: JarFile
 

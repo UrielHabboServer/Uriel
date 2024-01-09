@@ -9,8 +9,8 @@ class UserBadgesPacketHandler : PacketHandler {
 
     override suspend fun handle(client: UrielServerClient, packet: ByteBuffer) {
         val habbo = client.habbo ?: return
-        
+
         UserBadgesPacket(habbo).send(habbo)
     }
-    
+
 }
