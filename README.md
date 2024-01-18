@@ -1,28 +1,42 @@
-# Uriel Habbo Server
-Uriel aims to become the mainstream Habbo server, with a focus on performance & customisation.
+# Uriel Server
+Uriel is a Habbo Server library written in Kotlin, letting people easily create their own fully custom Habbo Hotels.
+
+> [!NOTE]
+> Uriel has switched goals from being a Habbo Emulator to a Habbo Server Library. This means that Uriel will no longer be a standalone server.
 
 > [!IMPORTANT]
-> 
-> Uriel is not yet ready for production use. It is still in very early development.
+> Uriel is not yet finished and may contain bugs or lack features. Breaking changes may also occur at any time.
 
 ## Goals
-* Per-room tick loops for Wired, Pathfinding, etc.
-* Hotel-wide tick loop for global tasks, such as subscription checks.
-* Easy packet creation & handling.
-* Both a plugin system & a scripting system to allow for easy & powerful customisation.
-* A powerful, yet easy to use, permission system, similar to Minecraft's.
+* Hotel-wide tick loops and per-room tick loops.
+* Total customisation of the hotel, which includes the ability to use your own components anywhere.
+* A plugin system to allow for easy extension of the server via other people's creations.
+* A powerful, yet easy to use permission system, like that of Bukkit.
+
+## Goal Usage *(not yet implemented)*
+```kotlin
+val server = UrielServer {
+    port = 3000
+    ip = "127.0.0.1"
+    
+    authentication {
+        handler = MyAuthenticationHandler()
+    }
+}
+
+server.start()
+```
 
 ## Initial Roadmap
 * [x] Handshake & Authentication
-* [x] Navigator *(mostly done, missing a tab and some details)*
-* [ ] Rooms *(in progress)*
-* [x] Chat
-* [ ] Inventory
-* [ ] Furniture
-* [ ] Catalog
 * [x] Friends & Messenger
+* [x] Default Navigator provider
+* [ ] Rooms *(in progress)*
+* * [x] Chat, Commands & Chat Bubbles
+* [ ] Inventory *(in progress)*
+* [ ] Furniture
+* [ ] Catalogue
 * [ ] Moderation
-* [ ] Wired
 
 ## License
 [MIT](/LICENSE)
