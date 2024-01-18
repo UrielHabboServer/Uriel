@@ -51,6 +51,7 @@ object Incoming {
     const val RoomEnter = 2312
     const val RoomModel = 2300
     const val GetGuestRoom = 2230
+    const val RoomSettings = 3129
 
     const val RoomUnitWalk = 3320
     const val RoomUnitLook = 3301

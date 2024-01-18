@@ -66,6 +66,7 @@ object Outgoing {
     const val RoomHeightmap = 2753
     const val RoomModel = 1301
     const val RoomForward = 160
+    const val RoomSettings = 1498
 
     const val RoomUnit = 374
     const val RoomUnitStatus = 1640

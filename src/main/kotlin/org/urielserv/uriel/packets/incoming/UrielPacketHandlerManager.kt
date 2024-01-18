@@ -107,6 +107,7 @@ class UrielPacketHandlerManager {
         registerPacket(Incoming.RoomModel, RoomModelPacketHandler()) // -> finishes loading the room
         registerPacket(Incoming.FurnitureAliases, RoomModelPacketHandler()) // -> finishes loading the room
         registerPacket(Incoming.GetGuestRoom, GetGuestRoomPacketHandler()) // -> finishes loading the room
+        registerPacket(Incoming.RoomSettings, RoomSettingsPacketHandler())
 
         registerPacket(Incoming.RoomUnitWalk, RoomUnitWalkPacketHandler())
         registerPacket(Incoming.RoomUnitLook, RoomUnitLookPacketHandler())
